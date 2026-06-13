@@ -1,0 +1,102 @@
+---
+/**
+ * Install — up and running in 30 seconds. Method switcher with real commands.
+ * Ported from the seekstone-design skill. Commands verified against the README.
+ */
+import Card from "./Card.astro";
+import Button from "./Button.astro";
+import Badge from "./Badge.astro";
+import Tabs from "./Tabs.astro";
+import CodeBlock from "./CodeBlock.astro";
+import Icon from "./Icon.astro";
+
+const CONFIG_JSON = `{
+  "mcpServers": {
+    "seekstone": {
+      "command": "npx",
+      "args": ["-y", "obsidian-mcp-seekstone"],
+      "env": { "SEEKSTONE_VAULT": "/path/to/your/vault" }
+    }
+  }
+}`;
+
+const CODE_CMD = `claude mcp add seekstone \\
+  --env SEEKSTONE_VAULT=/path/to/vault \\
+  -- npx -y obsidian-mcp-seekstone`;
+---
+
+<section class="section" id="install">
+	<div class="glow-blob" style="width:520px;height:520px;top:-5%;left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(124,92,255,0.18), transparent 65%)"></div>
+	<div class="container container--narrow relativ">
+		<div class="head head--center">
+			<span class="eyebrow eyebrow--center"><Icon name="terminal" size={13} /> 30 seconds to first search</span>
+			<h2>Pick your way in.</h2>
+			<p>Two npm names, one server. Works with Claude Desktop, Claude Code, Cursor, Windsurf — any MCP-over-stdio client.</p>
+		</div>
+
+		<Card variant="raised" padding="lg" class="inst__card">
+			<Tabs
+				full
+				items={[
+					{ id: "oneclick", label: "One-click" },
+					{ id: "cli", label: "Guided CLI" },
+					{ id: "code", label: "Claude Code" },
+					{ id: "manual", label: "Manual" },
+				]}
+			>
+				<div class="ss-tabs__panel inst__panel" data-panel="oneclick">
+					<ol class="inst__steps">
+						<li class="inst__step"><span class="inst__num">1</span><span>Download <code>seekstone.mcpb</code> from GitHub Releases.</span></li>
+						<li class="inst__step"><span class="inst__num">2</span><span>Open it with Claude Desktop — double-click in Finder.</span></li>
+						<li class="inst__step"><span class="inst__num">3</span><span>Pick your Obsidian vault when prompted. Done.</span></li>
+					</ol>
+					<div class="inst__row">
+						<Button variant="spark" href="https://github.com/shaqmughal/seekstone/releases/latest" target="_blank" rel="noreferrer">
+							<Icon slot="iconLeft" name="download" size={16} />
+							Download .mcpb
+						</Button>
+						<span class="inst__note">No terminal · no Node.js required</span>
+					</div>
+				</div>
+
+				<div class="ss-tabs__panel inst__panel" data-panel="cli" hidden>
+					<p class="inst__lead">Auto-detects your vault, validates it, and patches Claude Desktop for you.</p>
+					<CodeBlock prompt code="npx -y obsidian-mcp-seekstone init" />
+					<span class="inst__note">Add <code>--write</code> to patch in place, or <code>--vault</code> to choose.</span>
+				</div>
+
+				<div class="ss-tabs__panel inst__panel" data-panel="code" hidden>
+					<p class="inst__lead">One command configures Claude Code end-to-end.</p>
+					<CodeBlock chrome title="Terminal" code={CODE_CMD} />
+				</div>
+
+				<div class="ss-tabs__panel inst__panel" data-panel="manual" hidden>
+					<p class="inst__lead">Paste into <code>claude_desktop_config.json</code> (Settings → Developer).</p>
+					<CodeBlock chrome title="claude_desktop_config.json" code={CONFIG_JSON} />
+				</div>
+			</Tabs>
+		</Card>
+
+		<div class="inst__pkgs">
+			<span class="inst__pkglabel">Installs as</span>
+			<Badge variant="violet" mono icon="package">obsidian-mcp-seekstone</Badge>
+			<Badge variant="neutral" mono icon="package">seekstone</Badge>
+			<Badge variant="outline" mono>Node ≥ 22</Badge>
+		</div>
+	</div>
+</section>
+
+<style is:global>
+	#install .head { margin-bottom: 2.25rem; }
+	.inst__card { margin-top: 0.5rem; }
+	.inst__panel { display: flex; flex-direction: column; gap: 1.1rem; padding-top: 0.25rem; }
+	.inst__lead { margin: 0; font-size: 0.9375rem; color: var(--text-secondary); }
+	.inst__lead code, .inst__note code, .inst__step code { font-family: var(--font-mono); font-size: 0.85em; color: var(--violet-200); background: var(--accent-soft); padding: 0.1em 0.4em; border-radius: 5px; }
+	.inst__steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+	.inst__step { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary); }
+	.inst__num { flex: none; width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--violet-200); background: var(--accent-soft); border: 1px solid rgba(124, 92, 255, 0.3); margin-top: 1px; }
+	.inst__row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+	.inst__note { font-size: 0.8125rem; color: var(--text-muted); }
+	.inst__pkgs { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.75rem; }
+	.inst__pkglabel { font-size: 0.8125rem; color: var(--text-faint); margin-right: 0.2rem; }
+</style>

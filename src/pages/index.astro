@@ -1,18 +1,29 @@
 ---
 /**
- * Landing page. Phase 2 sections from the seekstone-design UI kit, ported to
- * Astro. Nav + Hero are live; the remaining sections (Benchmark, Tools,
- * Pillars, Install, FAQ, Footer) land next.
+ * Landing page — the full Seekstone marketing site, ported from the
+ * seekstone-design UI kit to Astro (zero framework runtime; interactivity via
+ * small vanilla islands). Copy and every figure trace to the README.
  */
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
+import Benchmark from "../components/Benchmark.astro";
+import Tools from "../components/Tools.astro";
+import Pillars from "../components/Pillars.astro";
+import Install from "../components/Install.astro";
+import Faq from "../components/Faq.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <Base>
 	<Nav />
 	<main>
 		<Hero />
-		<!-- TODO(Phase 2): Benchmark · Tools · Pillars · Install · FAQ · Footer -->
+		<Benchmark />
+		<Tools />
+		<Pillars />
+		<Install />
+		<Faq />
 	</main>
+	<Footer />
 </Base>
