@@ -20,18 +20,31 @@ import "../styles/ds/spacing.css";
 import "../styles/ds/effects.css";
 import "../styles/ds/base.css";
 import "../styles/site.css";
+import { SITE } from "../consts";
 
 interface Props {
 	title?: string;
 	description?: string;
+	/** Open Graph object type. "website" for the landing page, "article" for docs/changelog. */
+	ogType?: string;
+	/** Social card path, resolved to an absolute URL. Defaults to the site OG image. */
+	ogImage?: string;
+	/** JSON-LD schema object(s) to emit in <head>. The landing page passes
+	 *  SoftwareApplication (SHA-112); FAQPage is appended here in SHA-113. */
+	jsonLd?: object | object[];
 }
 
 const {
-	title = "Seekstone — the fastest Obsidian MCP server for Claude",
-	description = "Seekstone is a filesystem-direct Obsidian MCP server for Claude. Search and edit your vault in milliseconds, with ~575× smaller payloads than the REST plugin. No plugins, no Obsidian app required.",
+	title = SITE.title,
+	description = SITE.description,
+	ogType = "website",
+	ogImage = SITE.ogImage,
+	jsonLd,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -46,7 +59,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
 
-		<!-- SHA-112 will expand OG/Twitter/JSON-LD here. -->
+		<!-- Open Graph (Facebook, LinkedIn, Slack, iMessage, Discord) -->
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content={SITE.name} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+
+		<!-- Twitter / X large summary card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		{/* JSON-LD structured data — the GEO play. set:html keeps the JSON
+		    intact (Astro would otherwise HTML-escape quotes and break it). */}
+		{
+			schemas.map((schema) => (
+				<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+			))
+		}
 		<slot name="head" />
 	</head>
 	<body>
