@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Seekstone — the fastest Obsidian MCP server for Claude">
+  <title>Seekstone — the fastest Obsidian MCP server for Claude</title>
+  <defs>
+    <radialGradient id="glow" cx="18%" cy="22%" r="70%">
+      <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.26"/>
+      <stop offset="55%" stop-color="#7c5cff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#7c5cff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Canvas: purple-tinted obsidian near-black + ambient violet glow -->
+  <rect width="1200" height="630" fill="#110f18"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#7c5cff"/>
+
+  <!-- Header row: brand gem + wordmark -->
+  <g transform="translate(82,64) scale(1.35)">
+    <polygon points="48,10 16,40 48,52" fill="#9a7dff"/>
+    <polygon points="48,10 80,40 48,52" fill="#7c5cff"/>
+    <polygon points="16,40 48,52 48,86" fill="#6344e0"/>
+    <polygon points="80,40 48,52 48,86" fill="#4c2fb8"/>
+    <polygon points="48,10 33,25 48,36 63,25" fill="#b8a6ff"/>
+    <path d="M80,8 l2,5 5,2 -5,2 -2,5 -2,-5 -5,-2 5,-2 z" fill="#f59e0b"/>
+  </g>
+  <text x="238" y="156" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="58" font-weight="600" letter-spacing="-1.5" fill="#ece8ff">Seekstone</text>
+
+  <!-- Headline -->
+  <text x="84" y="318" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2" fill="#f1eefb">The fastest Obsidian MCP</text>
+  <text x="84" y="398" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2" fill="#f1eefb">server for Claude.</text>
+
+  <!-- Stat pill -->
+  <rect x="84" y="452" width="734" height="70" rx="35" fill="#1a1726" stroke="#4c2fb8" stroke-width="1.5"/>
+  <text x="118" y="496" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="600" fill="#c8c3da"><tspan fill="#fbbf24" font-weight="700">575×</tspan> smaller payloads than the REST plugin</text>
+
+  <!-- Footer note -->
+  <text x="86" y="586" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="25" fill="#8b84a3">npx seekstone init<tspan fill="#4f4868">&#160;&#160;·&#160;&#160;</tspan>MIT licensed<tspan fill="#4f4868">&#160;·&#160;</tspan>no telemetry</text>
+</svg>

@@ -13,9 +13,28 @@ import Pillars from "../components/Pillars.astro";
 import Install from "../components/Install.astro";
 import Faq from "../components/Faq.astro";
 import Footer from "../components/Footer.astro";
+import { SITE } from "../consts";
+
+// SoftwareApplication schema (SHA-112) — the primary GEO signal. Tells Google
+// rich results and AI citation engines what Seekstone is, that it's free, and
+// where to get it. Sourced from SITE so version/URLs never drift.
+const softwareApplication = {
+	"@context": "https://schema.org",
+	"@type": "SoftwareApplication",
+	name: SITE.name,
+	description: SITE.description,
+	applicationCategory: "DeveloperApplication",
+	operatingSystem: "macOS, Linux, Windows",
+	offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+	url: SITE.url,
+	downloadUrl: SITE.npm,
+	softwareVersion: SITE.version,
+	license: "https://opensource.org/licenses/MIT",
+	author: { "@type": "Person", name: SITE.author.name, url: SITE.author.url },
+};
 ---
 
-<Base>
+<Base jsonLd={softwareApplication}>
 	<Nav />
 	<main>
 		<Hero />
