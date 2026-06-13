@@ -14,7 +14,7 @@ const CONFIG_JSON = `{
   "mcpServers": {
     "seekstone": {
       "command": "npx",
-      "args": ["-y", "obsidian-mcp-seekstone"],
+      "args": ["-y", "seekstone"],
       "env": { "SEEKSTONE_VAULT": "/path/to/your/vault" }
     }
   }
@@ -22,7 +22,7 @@ const CONFIG_JSON = `{
 
 const CODE_CMD = `claude mcp add seekstone \\
   --env SEEKSTONE_VAULT=/path/to/vault \\
-  -- npx -y obsidian-mcp-seekstone`;
+  -- npx -y seekstone`;
 ---
 
 <section class="section" id="install">
@@ -61,7 +61,7 @@ const CODE_CMD = `claude mcp add seekstone \\
 
 				<div class="ss-tabs__panel inst__panel" data-panel="cli" hidden>
 					<p class="inst__lead">Auto-detects your vault, validates it, and patches Claude Desktop for you.</p>
-					<CodeBlock prompt code="npx -y obsidian-mcp-seekstone init" analytics="Copy Install Command" />
+					<CodeBlock prompt code="npx -y seekstone init" analytics="Copy Install Command" />
 					<span class="inst__note">Add <code>--write</code> to patch in place, or <code>--vault</code> to choose.</span>
 				</div>
 
@@ -79,8 +79,8 @@ const CODE_CMD = `claude mcp add seekstone \\
 
 		<div class="inst__pkgs">
 			<span class="inst__pkglabel">Installs as</span>
-			<Badge variant="violet" mono icon="package">obsidian-mcp-seekstone</Badge>
-			<Badge variant="neutral" mono icon="package">seekstone</Badge>
+			<Badge variant="violet" mono icon="package">seekstone</Badge>
+			<Badge variant="neutral" mono icon="package">obsidian-mcp-seekstone</Badge>
 			<Badge variant="outline" mono>Node ≥ 22</Badge>
 		</div>
 	</div>

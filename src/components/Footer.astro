@@ -40,6 +40,10 @@ import Icon from "./Icon.astro";
 				<Badge variant="spark">MIT</Badge>
 				<Badge variant="neutral" mono>v0.6.1</Badge>
 			</div>
+			<a class="ftr__bmc" href="https://buymeacoffee.com/shaqmughal" target="_blank" rel="noreferrer" data-analytics="BMC Click">
+				<Icon name="coffee" size={15} />
+				<span>Buy me a coffee</span>
+			</a>
 		</div>
 		<div class="ftr__cols">
 			<div class="ftr__col">
@@ -51,8 +55,8 @@ import Icon from "./Icon.astro";
 			</div>
 			<div class="ftr__col">
 				<span class="ftr__h">Packages</span>
-				<a href="https://www.npmjs.com/package/obsidian-mcp-seekstone" target="_blank" rel="noreferrer" data-analytics="npm Click">npm · obsidian-mcp-seekstone</a>
 				<a href="https://www.npmjs.com/package/seekstone" target="_blank" rel="noreferrer" data-analytics="npm Click">npm · seekstone</a>
+				<a href="https://www.npmjs.com/package/obsidian-mcp-seekstone" target="_blank" rel="noreferrer" data-analytics="npm Click">npm · obsidian-mcp-seekstone <span class="ftr__alias">alias</span></a>
 				<a href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer" data-analytics="GitHub Click">GitHub</a>
 			</div>
 			<div class="ftr__col">
@@ -83,6 +87,9 @@ import Icon from "./Icon.astro";
 	.ftr__lockup { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 600; font-size: 1.1rem; letter-spacing: -0.03em; color: var(--violet-100); }
 	.ftr__tag { margin: 0.9rem 0 1rem; font-size: 0.875rem; color: var(--text-muted); max-width: 32ch; }
 	.ftr__badges { display: flex; gap: 0.5rem; }
+	.ftr__bmc { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1rem; padding: 0.45rem 0.8rem; border-radius: var(--radius-sm); font-size: 0.8125rem; font-weight: 600; color: var(--amber-300); border: 1px solid rgba(245, 158, 11, 0.28); background: rgba(245, 158, 11, 0.05); transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); }
+	.ftr__bmc:hover { color: var(--amber-400); border-color: rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.1); }
+	.ftr__alias { font-size: 0.6875rem; color: var(--text-faint); letter-spacing: 0.04em; text-transform: uppercase; margin-left: 0.15rem; }
 	.ftr__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 	.ftr__col { display: flex; flex-direction: column; gap: 0.7rem; }
 	.ftr__h { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.15rem; }
