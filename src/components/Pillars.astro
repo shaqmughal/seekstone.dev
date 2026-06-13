@@ -1,0 +1,40 @@
+---
+/**
+ * Pillars — three trust statements in Obsidian's "Your X is Y" voice.
+ * Ported from the seekstone-design skill.
+ */
+import Card from "./Card.astro";
+import Icon from "./Icon.astro";
+
+const PILLARS: [icon: string, title: string, body: string][] = [
+	["zap", "Your context is precious.", "Most servers return full note content for every hit — megabytes your model has to read. Seekstone returns short ranked excerpts, so a query that cost 459,000 tokens costs about 800."],
+	["shield", "Your vault stays yours.", "No Obsidian app, no Local REST API plugin, no cloud. Seekstone reads files straight from disk, makes zero network calls, and sends no telemetry. Writes only ever happen when you ask."],
+	["hardDrive", "Your files, forever.", "Plain Markdown on your machine — nothing to lock you in. Frontmatter edits are byte-identical by design: key order, quote style and comments preserved, proven by the test harness."],
+];
+---
+
+<section class="section section--tight pillars">
+	<div class="glow-blob" style="width:480px;height:480px;top:20%;right:-10%;background:radial-gradient(circle, rgba(124,92,255,0.12), transparent 65%)"></div>
+	<div class="container relativ">
+		<div class="pillars__grid">
+			{
+				PILLARS.map(([icon, title, body]) => (
+					<Card padding="lg" class="pillar">
+						<div class="pillar__icon"><Icon name={icon} size={20} /></div>
+						<h3 class="pillar__title">{title}</h3>
+						<p class="pillar__body">{body}</p>
+					</Card>
+				))
+			}
+		</div>
+	</div>
+</section>
+
+<style is:global>
+	.pillars__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+	.pillar { gap: 0.9rem; }
+	.pillar__icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; color: var(--amber-300); background: var(--spark-soft); border: 1px solid rgba(245, 158, 11, 0.22); }
+	.pillar__title { margin: 0.3rem 0 0; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+	.pillar__body { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+	@media (max-width: 900px) { .pillars__grid { grid-template-columns: 1fr; } }
+</style>

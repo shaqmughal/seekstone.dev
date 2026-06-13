@@ -1,0 +1,51 @@
+/* ============================================================
+   Seekstone — Typography tokens
+   Inter for UI & prose. JetBrains Mono for code, install
+   commands, tool names, and — the brand's signature move —
+   big benchmark numerals.
+   ============================================================ */
+
+:root {
+	/* Families */
+	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+	/* Fluid type scale (clamp: min → preferred → max) ------------- */
+	--text-xs:   0.75rem;   /* 12px — labels, badges, captions */
+	--text-sm:   0.8125rem; /* 13px — secondary UI, table cells */
+	--text-base: 0.9375rem; /* 15px — body default */
+	--text-md:   1.0625rem; /* 17px — lead paragraph */
+	--text-lg:   1.25rem;   /* 20px — card titles */
+	--text-xl:   1.5rem;    /* 24px — section subhead */
+	--text-2xl:  clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem); /* @kind spacing */ /* 28→36 */
+	--text-3xl:  clamp(2.25rem, 1.7rem + 2.6vw, 3.25rem); /* @kind spacing */ /* 36→52 */
+	--text-4xl:  clamp(3rem, 2.1rem + 4.4vw, 4.75rem); /* @kind spacing */ /* 48→76 hero */
+	--text-5xl:  clamp(3.5rem, 2.2rem + 6.4vw, 6rem); /* @kind spacing */ /* 56→96 display */
+
+	/* Weights */
+	--weight-regular:  400;
+	--weight-medium:   500;
+	--weight-semibold: 600;
+	--weight-bold:     700;
+	--weight-black:    800;
+
+	/* Line heights */
+	--leading-tight:  1.05;  /* display headlines */
+	--leading-snug:   1.2;   /* headings */
+	--leading-normal: 1.5;   /* UI */
+	--leading-relaxed:1.65;  /* prose */
+
+	/* Letter spacing */
+	--tracking-tighter: -0.04em;  /* big display */
+	--tracking-tight:   -0.02em;  /* headings */
+	--tracking-normal:  -0.011em; /* Inter optical default */
+	--tracking-wide:    0.02em;
+	--tracking-caps:    0.08em;   /* eyebrow / overline ALL CAPS */
+	--tracking-mono:    -0.01em;
+
+	/* Semantic roles */
+	--font-display: var(--font-sans);
+	--font-body:    var(--font-sans);
+	--font-code:    var(--font-mono);
+	--font-numeric: var(--font-mono);  /* benchmark figures */
+}

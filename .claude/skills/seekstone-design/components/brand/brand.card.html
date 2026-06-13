@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Brand — GemMark" subtitle="The faceted gem: color/mono, glow, spark, animated, any size." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 30px; }
+  .row { display:flex; align-items: flex-end; gap: 44px; flex-wrap: wrap; }
+  .cell { display:flex; flex-direction: column; align-items: center; gap: 14px; }
+  .cap { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+  .mono { color: var(--violet-300); }
+  .lockup { display:flex; align-items:center; gap: 12px; }
+  .word { font-family: var(--font-sans); font-weight: 500; font-size: 26px; letter-spacing: -0.03em; color: var(--violet-100); }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { GemMark } = window.SeekstoneDesignSystem_a9cecb;
+    function Demo() {
+      return (
+        <div className="row">
+          <div className="cell"><GemMark size={72} /><span className="cap">color</span></div>
+          <div className="cell"><GemMark size={72} glow spark /><span className="cap">glow + spark</span></div>
+          <div className="cell"><GemMark size={72} glow spark animated /><span className="cap">animated</span></div>
+          <div className="cell mono"><GemMark size={72} variant="mono" /><span className="cap">mono</span></div>
+          <div className="cell">
+            <div className="lockup"><GemMark size={40} spark /><span className="word">Seekstone</span></div>
+            <span className="cap">lockup</span>
+          </div>
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+---
+/**
+ * CodeBlock — terminal-style command surface with one-click copy.
+ * Ported from the seekstone-design skill; copy is a small vanilla island
+ * (no React). The install command is the conversion moment.
+ */
+interface Props {
+	code: string;
+	prompt?: boolean;
+	title?: string | null;
+	chrome?: boolean;
+	copy?: boolean;
+	class?: string;
+}
+
+const {
+	code,
+	prompt = false,
+	title = null,
+	chrome = false,
+	copy = true,
+	class: className = "",
+} = Astro.props;
+
+const cls = ["ss-code", chrome && "ss-code--bar", className].filter(Boolean).join(" ");
+---
+
+<div class={cls}>
+	{
+		chrome && (
+			<div class="ss-code__bar">
+				<div class="ss-code__dots">
+					<span class="ss-code__dot" style="background:#3d3656" />
+					<span class="ss-code__dot" style="background:#3d3656" />
+					<span class="ss-code__dot" style="background:#3d3656" />
+				</div>
+				{title && <span class="ss-code__title">{title}</span>}
+			</div>
+		)
+	}
+	<div class="ss-code__body">
+		{prompt && <span class="ss-code__prompt">$</span>}
+		<code class="ss-code__text">{code}</code>
+	</div>
+	{
+		copy && (
+			<button class="ss-code__copy" data-code={code} aria-label="Copy to clipboard">
+				<svg class="ss-code__copy-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<rect x="9" y="9" width="13" height="13" rx="2" />
+					<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+				</svg>
+				<span class="ss-code__copy-label">Copy</span>
+			</button>
+		)
+	}
+</div>
+
+<style is:global>
+	.ss-code {
+		position: relative; display: flex; flex-direction: column;
+		background: var(--bg-sunken, #0c0a12);
+		border: 1px solid var(--border-default, rgba(180, 166, 255, 0.12));
+		border-radius: var(--radius-md, 10px); overflow: hidden;
+		font-family: var(--font-mono);
+	}
+	.ss-code__bar { display: flex; align-items: center; gap: 0.55rem; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-subtle, rgba(180, 166, 255, 0.07)); background: rgba(180, 166, 255, 0.025); }
+	.ss-code__dots { display: flex; gap: 0.4rem; }
+	.ss-code__dot { width: 11px; height: 11px; border-radius: 50%; }
+	.ss-code__title { font-size: var(--text-xs, 0.75rem); color: var(--text-muted, #8b84a3); letter-spacing: -0.01em; }
+	.ss-code__body { display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.95rem 1rem; overflow-x: auto; font-size: var(--text-sm, 0.8125rem); line-height: 1.7; color: var(--neutral-100, #e1ddee); }
+	.ss-code__prompt { color: var(--violet-400, #9a7dff); user-select: none; flex: none; font-weight: 600; }
+	.ss-code__text { white-space: pre; }
+	.ss-code__copy {
+		position: absolute; top: 0.5rem; right: 0.5rem;
+		display: inline-flex; align-items: center; gap: 0.35rem;
+		height: 28px; padding: 0 0.6rem; border-radius: var(--radius-sm, 6px);
+		background: rgba(180, 166, 255, 0.06); border: 1px solid var(--border-default, rgba(180, 166, 255, 0.12));
+		color: var(--text-secondary, #a9a2c0); font-family: var(--font-sans);
+		font-size: var(--text-xs, 0.75rem); font-weight: 600; cursor: pointer;
+		transition: all var(--dur-fast, 120ms) var(--ease-out);
+	}
+	.ss-code--bar .ss-code__copy { top: 0.45rem; }
+	.ss-code__copy:hover { background: rgba(180, 166, 255, 0.12); color: var(--text-primary, #f1eefb); border-color: var(--border-violet, rgba(124, 92, 255, 0.45)); }
+	.ss-code__copy.is-copied { color: var(--green-400, #34d399); border-color: rgba(16, 185, 129, 0.4); }
+	.ss-code__copy svg { width: 13px; height: 13px; }
+</style>
+
+<script>
+	// Wire every copy button once. Vanilla — no framework runtime shipped.
+	const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+	document.querySelectorAll<HTMLButtonElement>(".ss-code__copy").forEach((btn) => {
+		const original = btn.innerHTML;
+		btn.addEventListener("click", () => {
+			const code = btn.dataset.code ?? "";
+			navigator.clipboard?.writeText(code).catch(() => {});
+			btn.classList.add("is-copied");
+			btn.innerHTML = `${CHECK}<span class="ss-code__copy-label">Copied</span>`;
+			// @ts-expect-error optional analytics hook (Plausible) — SHA-115
+			window.plausible?.("Copy Install Command");
+			setTimeout(() => {
+				btn.classList.remove("is-copied");
+				btn.innerHTML = original;
+			}, 1600);
+		});
+	});
+</script>

@@ -1,0 +1,30 @@
+<!-- @dsCard group="Brand" viewport="700x170" name="Motion & easing" subtitle="Quick, confident easings. 120/200/360ms. Spring only for delight." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; }
+  h4 { margin: 0 0 16px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .row { display:flex; gap: 30px; }
+  .track { flex: 1; display:flex; flex-direction: column; gap: 10px; }
+  .name { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); }
+  .rail { position: relative; height: 12px; background: var(--bg-sunken); border:1px solid var(--border-subtle); border-radius: 999px; overflow: hidden; }
+  .dot { position: absolute; top: 1px; left: 1px; width: 10px; height: 10px; border-radius: 50%; background: var(--violet-400); }
+  .d1 { animation: run 2.4s infinite; animation-timing-function: var(--ease-out); }
+  .d2 { animation: run 2.4s infinite; animation-timing-function: var(--ease-in-out); }
+  .d3 { animation: run 2.4s infinite; animation-timing-function: var(--ease-spring); background: var(--amber-400); }
+  @keyframes run { 0%,12% { left: 1px; } 50%,62% { left: calc(100% - 11px); } 100% { left: 1px; } }
+  .meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); }
+</style>
+</head>
+<body>
+  <h4>Motion &amp; easing</h4>
+  <div class="row">
+    <div class="track"><span class="name">--ease-out <span class="meta">· UI default</span></span><div class="rail"><div class="dot d1"></div></div></div>
+    <div class="track"><span class="name">--ease-in-out <span class="meta">· transitions</span></span><div class="rail"><div class="dot d2"></div></div></div>
+    <div class="track"><span class="name">--ease-spring <span class="meta">· delight only</span></span><div class="rail"><div class="dot d3"></div></div></div>
+  </div>
+</body>
+</html>

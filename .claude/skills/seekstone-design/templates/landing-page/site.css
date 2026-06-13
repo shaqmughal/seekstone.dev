@@ -1,0 +1,182 @@
+/* ============================================================
+   Seekstone website UI kit — layout & atmosphere.
+   Composes the design-system tokens; only marketing-layout
+   concerns live here (containers, section rhythm, hero glow).
+   ============================================================ */
+
+.ss-site { background: transparent; color: var(--text-primary); overflow-x: hidden; position: relative; z-index: 1; }
+.ss-site * { box-sizing: border-box; }
+
+/* ============================================================
+   Ambient aurora — a slow, low-opacity light field that lives
+   FIXED behind all content (injected by anim.js). Pure black
+   reads flat over a long scroll; this gives the page dimension
+   and ties sections together, without an AI-slop gradient wash.
+   It is decorative + freeze-safe: the resting state already
+   looks right, drift is gated by prefers-reduced-motion.
+   ============================================================ */
+.ss-aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; contain: strict; }
+.ss-aurora__bloom { position: absolute; border-radius: 50%; filter: blur(100px); will-change: transform; }
+.ss-aurora__a {
+  width: 70vw; height: 70vw; top: -28vh; left: -12vw; opacity: 0.55;
+  background: radial-gradient(circle at center, rgba(124,92,255,0.42), transparent 62%);
+}
+.ss-aurora__b {
+  width: 62vw; height: 62vw; top: 26vh; right: -18vw; opacity: 0.42;
+  background: radial-gradient(circle at center, rgba(99,68,224,0.38), transparent 62%);
+}
+.ss-aurora__c {
+  width: 48vw; height: 48vw; bottom: -16vh; left: 26vw; opacity: 0.30;
+  background: radial-gradient(circle at center, rgba(245,158,11,0.22), transparent 60%);
+}
+/* Keep the edges dark so content stays legible and the field feels intentional. */
+.ss-aurora__veil {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 120% 90% at 50% 30%, transparent 45%, var(--bg-base) 92%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ss-aurora__a { animation: ssDriftA 28s var(--ease-in-out) infinite; }
+  .ss-aurora__b { animation: ssDriftB 34s var(--ease-in-out) infinite; }
+  .ss-aurora__c { animation: ssDriftC 40s var(--ease-in-out) infinite; }
+}
+@keyframes ssDriftA { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(7vw,5vh) scale(1.08); } }
+@keyframes ssDriftB { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-6vw,4vh) scale(1.06); } }
+@keyframes ssDriftC { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(5vw,-5vh) scale(1.1); } }
+
+.container { width: 100%; max-width: var(--container); margin: 0 auto; padding-inline: var(--gutter); }
+.container--narrow { max-width: var(--container-narrow); }
+
+.section { padding-block: var(--section-y); position: relative; }
+.section--tight { padding-block: clamp(3rem, 1.5rem + 6vw, 5.5rem); }
+
+/* Eyebrow / overline */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--violet-300);
+}
+.eyebrow::before { content: ""; width: 22px; height: 1px; background: linear-gradient(90deg, transparent, var(--violet-400)); }
+.eyebrow--center::after { content: ""; width: 22px; height: 1px; background: linear-gradient(90deg, var(--violet-400), transparent); }
+
+/* Section heading block */
+.head { display: flex; flex-direction: column; gap: 1rem; }
+.head--center { align-items: center; text-align: center; }
+.head h2 {
+  margin: 0; font-weight: 800; font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tighter); line-height: var(--leading-tight);
+  color: var(--text-primary); text-wrap: balance;
+}
+.head h2 .grad {
+  background: var(--gradient-text-shimmer);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .head h2 .grad { animation: ssShimmer 8s linear infinite; }
+}
+@keyframes ssShimmer { from { background-position: 0% center; } to { background-position: 200% center; } }
+.head p { margin: 0; max-width: 56ch; font-size: var(--text-md); line-height: var(--leading-relaxed); color: var(--text-secondary); text-wrap: pretty; }
+
+/* Atmosphere: hairline grid + radial violet glow */
+.grid-bg {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 30%, transparent 75%);
+}
+.glow-blob {
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(70px); opacity: 0.6;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .glow-blob { animation: ssGlowPulse 9s var(--ease-in-out) infinite; }
+}
+@keyframes ssGlowPulse { 0%, 100% { opacity: 0.48; } 50% { opacity: 0.72; } }
+
+.relativ { position: relative; z-index: 1; }
+
+/* Generic helpers */
+.stack { display: flex; flex-direction: column; }
+.row { display: flex; align-items: center; }
+.wrap { flex-wrap: wrap; }
+.divider { height: 1px; background: var(--border-subtle); border: 0; margin: 0; }
+
+/* Trust strip */
+.trust { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 1.75rem; }
+.trust__item { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-muted); }
+.trust__item svg { color: var(--violet-400); }
+
+/* Entrance polish is intentionally NOT a hide-then-reveal: content is
+   always visible by default. (A clock-dependent reveal can leave content
+   stuck invisible in throttled/backgrounded tabs, print and PDF export.)
+   On-page life comes from the freeze-safe GemMark float + hover states. */
+.rise { opacity: 1; transform: none; }
+
+/* Responsive */
+@media (max-width: 820px) {
+  .hide-md { display: none !important; }
+}
+
+/* ============================================================
+   Motion layer (paired with anim.js)
+   ============================================================ */
+
+/* Scroll reveal — JS decides hidden/shown; these are the states.
+   r-instant has no transition so it shows even with a frozen clock. */
+.r-hidden  { opacity: 0; transform: translateY(26px); will-change: opacity, transform; }
+.r-in      { opacity: 1; transform: none;
+             transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+             transition-delay: var(--r-delay, 0ms); }
+.r-instant { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+/* Card cursor spotlight — a soft violet light that follows the pointer.
+   Default off-screen + opacity 0, so it is invisible until hover (safe). */
+.has-spot { isolation: isolate; }
+.has-spot > * { position: relative; z-index: 1; }
+.has-spot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: 0;
+  pointer-events: none; opacity: 0; transition: opacity 0.35s var(--ease-out);
+  background: radial-gradient(240px circle at var(--spot-x, -200px) var(--spot-y, -200px),
+              rgba(124, 92, 255, 0.16), transparent 60%);
+}
+.has-spot:hover::after { opacity: 1; }
+
+/* Pillars aren't interactive Cards — give them the same hover lift. */
+.pillar { transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.pillar:hover { transform: translateY(-3px); border-color: var(--border-violet); box-shadow: var(--ring-inset), 0 18px 44px -20px rgba(0,0,0,0.7); }
+.pillar__icon { transition: transform var(--dur-base) var(--ease-spring); }
+.pillar:hover .pillar__icon { transform: translateY(-2px) scale(1.06) rotate(-4deg); }
+
+/* Tool icon reacts to its card's hover. */
+.tool__icon { transition: transform var(--dur-base) var(--ease-spring), background var(--dur-base); }
+.tool:hover .tool__icon { transform: scale(1.1) rotate(-4deg); }
+
+/* Primary & spark buttons get a one-shot sheen sweep on hover. */
+.ss-site .ss-btn--primary, .ss-site .ss-btn--spark { overflow: hidden; }
+.ss-site .ss-btn--primary::after, .ss-site .ss-btn--spark::after {
+  content: ""; position: absolute; top: 0; left: -130%; width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform: skewX(-18deg); pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ss-site .ss-btn--primary:hover::after, .ss-site .ss-btn--spark:hover::after { animation: ssSheen 1.25s var(--ease-in-out); }
+}
+@keyframes ssSheen { from { left: -130%; } to { left: 175%; } }
+
+/* Nav lockup gem gives a tiny spin on hover. */
+.ss-nav__brand .ss-gem { transition: transform var(--dur-base) var(--ease-spring); }
+.ss-nav__brand:hover .ss-gem { transform: rotate(8deg) scale(1.08); }
+
+/* Eyebrow icon twinkle. */
+@media (prefers-reduced-motion: no-preference) {
+  .eyebrow svg { animation: ssTwinkle 3.5s var(--ease-in-out) infinite; }
+}
+@keyframes ssTwinkle { 0%, 80%, 100% { opacity: 1; transform: scale(1); } 88% { opacity: 0.7; transform: scale(1.25); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .r-hidden { opacity: 1; transform: none; }
+}

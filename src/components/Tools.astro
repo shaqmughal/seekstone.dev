@@ -1,0 +1,81 @@
+---
+/**
+ * Tools — 16 tools, one warm index. Read/Write tab switcher over a card grid.
+ * Ported from the seekstone-design skill. Tool names/descriptions match the README.
+ */
+import Card from "./Card.astro";
+import Tabs from "./Tabs.astro";
+import Icon from "./Icon.astro";
+
+type Tool = [name: string, icon: string, desc: string, danger?: boolean];
+
+const READ: Tool[] = [
+	["search", "search", "Full-text search returning ranked ~200-char excerpts — not full notes."],
+	["read_note", "fileText", "Read a note by path. Return a single section, block, or line range."],
+	["list_notes", "list", "List notes, optionally filtered by folder prefix or tag."],
+	["list_tags", "tag", "Every tag in the vault, sorted by usage count or alphabetically."],
+	["outline_note", "listTree", "Heading & block structure — cheap navigation before a targeted read."],
+	["get_backlinks", "link", "Find all notes that link to a given note."],
+	["get_links", "link", "List all outgoing wikilinks and markdown links from a note."],
+	["get_periodic_note", "calendar", "Read any date's daily / weekly / monthly note — Obsidian closed."],
+];
+const WRITE: Tool[] = [
+	["create_note", "filePlus", "Create a note with optional frontmatter; parent dirs made for you."],
+	["append_note", "filePen", "Append text to a note body without ever touching frontmatter."],
+	["patch_frontmatter", "braces", "Edit YAML in place — key order, quote style and comments preserved."],
+	["patch_note", "filePen", "Insert text immediately after a heading, frontmatter untouched."],
+	["replace_in_note", "replace", "Replace the first occurrence of a phrase, with a dry-run preview."],
+	["move_note", "move", "Move or rename a note; destination directories created automatically."],
+	["append_periodic_note", "calendarPlus", "Append to today's periodic note, creating it from a template."],
+	["delete_note", "trash", "Permanently delete a note. Irreversible — only when you ask.", true],
+];
+---
+
+<section class="section" id="tools">
+	<div class="container">
+		<div class="head head--center">
+			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 16 tools · one warm index</span>
+			<h2>Everything Claude needs<br />to <span class="grad">work your vault.</span></h2>
+			<p>Read and write, link-graph and periodic notes — the broadest toolset of any Obsidian MCP server. Four capabilities no other tested server even ships.</p>
+		</div>
+
+		<div class="tools__tabswrap">
+			<Tabs items={[{ id: "read", label: "Read · 8", icon: "search" }, { id: "write", label: "Write · 8", icon: "filePen" }]}>
+				{
+					[
+						{ id: "read", items: READ },
+						{ id: "write", items: WRITE },
+					].map(({ id, items }, panelIdx) => (
+						<div class="ss-tabs__panel tools__grid" data-panel={id} hidden={panelIdx !== 0}>
+							{items.map(([name, icon, desc, danger]) => (
+								<Card class="tool" interactive padding="md">
+									<div class={"tool__icon" + (danger ? " tool__icon--danger" : "")}>
+										<Icon name={icon} size={18} />
+									</div>
+									<div class="tool__body">
+										<code class="tool__name">{name}</code>
+										<p class="tool__desc">{desc}</p>
+									</div>
+								</Card>
+							))}
+						</div>
+					))
+				}
+			</Tabs>
+		</div>
+	</div>
+</section>
+
+<style is:global>
+	#tools .head { margin-bottom: 2.5rem; }
+	.tools__tabswrap { display: flex; flex-direction: column; align-items: center; }
+	.tools__tabswrap .ss-tabs { width: 100%; align-items: center; }
+	.tools__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%; margin-top: 0.5rem; }
+	.tool { gap: 0.85rem; }
+	.tool__icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; color: var(--violet-300); background: var(--accent-soft); border: 1px solid rgba(124, 92, 255, 0.25); flex: none; }
+	.tool__icon--danger { color: var(--red-400); background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.25); }
+	.tool__name { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); }
+	.tool__desc { margin: 0.35rem 0 0; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+	@media (max-width: 1000px) { .tools__grid { grid-template-columns: repeat(2, 1fr); } }
+	@media (max-width: 560px) { .tools__grid { grid-template-columns: 1fr; } }
+</style>

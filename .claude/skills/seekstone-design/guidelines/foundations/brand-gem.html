@@ -1,0 +1,32 @@
+<!-- @dsCard group="Brand" viewport="700x220" name="The gem — anatomy" subtitle="Five violet facets + one amber spark. Glow optional; clear space = its own width." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 22px 28px; display:flex; align-items: center; gap: 40px; }
+  .stage { width: 150px; height: 150px; display:flex; align-items:center; justify-content:center; border-radius: 16px;
+           background: radial-gradient(circle at 50% 42%, rgba(124,92,255,0.18), transparent 70%); }
+  .legend { display:flex; flex-direction: column; gap: 9px; }
+  .li { display:flex; align-items: center; gap: 10px; }
+  .sw { width: 16px; height: 16px; border-radius: 4px; flex: none; }
+  .lt { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); }
+  h4 { margin: 0 0 4px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <img src="../../assets/seekstone-icon.svg" width="110" height="110" alt="Seekstone gem" />
+  </div>
+  <div class="legend">
+    <h4>Facets</h4>
+    <div class="li"><span class="sw" style="background:#b8a6ff"></span><span class="lt">crown · violet-300</span></div>
+    <div class="li"><span class="sw" style="background:#9a7dff"></span><span class="lt">upper-left · violet-400</span></div>
+    <div class="li"><span class="sw" style="background:#7c5cff"></span><span class="lt">upper-right · violet-500</span></div>
+    <div class="li"><span class="sw" style="background:#6344e0"></span><span class="lt">lower-left · violet-600</span></div>
+    <div class="li"><span class="sw" style="background:#4c2fb8"></span><span class="lt">lower-right · violet-700</span></div>
+    <div class="li"><span class="sw" style="background:#f59e0b"></span><span class="lt">spark · amber-500</span></div>
+  </div>
+</body>
+</html>

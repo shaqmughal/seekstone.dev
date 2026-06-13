@@ -1,0 +1,28 @@
+<!-- @dsCard group="Type" viewport="700x220" name="Mono & numerals — JetBrains Mono" subtitle="Code, commands, package names, and the signature benchmark figures." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; display:flex; gap: 36px; align-items: center; }
+  .nums { display:flex; gap: 26px; }
+  .num { display:flex; flex-direction: column; gap: 2px; }
+  .fig { font-family: var(--font-mono); font-weight: 700; font-size: 44px; letter-spacing: -0.03em; line-height: 0.95; font-feature-settings: 'zero','ss02'; }
+  .fig .u { font-size: 18px; color: var(--text-muted); }
+  .nl { font-family: var(--font-sans); font-size: 11px; color: var(--text-muted); }
+  .grad { background: var(--gradient-spark); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .code { font-family: var(--font-mono); font-size: 13px; line-height: 1.8; color: var(--neutral-100); background: var(--bg-sunken); border:1px solid var(--border-default); border-radius: 10px; padding: 14px 16px; }
+  .p { color: var(--violet-400); }
+  .f { color: var(--amber-400); }
+</style>
+</head>
+<body>
+  <div class="nums">
+    <div class="num"><span class="fig grad">575×</span><span class="nl">smaller payloads</span></div>
+    <div class="num"><span class="fig" style="color:var(--green-400)">1.4<span class="u">ms</span></span><span class="nl">warm latency</span></div>
+    <div class="num"><span class="fig" style="color:var(--violet-300)">160×</span><span class="nl">faster</span></div>
+  </div>
+  <div class="code"><span class="p">$</span> npx -y obsidian-mcp-seekstone <span class="f">init</span></div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!-- @dsCard group="Spacing" viewport="700x190" name="Elevation & glow" subtitle="Soft ambient shadows for depth; violet glow for brand/interactive surfaces." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 26px 24px; }
+  .row { display:flex; gap: 22px; }
+  .item { flex:1; display:flex; flex-direction: column; gap: 11px; align-items: center; }
+  .box { width: 100%; height: 64px; background: var(--surface-raised); border: 1px solid var(--border-default); border-radius: 12px; }
+  .lbl { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-secondary); }
+  h4 { margin: 0 0 18px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <h4>Elevation &amp; glow</h4>
+  <div class="row">
+    <div class="item"><div class="box" style="box-shadow: var(--shadow-sm)"></div><span class="lbl">shadow-sm</span></div>
+    <div class="item"><div class="box" style="box-shadow: var(--shadow-md)"></div><span class="lbl">shadow-md</span></div>
+    <div class="item"><div class="box" style="box-shadow: var(--shadow-lg)"></div><span class="lbl">shadow-lg</span></div>
+    <div class="item"><div class="box" style="box-shadow: var(--shadow-xl)"></div><span class="lbl">shadow-xl</span></div>
+    <div class="item"><div class="box" style="border-color: var(--border-violet); box-shadow: var(--glow-accent-lg)"></div><span class="lbl">glow-accent</span></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+/* ============================================================
+   Seekstone — Fonts
+   Webfonts loaded from Google Fonts CDN.
+   - Inter: brand sans (the wordmark is set in Inter Medium)
+   - JetBrains Mono: technical / numeric / code accent
+   NOTE: these @import lines must precede all other CSS, so this
+   file is imported first from styles.css. If you need to self-host,
+   replace the @import with local @font-face rules pointing at
+   /assets/fonts/*.woff2.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
