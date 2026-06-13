@@ -1,0 +1,64 @@
+/* ============================================================
+   Seekstone — Base reset & document defaults
+   Imported last so it can use the tokens above.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: var(--font-sans);
+	background: var(--bg-base);
+	color: var(--text-primary);
+	line-height: var(--leading-normal);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	font-feature-settings: 'cv11', 'ss01';
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	font-size: var(--text-base);
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-family: var(--font-mono);
+	font-feature-settings: 'zero', 'ss02';
+}
+
+a {
+	color: var(--text-link);
+	text-decoration: none;
+}
+
+::selection {
+	background: var(--accent-soft-strong);
+	color: var(--violet-100);
+}
+
+:focus-visible {
+	outline: none;
+	box-shadow: var(--focus-ring);
+	border-radius: var(--radius-sm);
+}
+
+/* Thin dark scrollbars to match the canvas */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--neutral-700) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+	background: var(--neutral-700);
+	border-radius: 999px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}

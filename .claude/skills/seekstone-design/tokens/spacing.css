@@ -1,0 +1,55 @@
+/* ============================================================
+   Seekstone — Spacing, sizing & radii
+   8px base grid with a few half-steps for dense UI.
+   ============================================================ */
+
+:root {
+	/* Spacing scale (4 / 8 grid) */
+	--space-0:   0;
+	--space-1:   0.25rem;  /* 4 */
+	--space-2:   0.5rem;   /* 8 */
+	--space-3:   0.75rem;  /* 12 */
+	--space-4:   1rem;     /* 16 */
+	--space-5:   1.5rem;   /* 24 */
+	--space-6:   2rem;     /* 32 */
+	--space-7:   2.5rem;   /* 40 */
+	--space-8:   3rem;     /* 48 */
+	--space-9:   4rem;     /* 64 */
+	--space-10:  5rem;     /* 80 */
+	--space-12:  6rem;     /* 96 */
+	--space-16:  8rem;     /* 128 — section rhythm */
+
+	/* Radii */
+	--radius-xs:  4px;
+	--radius-sm:  6px;
+	--radius-md:  10px;   /* default control / input */
+	--radius-lg:  14px;   /* cards */
+	--radius-xl:  20px;   /* panels, hero cards */
+	--radius-2xl: 28px;
+	--radius-pill: 999px;
+	--radius-round: 50%;
+
+	/* Control heights (44px min touch target on primary) */
+	--control-sm: 32px;
+	--control-md: 40px;
+	--control-lg: 48px;
+
+	/* Layout */
+	--container:    1200px; /* @kind spacing */
+	--container-narrow: 760px; /* @kind spacing */
+	--measure:      68ch; /* @kind spacing */
+	--gutter:       clamp(1.25rem, 0.5rem + 3vw, 2.5rem); /* @kind spacing */
+	--section-y:    clamp(4rem, 2rem + 8vw, 8rem); /* @kind spacing */
+
+	/* Border widths */
+	--border-w: 1px;
+	--border-w-2: 1.5px;
+
+	/* Z-index ladder */
+	--z-base: 0;     /* @kind other */
+	--z-sticky: 100; /* @kind other */
+	--z-nav: 200;    /* @kind other */
+	--z-popover: 300;/* @kind other */
+	--z-toast: 400;  /* @kind other */
+	--z-modal: 500;  /* @kind other */
+}

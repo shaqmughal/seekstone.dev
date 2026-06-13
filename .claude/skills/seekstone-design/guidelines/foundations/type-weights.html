@@ -1,0 +1,34 @@
+<!-- @dsCard group="Type" viewport="700x180" name="Weights & tracking" subtitle="Inter 400–800; tracking tightens as size grows." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; display:flex; gap: 40px; }
+  .col { display:flex; flex-direction: column; gap: 10px; }
+  .w { font-size: 22px; color: var(--text-primary); letter-spacing: -0.02em; }
+  .wm { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); }
+  .t { font-size: 16px; color: var(--text-secondary); }
+  h4 { margin: 0 0 6px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--violet-300); }
+</style>
+</head>
+<body>
+  <div class="col">
+    <h4>Weights</h4>
+    <span class="w" style="font-weight:400">Regular 400 <span class="wm">body</span></span>
+    <span class="w" style="font-weight:500">Medium 500 <span class="wm">wordmark</span></span>
+    <span class="w" style="font-weight:600">Semibold 600 <span class="wm">ui / labels</span></span>
+    <span class="w" style="font-weight:700">Bold 700 <span class="wm">headings</span></span>
+    <span class="w" style="font-weight:800">Black 800 <span class="wm">hero</span></span>
+  </div>
+  <div class="col">
+    <h4>Tracking</h4>
+    <span class="eyebrow">Open source · MIT</span>
+    <span class="t" style="letter-spacing:-0.04em">Tight —0.04em on display</span>
+    <span class="t" style="letter-spacing:-0.011em">Normal —0.011em on body</span>
+    <span class="t" style="letter-spacing:0.02em; color:var(--text-muted)">Wide +0.02em on small caps</span>
+  </div>
+</body>
+</html>

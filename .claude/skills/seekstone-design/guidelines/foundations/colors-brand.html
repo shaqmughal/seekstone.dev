@@ -1,0 +1,29 @@
+<!-- @dsCard group="Colors" viewport="700x210" name="Brand — Violet facets" subtitle="The gem palette, sampled from the logo. 500 is the primary accent." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 22px 24px; }
+  .row { display: flex; gap: 10px; }
+  .sw { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .chip { height: 56px; border-radius: 10px; border: 1px solid var(--border-subtle); box-shadow: var(--ring-inset); }
+  .name { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); letter-spacing: -0.01em; }
+  .hex { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
+  .tag { display:inline-block; margin-top: 2px; font-family: var(--font-sans); font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--violet-300); }
+  h4 { margin: 0 0 14px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <h4>Violet — brand facets</h4>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:var(--violet-300)"></div><span class="name">violet-300</span><span class="hex">#b8a6ff</span></div>
+    <div class="sw"><div class="chip" style="background:var(--violet-400)"></div><span class="name">violet-400</span><span class="hex">#9a7dff</span></div>
+    <div class="sw"><div class="chip" style="background:var(--violet-500); box-shadow: var(--glow-accent-sm)"></div><span class="name">violet-500</span><span class="hex">#7c5cff</span><span class="tag">Accent</span></div>
+    <div class="sw"><div class="chip" style="background:var(--violet-600)"></div><span class="name">violet-600</span><span class="hex">#6344e0</span></div>
+    <div class="sw"><div class="chip" style="background:var(--violet-700)"></div><span class="name">violet-700</span><span class="hex">#4c2fb8</span></div>
+    <div class="sw"><div class="chip" style="background:var(--violet-900)"></div><span class="name">violet-900</span><span class="hex">#241556</span></div>
+  </div>
+</body>
+</html>

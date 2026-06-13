@@ -1,0 +1,42 @@
+/* ============================================================
+   Seekstone — Effects: shadows, glows, blur, motion
+   Dark UI: depth comes from subtle borders + soft ambient
+   shadows + violet glow on interactive/brand surfaces, not
+   heavy drop shadows.
+   ============================================================ */
+
+:root {
+	/* Elevation — soft, large, low-opacity (reads on near-black) */
+	--shadow-sm:  0 1px 2px rgba(0,0,0,0.4);
+	--shadow-md:  0 4px 16px -4px rgba(0,0,0,0.5);
+	--shadow-lg:  0 12px 40px -8px rgba(0,0,0,0.6);
+	--shadow-xl:  0 28px 80px -16px rgba(0,0,0,0.7);
+
+	/* Inset hairline that gives panels a crisp top edge on dark */
+	--ring-inset: inset 0 1px 0 0 rgba(255,255,255,0.05);
+
+	/* Brand glows */
+	--glow-accent-sm: 0 0 0 1px rgba(124,92,255,0.30), 0 6px 24px -6px rgba(124,92,255,0.45);
+	--glow-accent-lg: 0 0 60px -10px rgba(124,92,255,0.55);
+	--glow-spark:     0 0 32px -6px rgba(245,158,11,0.5);
+
+	/* Focus ring (keyboard) */
+	--focus-ring: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--violet-500);
+
+	/* Blur / glass */
+	--blur-sm: blur(8px);  /* @kind other */
+	--blur-md: blur(16px); /* @kind other */
+	--blur-lg: blur(28px); /* @kind other */
+	--glass: rgba(14,15,19,0.72); /* @kind color */
+
+	/* Motion — quick, confident, no bounce on UI */
+	--ease-out:    cubic-bezier(0.22, 1, 0.36, 1);  /* @kind other */
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);  /* @kind other */
+	--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* @kind other */
+	--dur-fast:   120ms; /* @kind other */
+	--dur-base:   200ms; /* @kind other */
+	--dur-slow:   360ms; /* @kind other */
+
+	/* Hairline grid texture (used on hero / section backgrounds) */
+	--grid-line: rgba(255,255,255,0.025); /* @kind color */
+}

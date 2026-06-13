@@ -1,0 +1,115 @@
+/* ============================================================
+   Seekstone — Color tokens
+   Dark-first. The palette is derived directly from the brand
+   gemstone: five violet facets + one amber spark, on a cool
+   near-black developer canvas.
+   ============================================================ */
+
+:root {
+	color-scheme: dark;
+
+	/* --- Brand: Violet facets (sampled from the logo gem) --------- */
+	--violet-50:  #f3f0ff;
+	--violet-100: #ece8ff;  /* wordmark text on dark */
+	--violet-200: #d8cfff;
+	--violet-300: #b8a6ff;  /* gem — top light facet */
+	--violet-400: #9a7dff;  /* gem — upper-left facet */
+	--violet-500: #7c5cff;  /* gem — primary bright facet — PRIMARY ACCENT */
+	--violet-600: #6344e0;  /* gem — lower-left facet */
+	--violet-700: #4c2fb8;  /* gem — darkest facet */
+	--violet-800: #38228a;
+	--violet-900: #241556;
+	--violet-950: #160d36;
+
+	/* --- Brand: Amber spark (the sparkle on the gem) -------------- */
+	/* Seekstone's own flavor — the warm note Obsidian's all-violet
+	   palette doesn't have. Carries the "speed / joy" signal. */
+	--amber-300: #fcd34d;
+	--amber-400: #fbbf24;
+	--amber-500: #f59e0b;   /* spark — SECONDARY ACCENT */
+	--amber-600: #d97706;
+
+	/* --- Obsidian anchor references ------------------------------ */
+	/* Exact Obsidian brand values, kept so the system reads as a
+	   clean extension of Obsidian. Use sparingly for direct tie-in. */
+	--obsidian-purple:       #6c31e3;  /* Obsidian logo base / accent */
+	--obsidian-purple-light: #a079ff;  /* Obsidian light accent */
+	--obsidian-bg:           #1e1e2e;  /* Obsidian app dark canvas */
+
+	/* --- Neutrals: purple-tinted obsidian canvas ----------------- */
+	/* Hue ~260deg, low saturation — the volcanic-glass dark that ties
+	   us to Obsidian, never a flat cool-grey black. */
+	--neutral-0:   #ffffff;
+	--neutral-950: #0c0a12;  /* sunken / wells / code blocks */
+	--neutral-925: #110f18;  /* page background */
+	--neutral-900: #15131d;
+	--neutral-875: #1a1726;  /* surface (≈ Obsidian #1E1E2E) */
+	--neutral-850: #211d2f;  /* raised surface */
+	--neutral-800: #2a2540;  /* hover surface */
+	--neutral-750: #332c4a;  /* border-strong / input */
+	--neutral-700: #3d3656;
+	--neutral-600: #4f4868;
+	--neutral-500: #6b6486;
+	--neutral-400: #8b84a3;  /* muted text */
+	--neutral-300: #a9a2c0;  /* secondary text */
+	--neutral-200: #c8c3da;
+	--neutral-100: #e1ddee;
+	--neutral-50:  #f1eefb;  /* primary text (violet-white, Obsidian-like) */
+
+	/* --- Semantic: status ---------------------------------------- */
+	--green-400: #34d399;
+	--green-500: #10b981;   /* "fastest" / success / winner row */
+	--red-400:   #f87171;
+	--red-500:   #ef4444;   /* destructive (delete_note) */
+	--cyan-400:  #22d3ee;   /* informational accent for links/code */
+
+	/* ============================================================
+	   SEMANTIC ALIASES — reference these in components, not the
+	   raw scales above.
+	   ============================================================ */
+
+	/* Surfaces */
+	--bg-base:      var(--neutral-925);  /* the page */
+	--bg-sunken:    var(--neutral-950);  /* wells, code blocks */
+	--surface:      var(--neutral-875);  /* cards, panels */
+	--surface-raised: var(--neutral-850);/* popovers, elevated cards */
+	--surface-hover: var(--neutral-800); /* hovered rows / ghost btn hover */
+
+	/* Borders — faint violet-white hairlines on the purple canvas */
+	--border-subtle:  rgba(180,166,255,0.07);
+	--border-default: rgba(180,166,255,0.12);
+	--border-strong:  rgba(180,166,255,0.20);
+	--border-violet:  rgba(124,92,255,0.45);
+
+	/* Text */
+	--text-primary:   var(--neutral-50);
+	--text-secondary: var(--neutral-300);
+	--text-muted:     var(--neutral-400);
+	--text-faint:     var(--neutral-500);
+	--text-on-accent: #ffffff;
+	--text-accent:    var(--violet-300);
+	--text-link:      var(--violet-300);
+
+	/* Accent roles */
+	--accent:          var(--violet-500);
+	--accent-hover:    var(--violet-400);
+	--accent-press:    var(--violet-600);
+	--accent-soft:     rgba(124,92,255,0.14);  /* tinted fills */
+	--accent-soft-strong: rgba(124,92,255,0.22);
+	--spark:           var(--amber-500);
+	--spark-soft:      rgba(245,158,11,0.14);
+
+	/* Brand gradient — the gem, as a sweep */
+	--gradient-gem: linear-gradient(135deg, var(--violet-300) 0%, var(--violet-500) 45%, var(--violet-700) 100%); /* @kind color */
+	--gradient-gem-soft: linear-gradient(135deg, rgba(184,166,255,0.18), rgba(76,47,184,0.06)); /* @kind color */
+	--gradient-spark: linear-gradient(120deg, var(--violet-400), var(--amber-400)); /* @kind color */
+
+	/* Seamless rolling shimmer for clipped headline text. The first and last
+	   stops are the SAME colour so the gradient tiles with no visible seam;
+	   pair with `background-size: 200% auto` and animate background-position
+	   by exactly 200% for a smooth, flicker-free loop. */
+	--gradient-text-shimmer: linear-gradient(110deg, var(--violet-400) 0%, var(--violet-300) 18%, var(--amber-300) 34%, var(--violet-200) 50%, var(--amber-300) 66%, var(--violet-300) 82%, var(--violet-400) 100%); /* @kind color */
+
+	/* Glow halos used behind the gem / hero */
+	--glow-violet: radial-gradient(circle at center, rgba(124,92,255,0.35), transparent 70%); /* @kind color */
+}
