@@ -61,18 +61,18 @@ const CODE_CMD = `claude mcp add seekstone \\
 
 				<div class="ss-tabs__panel inst__panel" data-panel="cli" hidden>
 					<p class="inst__lead">Auto-detects your vault, validates it, and patches Claude Desktop for you.</p>
-					<CodeBlock prompt code="npx -y obsidian-mcp-seekstone init" />
+					<CodeBlock prompt code="npx -y obsidian-mcp-seekstone init" analytics="Copy Install Command" />
 					<span class="inst__note">Add <code>--write</code> to patch in place, or <code>--vault</code> to choose.</span>
 				</div>
 
 				<div class="ss-tabs__panel inst__panel" data-panel="code" hidden>
 					<p class="inst__lead">One command configures Claude Code end-to-end.</p>
-					<CodeBlock chrome title="Terminal" code={CODE_CMD} />
+					<CodeBlock chrome title="Terminal" code={CODE_CMD} analytics="Copy Config" />
 				</div>
 
 				<div class="ss-tabs__panel inst__panel" data-panel="manual" hidden>
 					<p class="inst__lead">Paste into <code>claude_desktop_config.json</code> (Settings → Developer).</p>
-					<CodeBlock chrome title="claude_desktop_config.json" code={CONFIG_JSON} />
+					<CodeBlock chrome title="claude_desktop_config.json" code={CONFIG_JSON} analytics="Copy Config" />
 				</div>
 			</Tabs>
 		</Card>

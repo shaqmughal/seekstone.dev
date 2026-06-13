@@ -40,14 +40,14 @@ import Icon from "./Icon.astro";
 				Get Seekstone
 				<Icon slot="iconRight" name="download" size={17} />
 			</Button>
-			<Button variant="secondary" size="lg" href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer">
+			<Button variant="secondary" size="lg" href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer" data-analytics="GitHub Click">
 				<Icon slot="iconLeft" name="github" size={17} />
 				Star on GitHub
 			</Button>
 		</div>
 
 		<div class="hero__install rise rise-4">
-			<CodeBlock prompt code="npx -y obsidian-mcp-seekstone init" />
+			<CodeBlock prompt code="npx -y obsidian-mcp-seekstone init" analytics="Copy Install Command" />
 		</div>
 
 		<div class="trust hero__trust rise rise-4">
