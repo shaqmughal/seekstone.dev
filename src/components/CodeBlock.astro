@@ -10,6 +10,8 @@ interface Props {
 	title?: string | null;
 	chrome?: boolean;
 	copy?: boolean;
+	/** Plausible event name fired when this block's copy button is clicked (SHA-115). */
+	analytics?: string;
 	class?: string;
 }
 
@@ -19,6 +21,7 @@ const {
 	title = null,
 	chrome = false,
 	copy = true,
+	analytics,
 	class: className = "",
 } = Astro.props;
 
@@ -44,7 +47,7 @@ const cls = ["ss-code", chrome && "ss-code--bar", className].filter(Boolean).joi
 	</div>
 	{
 		copy && (
-			<button class="ss-code__copy" data-code={code} aria-label="Copy to clipboard">
+			<button class="ss-code__copy" data-code={code} data-analytics={analytics} aria-label="Copy to clipboard">
 				<svg class="ss-code__copy-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<rect x="9" y="9" width="13" height="13" rx="2" />
 					<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
@@ -95,8 +98,7 @@ const cls = ["ss-code", chrome && "ss-code--bar", className].filter(Boolean).joi
 			navigator.clipboard?.writeText(code).catch(() => {});
 			btn.classList.add("is-copied");
 			btn.innerHTML = `${CHECK}<span class="ss-code__copy-label">Copied</span>`;
-			// @ts-expect-error optional analytics hook (Plausible) — SHA-115
-			window.plausible?.("Copy Install Command");
+			// Analytics fires via the delegated [data-analytics] listener in Base.astro (SHA-115).
 			setTimeout(() => {
 				btn.classList.remove("is-copied");
 				btn.innerHTML = original;
