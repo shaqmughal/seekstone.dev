@@ -8,5 +8,6 @@ export default defineConfig({
 	// canonical/OG tags (Phase 3 SEO). getseekstone.com and bestobsidianmcp.com
 	// 308-redirect here at the Vercel edge (SHA-103).
 	site: 'https://seekstone.dev',
-	integrations: [sitemap()],
+	// Keep noindex/internal pages (e.g. /styleguide) out of the sitemap.
+	integrations: [sitemap({ filter: (page) => !page.includes('/styleguide') })],
 });

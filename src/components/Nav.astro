@@ -1,0 +1,67 @@
+---
+/**
+ * Nav — sticky glass top bar with logo lockup, links, and CTAs.
+ * Ported from the seekstone-design skill (ui_kits/website/Nav.jsx). The
+ * scroll "is-scrolled" frosting is a tiny vanilla island.
+ */
+import GemMark from "./GemMark.astro";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+	stars?: string;
+}
+const { stars = "1.2k" } = Astro.props;
+
+const links: [string, string][] = [
+	["Benchmarks", "#benchmark"],
+	["Tools", "#tools"],
+	["Install", "#install"],
+	["FAQ", "#faq"],
+];
+---
+
+<header class="ss-nav">
+	<div class="container ss-nav__inner">
+		<a class="ss-nav__brand" href="#top">
+			<GemMark size={30} spark />
+			<span class="ss-nav__word">Seekstone</span>
+		</a>
+		<nav class="ss-nav__links hide-md">
+			{links.map(([label, href]) => <a href={href} class="ss-nav__link">{label}</a>)}
+		</nav>
+		<div class="ss-nav__actions">
+			<a class="ss-nav__ghost hide-md" href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer">
+				<Icon name="github" size={16} />
+				<span>{stars}</span>
+			</a>
+			<Button variant="primary" size="sm" href="#install">
+				Get Seekstone
+				<Icon slot="iconRight" name="arrowRight" size={15} />
+			</Button>
+		</div>
+	</div>
+</header>
+
+<style is:global>
+	.ss-nav { position: sticky; top: 0; z-index: var(--z-nav); transition: background var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), backdrop-filter var(--dur-base); border-bottom: 1px solid transparent; }
+	.ss-nav.is-scrolled { background: var(--glass); backdrop-filter: var(--blur-md); -webkit-backdrop-filter: var(--blur-md); border-bottom-color: var(--border-subtle); }
+	.ss-nav__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+	.ss-nav__brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+	.ss-nav__word { font-weight: 600; font-size: 1.15rem; letter-spacing: -0.03em; color: var(--violet-100); }
+	.ss-nav__links { display: flex; align-items: center; gap: 0.35rem; }
+	.ss-nav__link { padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); transition: color var(--dur-fast), background var(--dur-fast); }
+	.ss-nav__link:hover { color: var(--text-primary); background: var(--surface-hover); }
+	.ss-nav__actions { display: flex; align-items: center; gap: 0.6rem; }
+	.ss-nav__ghost { display: inline-flex; align-items: center; gap: 0.4rem; height: 32px; padding: 0 0.7rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8125rem; color: var(--text-secondary); border: 1px solid var(--border-default); transition: all var(--dur-fast); }
+	.ss-nav__ghost:hover { color: var(--text-primary); border-color: var(--border-violet); background: var(--surface-hover); }
+</style>
+
+<script>
+	const nav = document.querySelector(".ss-nav");
+	if (nav) {
+		const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 8);
+		onScroll();
+		window.addEventListener("scroll", onScroll, { passive: true });
+	}
+</script>

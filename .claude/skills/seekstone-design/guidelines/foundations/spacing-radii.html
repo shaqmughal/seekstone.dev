@@ -1,0 +1,29 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Radii" subtitle="From 4px controls to pill. Cards use --radius-lg (14px)." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 24px; }
+  .row { display:flex; gap: 16px; align-items: flex-end; }
+  .item { display:flex; flex-direction: column; gap: 9px; align-items: center; }
+  .box { width: 66px; height: 66px; background: var(--surface-raised); border: 1px solid var(--border-strong); border-top: 2px solid var(--violet-500); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); }
+  .px { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); }
+  h4 { margin: 0 0 16px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <h4>Corner radii</h4>
+  <div class="row">
+    <div class="item"><div class="box" style="border-radius:4px"></div><span class="lbl">xs</span><span class="px">4</span></div>
+    <div class="item"><div class="box" style="border-radius:6px"></div><span class="lbl">sm</span><span class="px">6</span></div>
+    <div class="item"><div class="box" style="border-radius:10px"></div><span class="lbl">md</span><span class="px">10</span></div>
+    <div class="item"><div class="box" style="border-radius:14px"></div><span class="lbl">lg</span><span class="px">14</span></div>
+    <div class="item"><div class="box" style="border-radius:20px"></div><span class="lbl">xl</span><span class="px">20</span></div>
+    <div class="item"><div class="box" style="border-radius:28px"></div><span class="lbl">2xl</span><span class="px">28</span></div>
+    <div class="item"><div class="box" style="border-radius:999px"></div><span class="lbl">pill</span><span class="px">∞</span></div>
+  </div>
+</body>
+</html>

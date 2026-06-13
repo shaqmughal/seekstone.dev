@@ -1,0 +1,39 @@
+<!-- @dsCard group="Brand" viewport="700x230" name="Logo lockups" subtitle="Gem + wordmark. Primary on dark; mono and icon-only variants." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 26px 28px; display:flex; flex-direction: column; gap: 22px; }
+  .lockup { display:flex; align-items: center; gap: 14px; }
+  .word { font-family: var(--font-sans); font-weight: 500; font-size: 30px; letter-spacing: -0.03em; color: var(--violet-100); }
+  .sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-left: 6px; }
+  .divider { height: 1px; background: var(--border-subtle); }
+  .row { display:flex; align-items: center; gap: 40px; }
+  .cap { font-family: var(--font-sans); font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="lockup">
+    <img src="../../assets/seekstone-icon.svg" width="44" height="44" alt="" />
+    <span class="word">Seekstone</span>
+    <span class="sub">primary lockup</span>
+  </div>
+  <div class="divider"></div>
+  <div class="row">
+    <div class="lockup">
+      <img src="../../assets/seekstone-icon.svg" width="40" height="40" alt="" />
+      <span class="cap">Gem · color</span>
+    </div>
+    <div class="lockup" style="color: var(--text-secondary)">
+      <img src="../../assets/seekstone-icon-mono.svg" width="40" height="40" alt="" />
+      <span class="cap">Gem · mono</span>
+    </div>
+    <div class="lockup">
+      <span class="word" style="font-size:24px">Seekstone</span>
+      <span class="cap">Wordmark · Inter Medium</span>
+    </div>
+  </div>
+</body>
+</html>

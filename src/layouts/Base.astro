@@ -1,12 +1,25 @@
 ---
 /**
- * Base layout — shared <head>, document shell, and global styles.
- *
- * The <head> here is the seam Phase 3 SEO (SHA-112 meta/OG/JSON-LD,
- * SHA-113 FAQ schema) plugs into. Per-page <title>/<description> come in
- * as props; sensible site-wide defaults live below.
+ * Base layout — self-hosted fonts + the seekstone-design system, the document
+ * shell, and the website motion layer. The <head> here is the SEO seam (SHA-112).
  */
-import "../styles/tokens.css";
+// Self-hosted fonts (Fontsource) — privacy-first, no Google Fonts CDN (SHA-114/115).
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/jetbrains-mono/600.css";
+import "@fontsource/jetbrains-mono/700.css";
+// Design system: tokens (order matters) then base reset, then website layout.
+import "../styles/ds/colors.css";
+import "../styles/ds/typography.css";
+import "../styles/ds/spacing.css";
+import "../styles/ds/effects.css";
+import "../styles/ds/base.css";
+import "../styles/site.css";
 
 interface Props {
 	title?: string;
@@ -18,7 +31,6 @@ const {
 	description = "Seekstone is a filesystem-direct Obsidian MCP server for Claude. Search and edit your vault in milliseconds, with ~575× smaller payloads than the REST plugin. No plugins, no Obsidian app required.",
 } = Astro.props;
 
-// Absolute canonical URL for this page (needs `site` in astro.config.mjs).
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -28,7 +40,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 
 		<title>{title}</title>
@@ -39,6 +50,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 		<slot name="head" />
 	</head>
 	<body>
-		<slot />
+		<div class="ss-site">
+			<slot />
+		</div>
+		<!-- Motion layer: ambient aurora, scroll reveals, count-up, hero parallax, card spotlight.
+		     Loaded as a classic end-of-body script (NOT defer): anim.js calls onReady()
+		     before it defines its selector list, so it must run while readyState is still
+		     "loading" — defer makes onReady fire init() too early and it throws. -->
+		<script is:inline src="/scripts/anim.js"></script>
 	</body>
 </html>

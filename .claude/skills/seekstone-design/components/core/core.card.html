@@ -1,0 +1,83 @@
+<!-- @dsCard group="Components" viewport="700x560" name="Core — buttons, badges, metrics, code" subtitle="Button · Badge · Card · Metric · CodeBlock · Tabs" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; padding: 26px; }
+  .wrap { display:flex; flex-direction: column; gap: 22px; }
+  .group { display:flex; flex-direction: column; gap: 11px; }
+  .glabel { font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); }
+  .rowflex { display:flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { Button, Badge, Card, Metric, CodeBlock, Tabs } = window.SeekstoneDesignSystem_a9cecb;
+    const Arrow = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>);
+
+    function Demo() {
+      return (
+        <div className="wrap">
+          <div className="group">
+            <span className="glabel">Buttons</span>
+            <div className="rowflex">
+              <Button variant="primary" iconRight={<Arrow/>}>Get Seekstone</Button>
+              <Button variant="secondary">Star on GitHub</Button>
+              <Button variant="ghost">Docs</Button>
+              <Button variant="spark">Try it now</Button>
+              <Button variant="primary" size="sm">Small</Button>
+              <Button variant="secondary" disabled>Disabled</Button>
+            </div>
+          </div>
+
+          <div className="group">
+            <span className="glabel">Badges</span>
+            <div className="rowflex">
+              <Badge variant="success" dot>Fastest</Badge>
+              <Badge variant="violet" mono>v1.0.0</Badge>
+              <Badge variant="spark">MIT</Badge>
+              <Badge variant="neutral" mono>16 tools</Badge>
+              <Badge variant="outline">no plugins</Badge>
+              <Badge variant="danger" mono>delete_note</Badge>
+            </div>
+          </div>
+
+          <div className="group">
+            <span className="glabel">Metrics — the benchmark device</span>
+            <div className="grid3">
+              <Card padding="md"><Metric value="575×" label="smaller payloads" accent="gradient" size="md" /></Card>
+              <Card padding="md"><Metric value="1.4" unit="ms" label="warm latency" accent="green" size="md" /></Card>
+              <Card padding="md"><Metric value="160×" label="faster than REST" accent="violet" size="md" /></Card>
+            </div>
+          </div>
+
+          <div className="group">
+            <span className="glabel">CodeBlock + Tabs</span>
+            <Tabs
+              full
+              items={[{id:'cli',label:'Guided CLI'},{id:'code',label:'Claude Code'},{id:'npx',label:'One-liner'}]}
+              renderPanel={(id) => {
+                const cmd = {
+                  cli: 'npx -y obsidian-mcp-seekstone init',
+                  code: 'claude mcp add seekstone -- npx -y obsidian-mcp-seekstone',
+                  npx: 'npx -y seekstone',
+                }[id];
+                return <CodeBlock prompt code={cmd} />;
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+  </script>
+</body>
+</html>
