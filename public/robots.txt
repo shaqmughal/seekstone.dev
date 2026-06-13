@@ -1,4 +1,51 @@
+# seekstone.dev — robots policy
+# Static, public marketing site: everything is meant to be crawled and cited.
+
 User-agent: *
 Allow: /
 
+# ---------------------------------------------------------------------------
+# AI / LLM crawlers — explicitly welcomed (GEO).
+# These are the channels where Claude/Obsidian users actually discover tools,
+# so we opt IN rather than rely on the wildcard default. Covers both training
+# crawlers and the user-initiated "browse/cite" fetchers that power answers in
+# ChatGPT, Perplexity, and Claude.
+# ---------------------------------------------------------------------------
+
+# OpenAI — ChatGPT search, browsing, and training
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+# Perplexity — index + user-initiated answer fetches
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Anthropic — Claude web crawler + browsing
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Google — AI Overviews / Gemini grounding (separate from classic Googlebot)
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# ---------------------------------------------------------------------------
 Sitemap: https://seekstone.dev/sitemap-index.xml
