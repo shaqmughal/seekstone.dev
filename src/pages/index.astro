@@ -1,19 +1,61 @@
 ---
 /**
- * Landing page. This is a Phase 1 scaffold placeholder — Phase 2 (SHA-105..111)
- * replaces the body with real sections (Hero, Benchmark, Tools, Install, FAQ,
- * Footer), each as a component under src/components/.
+ * Landing page. Phase 1 placeholder — styled with the SHA-104 design system so
+ * it's on-brand while empty. Phase 2 (SHA-105..111) replaces the body with real
+ * sections (Hero, Benchmark, Tools, Install, FAQ, Footer) as components.
  */
 import Base from "../layouts/Base.astro";
 ---
 
 <Base>
-	<main>
-		<h1>Seekstone</h1>
-		<p>The fastest Obsidian MCP server for Claude. Site coming soon.</p>
-		<p>
-			<a href="https://github.com/shaqmughal/seekstone">GitHub</a> ·
-			<a href="https://www.npmjs.com/package/seekstone">npm</a>
-		</p>
+	<main class="hero">
+		<div class="container container--narrow hero__inner">
+			<img src="/wordmark-dark.svg" alt="Seekstone" width="304" height="76" class="hero__mark" />
+			<p class="eyebrow">Obsidian MCP server for Claude</p>
+			<h1>The fastest way to connect Claude to your Obsidian vault.</h1>
+			<p class="hero__sub">
+				Filesystem-direct. Searches in <strong>1.4–3.2&nbsp;ms</strong> — and
+				<strong>~575×</strong> smaller payloads than the REST plugin. Full site coming soon.
+			</p>
+			<p class="hero__links">
+				<a class="btn btn--primary" href="https://github.com/shaqmughal/seekstone">GitHub</a>
+				<a class="btn btn--ghost" href="https://www.npmjs.com/package/seekstone">npm</a>
+			</p>
+		</div>
 	</main>
 </Base>
+
+<style>
+	.hero {
+		min-height: 100vh;
+		display: grid;
+		place-items: center;
+		background: var(--glow);
+		text-align: center;
+	}
+	.hero__inner {
+		padding-block: var(--space-24);
+	}
+	.hero__mark {
+		height: auto;
+		margin-bottom: var(--space-8);
+	}
+	.hero h1 {
+		font-size: clamp(var(--text-2xl), 4vw + 1rem, var(--text-4xl));
+		margin-inline: auto;
+	}
+	.hero__sub {
+		color: var(--fg-muted);
+		font-size: var(--text-lg);
+		margin-inline: auto;
+	}
+	.hero__sub strong {
+		color: var(--fg);
+	}
+	.hero__links {
+		display: flex;
+		gap: var(--space-4);
+		justify-content: center;
+		margin-top: var(--space-8);
+	}
+</style>
