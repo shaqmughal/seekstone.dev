@@ -14,6 +14,7 @@ import Install from "../components/Install.astro";
 import Faq from "../components/Faq.astro";
 import Footer from "../components/Footer.astro";
 import { SITE } from "../consts";
+import { FAQS } from "../data/faq";
 
 // SoftwareApplication schema (SHA-112) — the primary GEO signal. Tells Google
 // rich results and AI citation engines what Seekstone is, that it's free, and
@@ -32,9 +33,22 @@ const softwareApplication = {
 	license: "https://opensource.org/licenses/MIT",
 	author: { "@type": "Person", name: SITE.author.name, url: SITE.author.url },
 };
+
+// FAQPage schema (SHA-113) — built from the SAME FAQS array the visible
+// accordion renders, so the structured data is guaranteed to match the page.
+// High-leverage GEO win: AI engines pull individual Q&A answers directly.
+const faqPage = {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	mainEntity: FAQS.map(({ q, a }) => ({
+		"@type": "Question",
+		name: q,
+		acceptedAnswer: { "@type": "Answer", text: a },
+	})),
+};
 ---
 
-<Base jsonLd={softwareApplication}>
+<Base jsonLd={[softwareApplication, faqPage]}>
 	<Nav />
 	<main>
 		<Hero />
