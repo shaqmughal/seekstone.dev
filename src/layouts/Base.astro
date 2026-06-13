@@ -82,6 +82,20 @@ const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 				<script type="application/ld+json" set:html={JSON.stringify(schema)} />
 			))
 		}
+
+		{/* Plausible — cookieless, privacy-first analytics (SHA-115). Dormant
+		    until the seekstone.dev site is created at plausible.io and the
+		    domain is live: the script ignores localhost and only counts the
+		    domain named in data-domain. The stub queues plausible() calls made
+		    before the external script finishes loading. */}
+		<script defer data-domain={SITE.domain} src="https://plausible.io/js/script.js"></script>
+		<script is:inline>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(arguments);
+				};
+		</script>
 		<slot name="head" />
 	</head>
 	<body>
@@ -93,5 +107,17 @@ const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 		     before it defines its selector list, so it must run while readyState is still
 		     "loading" — defer makes onReady fire init() too early and it throws. -->
 		<script is:inline src="/scripts/anim.js"></script>
+		{/* Conversion tracking (SHA-115): one delegated listener fires a Plausible
+		    custom event for any clicked element carrying data-analytics — copy
+		    buttons, GitHub/npm links, etc. Declarative: the event name lives on
+		    the element, not in here. */}
+		<script>
+			const w = window as unknown as { plausible?: (event: string) => void };
+			document.addEventListener("click", (e) => {
+				const el = (e.target as HTMLElement).closest<HTMLElement>("[data-analytics]");
+				const event = el?.dataset.analytics;
+				if (event) w.plausible?.(event);
+			});
+		</script>
 	</body>
 </html>
