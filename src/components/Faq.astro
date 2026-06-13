@@ -5,15 +5,7 @@
  * match the README FAQ and feed the FAQPage JSON-LD (SHA-113).
  */
 import Icon from "./Icon.astro";
-
-const FAQS: [q: string, a: string][] = [
-	["Does the Obsidian app need to be running?", "No. Seekstone reads the vault folder directly from disk. Obsidian can be open or closed — it never has to be running."],
-	["Do I need the Local REST API plugin?", "No. Seekstone bypasses it entirely — that's the source of the ~575× payload reduction. No plugins are required at all."],
-	["Which AI clients does it support?", "Any client that speaks the Model Context Protocol over stdio — Claude Desktop, Claude Code, Cursor, Windsurf, Continue, and more."],
-	["Is it safe to use on my vault?", "Seekstone only modifies files when you explicitly call a write tool. It makes no network requests, and the vault path is sandboxed — no tool can read or write outside it."],
-	["Does it work on Windows?", "Yes. Seekstone is tested on macOS, Linux, and Windows in CI on every commit."],
-	["How big a vault can it handle?", "It has been profiled against vaults with thousands of notes. The in-memory index is a few MB and starts in a few seconds."],
-];
+import { FAQS } from "../data/faq";
 ---
 
 <section class="section" id="faq">
@@ -24,7 +16,7 @@ const FAQS: [q: string, a: string][] = [
 		</div>
 		<div class="faq__list">
 			{
-				FAQS.map(([q, a], i) => (
+				FAQS.map(({ q, a }, i) => (
 					<div class={"faq__item" + (i === 0 ? " is-open" : "")}>
 						<button class="faq__q" aria-expanded={i === 0}>
 							<span>{q}</span>
