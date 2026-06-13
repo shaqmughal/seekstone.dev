@@ -1,0 +1,44 @@
+---
+/**
+ * Base layout — shared <head>, document shell, and global styles.
+ *
+ * The <head> here is the seam Phase 3 SEO (SHA-112 meta/OG/JSON-LD,
+ * SHA-113 FAQ schema) plugs into. Per-page <title>/<description> come in
+ * as props; sensible site-wide defaults live below.
+ */
+import "../styles/tokens.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Seekstone — the fastest Obsidian MCP server for Claude",
+	description = "Seekstone is a filesystem-direct Obsidian MCP server for Claude. Search and edit your vault in milliseconds, with ~575× smaller payloads than the REST plugin. No plugins, no Obsidian app required.",
+} = Astro.props;
+
+// Absolute canonical URL for this page (needs `site` in astro.config.mjs).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+
+		<!-- SHA-112 will expand OG/Twitter/JSON-LD here. -->
+		<slot name="head" />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "seekstone-dev",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "astro": "^6.4.6"
+  },
+  "overrides": {
+    "comment": "Force patched esbuild (advisory GHSA-gv7w-rqvm-qjhr / GHSA-g7r4-m6w7-qqqr tops out at 0.28.0). Build-only transitive dep via Astro→Vite; not in shipped static output. Mirrors the main repo's SHA-158 fix.",
+    "esbuild": "^0.28.1"
+  }
+}

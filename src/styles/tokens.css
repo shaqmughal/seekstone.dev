@@ -1,0 +1,50 @@
+/*
+ * Design tokens — placeholder foundation (SHA-104 fills this out).
+ * Dark-mode-first, monospace accents, developer-minimal aesthetic.
+ * Kept intentionally small here so SHA-104 can own the real system.
+ */
+:root {
+	color-scheme: dark;
+
+	/* Color — dark-first baseline */
+	--bg: #0b0d0f;
+	--bg-elevated: #14171a;
+	--fg: #e6e8eb;
+	--fg-muted: #9aa1a8;
+	--border: #23272b;
+	--accent: #7c3aed;
+
+	/* Typography */
+	--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+	/* Spacing / layout */
+	--space: 1rem;
+	--measure: 72ch;
+	--radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: var(--font-sans);
+	background: var(--bg);
+	color: var(--fg);
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+
+body {
+	margin: 0;
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-family: var(--font-mono);
+}
