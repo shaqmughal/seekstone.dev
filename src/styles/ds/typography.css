@@ -5,10 +5,34 @@
    big benchmark numerals.
    ============================================================ */
 
+/* Metric-matched fallback faces — sized (size-adjust + metric overrides) so the
+   system fallback occupies the SAME space as Inter / JetBrains Mono. This kills
+   the font-swap layout shift (the CLS source on the landing page): text doesn't
+   reflow when the web fonts finish loading. These render only in the brief
+   pre-swap window; the real face is always used once loaded, so final
+   typography is untouched. Override values are the standard Inter→Arial set
+   (as shipped by next/font). */
+@font-face {
+	font-family: 'Inter Fallback';
+	src: local('Arial');
+	ascent-override: 90.49%;
+	descent-override: 22.43%;
+	line-gap-override: 0.00%;
+	size-adjust: 107.06%;
+}
+@font-face {
+	font-family: 'JetBrains Mono Fallback';
+	src: local('Courier New'), local('Courier');
+	ascent-override: 75.00%;
+	descent-override: 25.00%;
+	line-gap-override: 0.00%;
+	size-adjust: 133.00%;
+}
+
 :root {
 	/* Families */
-	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-	--font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+	--font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
 	/* Fluid type scale (clamp: min → preferred → max) ------------- */
 	--text-xs:   0.75rem;   /* 12px — labels, badges, captions */
