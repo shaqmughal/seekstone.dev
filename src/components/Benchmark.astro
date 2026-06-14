@@ -30,7 +30,7 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 
 		<div class="bench__stats">
 			<Card variant="glow" padding="lg"><Metric value="575×" label="smaller search payloads" sub="~3 KB vs ~1.75 MB via REST" accent="gradient" size="lg" /></Card>
-			<Card padding="lg"><Metric value="1.4" unit="ms" label="warm search latency" sub="p50, in-process index" accent="green" size="lg" /></Card>
+			<Card padding="lg"><Metric value="1.4–3.2" unit="ms" label="warm search latency" sub="in-process MiniSearch index" accent="green" size="lg" /></Card>
 			<Card padding="lg"><Metric value="160×" label="faster than the slowest" sub="no subprocess, no HTTP" accent="violet" size="lg" /></Card>
 		</div>
 

@@ -23,8 +23,8 @@ const description =
 // reused <Benchmark/> chart below.
 const COMPARE: [metric: string, seekstone: string, rest: string][] = [
 	["Search payload, median", "~3 KB", "~1.75 MB"],
-	["Context tokens per search", "~750", "~450,000"],
-	["Warm search latency, p50", "1.4 ms", "58–219 ms"],
+	["Context tokens per search", "~800", "~459,000"],
+	["Warm search latency", "1.4–3.2 ms", "58–219 ms"],
 	["Obsidian app required", "No", "Yes"],
 	["Local REST API plugin required", "No", "Yes"],
 	["Network calls", "Zero", "HTTP to localhost"],
@@ -115,7 +115,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 				</Card>
 				<p class="bm__note">
 					REST and subprocess servers span 58–219 ms median search latency in the chart
-					above; Seekstone's in-process index serves the same queries in ~1.4 ms.
+					above; Seekstone's in-process index serves the same queries in 1.4–3.2 ms.
 				</p>
 			</div>
 		</section>
