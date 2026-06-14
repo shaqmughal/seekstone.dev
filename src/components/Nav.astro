@@ -13,17 +13,19 @@ interface Props {
 }
 const { stars = "1.2k" } = Astro.props;
 
+// Root-relative so they resolve from any page (e.g. /benchmarks), not just home.
+// "Benchmarks" links to the dedicated page; the rest jump to home-page sections.
 const links: [string, string][] = [
-	["Benchmarks", "#benchmark"],
-	["Tools", "#tools"],
-	["Install", "#install"],
-	["FAQ", "#faq"],
+	["Benchmarks", "/benchmarks"],
+	["Tools", "/#tools"],
+	["Install", "/#install"],
+	["FAQ", "/#faq"],
 ];
 ---
 
 <header class="ss-nav">
 	<div class="container ss-nav__inner">
-		<a class="ss-nav__brand" href="#top">
+		<a class="ss-nav__brand" href="/#top">
 			<GemMark size={30} spark />
 			<span class="ss-nav__word">Seekstone</span>
 		</a>
@@ -35,7 +37,7 @@ const links: [string, string][] = [
 				<Icon name="github" size={16} />
 				<span>{stars}</span>
 			</a>
-			<Button variant="primary" size="sm" href="#install">
+			<Button variant="primary" size="sm" href="/#install">
 				Get Seekstone
 				<Icon slot="iconRight" name="arrowRight" size={15} />
 			</Button>

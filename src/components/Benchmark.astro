@@ -56,6 +56,13 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 				}
 			</div>
 		</Card>
+
+		<div class="bench__more">
+			<a href="/benchmarks" class="bench__morelink">
+				See the full methodology & 6-server comparison
+				<Icon name="arrowRight" size={15} />
+			</a>
+		</div>
 	</div>
 </section>
 
@@ -77,6 +84,9 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 	.bench__ms { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); text-align: right; font-feature-settings: "zero"; }
 	.bench__row.is-you .bench__ms { color: var(--green-400); }
 	.bench__unit { font-size: 0.6875rem; color: var(--text-faint); margin-left: 1px; }
+	.bench__more { display: flex; justify-content: center; margin-top: 1.75rem; }
+	.bench__morelink { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9375rem; font-weight: 600; color: var(--violet-300); transition: color var(--dur-fast), gap var(--dur-fast); }
+	.bench__morelink:hover { color: var(--violet-200); gap: 0.6rem; }
 	@media (max-width: 720px) {
 		.bench__stats { grid-template-columns: 1fr; }
 		.bench__row { grid-template-columns: 130px 1fr 52px; gap: 0.6rem; }
