@@ -85,7 +85,11 @@
 	--text-primary:   var(--neutral-50);
 	--text-secondary: var(--neutral-300);
 	--text-muted:     var(--neutral-400);
-	--text-faint:     var(--neutral-500);
+	/* faint merged into muted: neutral-500 (#6b6486) fails WCAG AA for text, and
+	   the dark surfaces leave no compliant shade below muted. Kept as a named
+	   alias so existing usages resolve; a distinct faint text tier isn't viable
+	   on this palette (SHA-119). */
+	--text-faint:     var(--text-muted);
 	--text-on-accent: #ffffff;
 	--text-accent:    var(--violet-300);
 	--text-link:      var(--violet-300);
