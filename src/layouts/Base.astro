@@ -20,6 +20,7 @@ import "../styles/ds/spacing.css";
 import "../styles/ds/effects.css";
 import "../styles/ds/base.css";
 import "../styles/site.css";
+import Analytics from "@vercel/analytics/astro";
 import { SITE } from "../consts";
 
 interface Props {
@@ -96,6 +97,11 @@ const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 					(window.plausible.q = window.plausible.q || []).push(arguments);
 				};
 		</script>
+
+		{/* Vercel Web Analytics (SHA-168) — page views via the deployment's own
+		    /_vercel/insights/* routes; no account/domain config needed. Runs
+		    alongside the dormant Plausible block above. */}
+		<Analytics />
 		<slot name="head" />
 	</head>
 	<body>
