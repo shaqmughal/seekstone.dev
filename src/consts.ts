@@ -17,6 +17,6 @@ export const SITE = {
 	repo: "https://github.com/shaqmughal/seekstone",
 	npm: "https://www.npmjs.com/package/seekstone",
 	// Surfaced as JSON-LD softwareVersion. Bump on each release — mirrors the
-	// `latest` dist-tag of the `seekstone` npm package (0.6.1 as of 2026-06-13).
-	version: "0.6.1",
+	// `latest` dist-tag of the `seekstone` npm package (0.6.2 as of 2026-06-14).
+	version: "0.6.2",
 } as const;
