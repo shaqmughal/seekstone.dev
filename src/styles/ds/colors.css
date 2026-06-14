@@ -85,7 +85,7 @@
 	--text-primary:   var(--neutral-50);
 	--text-secondary: var(--neutral-300);
 	--text-muted:     var(--neutral-400);
-	--text-faint:     var(--neutral-400);  /* was neutral-500 (#6b6486) — failed WCAG AA for text on dark surfaces (SHA-119) */
+	--text-faint:     var(--text-muted);  /* merged into muted: neutral-500 (#6b6486) failed WCAG AA for text, and no compliant shade exists below muted on these dark surfaces (SHA-119) */
 	--text-on-accent: #ffffff;
 	--text-accent:    var(--violet-300);
 	--text-link:      var(--violet-300);
