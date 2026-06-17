@@ -42,7 +42,7 @@ import Icon from "./Icon.astro";
 		<label>Company<input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
 	</div>
 
-	<p class="sub__consent">By subscribing you agree to receive release updates. Unsubscribe anytime.</p>
+	<p class="sub__consent">By subscribing you agree to receive release updates. See our <a href="/privacy">privacy policy</a>. Unsubscribe anytime.</p>
 	<p class="sub__status" role="status" aria-live="polite" hidden></p>
 </form>
 
@@ -134,6 +134,8 @@ import Icon from "./Icon.astro";
 	}
 
 	.sub__consent { margin: 0; font-size: 0.75rem; line-height: 1.5; color: var(--text-faint); }
+	.sub__consent a { color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px; transition: color var(--dur-fast) var(--ease-out); }
+	.sub__consent a:hover { color: var(--violet-300); }
 	.sub__status { margin: 0; font-size: 0.8125rem; line-height: 1.5; font-weight: 500; }
 	.sub__status[data-tone="ok"] { color: var(--green-400); }
 	.sub__status[data-tone="error"] { color: var(--red-400); }
