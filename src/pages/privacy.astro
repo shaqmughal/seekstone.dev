@@ -1,0 +1,263 @@
+---
+/**
+ * /privacy — privacy policy (SHA-173). Required by the SHA-167 email list PRD
+ * (§5 Privacy / compliance): the subscribe form collects email addresses, so we
+ * publish what we collect, why, who processes it (Buttondown — DPA linked),
+ * retention, and how to access or delete it. Scope is the whole site, not just
+ * the list: cookieless analytics and self-hosted fonts are disclosed too. Linked
+ * from the footer subscribe consent line and the footer bottom bar.
+ */
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Icon from "../components/Icon.astro";
+
+const title = "Privacy Policy | Seekstone";
+const description =
+	"What Seekstone collects, why, and how to access or delete it — email subscriptions via Buttondown, cookieless analytics, self-hosted fonts. No tracking, no selling data.";
+
+const BUTTONDOWN_DPA = "https://buttondown.com/legal/data-processing-agreement";
+const CONTACT = "privacy@seekstone.dev";
+
+// Human-readable "last reviewed" date, shown under the heading. Bump when the
+// policy text materially changes.
+const UPDATED = "June 16, 2026";
+
+// What we collect — short definition rows (label + plain-language detail).
+const COLLECT: [what: string, detail: string][] = [
+	[
+		"Email address",
+		"Only if you subscribe to release updates. We never ask for it anywhere else, and the site has no accounts or logins.",
+	],
+	[
+		"Request logs",
+		"Our host (Vercel) keeps standard, short-lived server logs — IP and user-agent — to serve the site and block abuse. We don't build profiles from them.",
+	],
+	[
+		"Nothing else",
+		"No advertising IDs, no fingerprinting, no third-party trackers, and we never sell or rent any of it.",
+	],
+];
+---
+
+<Base title={title} description={description}>
+	<Nav />
+	<main>
+		<section class="section section--tight">
+			<div class="container container--narrow">
+				<div class="head head--center">
+					<span class="eyebrow eyebrow--center"><Icon name="shield" size={13} /> Transparency</span>
+					<h1 class="priv__h1">Privacy Policy</h1>
+					<p>
+						Seekstone is an open-source project, and this page is meant to be read, not
+						skimmed. The short version: the only personal data we collect is the email
+						address you give us to receive release updates — and you can delete it any time.
+					</p>
+					<p class="priv__updated">Last updated {UPDATED}</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="collect">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="fileText" size={13} /> What we collect</span>
+					<h2>Almost nothing.</h2>
+				</div>
+				<ul class="priv__defs">
+					{
+						COLLECT.map(([what, detail]) => (
+							<li>
+								<span class="priv__k">{what}</span>
+								<span>{detail}</span>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="email">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="sparkles" size={13} /> Email subscriptions</span>
+					<h2>The list, in full.</h2>
+				</div>
+				<div class="priv__prose">
+					<p>
+						<strong>What it's for.</strong> If you subscribe, we use your email address for
+						one thing: occasional release notes and the rare deep dive — roughly once a
+						month, never more. No drip sequences, no "we miss you" reactivation, no sponsored
+						sends.
+					</p>
+					<p>
+						<strong>Double opt-in.</strong> After you submit the form we send a confirmation
+						email; you're only added once you click the link in it. There are no pre-checked
+						boxes, and your address goes nowhere until you confirm.
+					</p>
+					<p>
+						<strong>Who processes it.</strong> Our newsletter runs on
+						<a href="https://buttondown.com" target="_blank" rel="noreferrer">Buttondown</a>, a
+						privacy-focused email provider that stores the list and handles sending and
+						unsubscribes on our behalf. Their commitments as a data processor are spelled out
+						in their <a href={BUTTONDOWN_DPA} target="_blank" rel="noreferrer">Data Processing
+						Agreement</a>. We turn off open-tracking pixels, so we don't see whether you opened
+						an email.
+					</p>
+					<p>
+						<strong>How long we keep it.</strong> Until you unsubscribe. Every email has a
+						one-click unsubscribe link in the footer — no login, no reason required — and
+						unsubscribing removes you from the list.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="analytics">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="gauge" size={13} /> Analytics</span>
+					<h2>Counts, not people.</h2>
+				</div>
+				<div class="priv__prose">
+					<p>
+						We measure aggregate traffic — how many people visit which pages — to know what's
+						useful. We use <a href="https://vercel.com/docs/analytics" target="_blank" rel="noreferrer">Vercel
+						Web Analytics</a>, and may also use <a href="https://plausible.io" target="_blank" rel="noreferrer">Plausible</a>,
+						both chosen because they are cookieless and don't track you across other sites.
+					</p>
+					<p>
+						There are no advertising cookies, no cross-site profiles, and nothing that follows
+						you once you leave. This is page-level counting, not surveillance — which is why
+						the site shows no cookie banner: there are no tracking cookies to consent to.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="third-parties">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="package" size={13} /> Fonts & third parties</span>
+					<h2>A short list of who's involved.</h2>
+				</div>
+				<div class="priv__prose">
+					<p>
+						Fonts are self-hosted from our own server — they are not loaded from the Google
+						Fonts CDN, so loading the site doesn't share your IP with Google.
+					</p>
+					<p>
+						The complete set of third parties that can touch your data is small:
+						<strong>Vercel</strong> (hosting and analytics) and <strong>Buttondown</strong>
+						(the email list, only if you subscribe). That's it.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="rights">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="lock" size={13} /> Your rights</span>
+					<h2>Your data is yours.</h2>
+				</div>
+				<div class="priv__prose">
+					<p>
+						You can ask us to show you the data we hold (your email address), export it, or
+						delete it outright. The fastest path to deletion is the unsubscribe link in any
+						email — it removes you from the list immediately. For anything else, or if you're
+						in a region with formal data-protection rights (GDPR, CCPA, and similar), email
+						<a href={`mailto:${CONTACT}`}>{CONTACT}</a> and we'll handle it.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="contact">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="link" size={13} /> Contact</span>
+					<h2>Questions?</h2>
+				</div>
+				<div class="priv__prose">
+					<p>
+						Reach us at <a href={`mailto:${CONTACT}`}>{CONTACT}</a>. If we ever change this
+						policy in a way that matters, we'll update the date at the top — and, for anything
+						significant, say so in a release email.
+					</p>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Base>
+
+<style is:global>
+	.priv__h1 {
+		font-size: var(--text-4xl);
+		font-weight: 800;
+		line-height: 1.04;
+		letter-spacing: -0.045em;
+		color: var(--text-primary);
+		text-wrap: balance;
+	}
+	.priv__updated {
+		margin-top: 0.5rem;
+		font-size: 0.8125rem;
+		color: var(--text-faint);
+	}
+
+	#collect .head, #email .head, #analytics .head,
+	#third-parties .head, #rights .head, #contact .head {
+		margin-bottom: 1.5rem;
+	}
+
+	.priv__defs {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	.priv__defs li {
+		display: grid;
+		grid-template-columns: 140px 1fr;
+		gap: 1rem;
+		align-items: baseline;
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		color: var(--text-secondary);
+	}
+	.priv__k {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--violet-300);
+	}
+
+	.priv__prose {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		font-size: 0.9375rem;
+		line-height: 1.7;
+		color: var(--text-secondary);
+		text-wrap: pretty;
+	}
+	.priv__prose p { margin: 0; max-width: 64ch; }
+	.priv__prose strong { color: var(--text-primary); font-weight: 600; }
+	.priv__prose a {
+		color: var(--violet-300);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: color var(--dur-fast) var(--ease-out);
+	}
+	.priv__prose a:hover { color: var(--violet-200); }
+
+	@media (max-width: 600px) {
+		.priv__defs li { grid-template-columns: 1fr; gap: 0.25rem; }
+	}
+</style>
