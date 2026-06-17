@@ -7,6 +7,7 @@ import GemMark from "./GemMark.astro";
 import Button from "./Button.astro";
 import Badge from "./Badge.astro";
 import Icon from "./Icon.astro";
+import SubscribeForm from "./SubscribeForm.astro";
 ---
 
 <footer class="ftr">
@@ -29,6 +30,12 @@ import Icon from "./Icon.astro";
 			</div>
 		</div>
 	</section>
+
+	<hr class="divider" />
+
+	<div class="container ftr__sub">
+		<SubscribeForm />
+	</div>
 
 	<hr class="divider" />
 
@@ -77,6 +84,7 @@ import Icon from "./Icon.astro";
 	.cta__sub { margin: 1rem 0 0; max-width: 50ch; font-size: var(--text-md); line-height: 1.6; color: var(--text-secondary); }
 	.cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
 	.ftr { background: var(--bg-base); }
+	.ftr__sub { padding-block: 2.75rem; }
 	.ftr__inner { display: grid; grid-template-columns: 1.3fr 2fr; gap: 2.5rem; padding-block: 3.5rem 2.5rem; }
 	.ftr__lockup { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 600; font-size: 1.1rem; letter-spacing: -0.03em; color: var(--violet-100); }
 	.ftr__tag { margin: 0.9rem 0 1rem; font-size: 0.875rem; color: var(--text-muted); max-width: 32ch; }

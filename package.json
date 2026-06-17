@@ -14,13 +14,15 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/vercel": "^10.0.8",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@vercel/analytics": "^2.0.1",
     "astro": "^6.4.6"
   },
   "overrides": {
-    "comment": "Force patched esbuild (advisory GHSA-gv7w-rqvm-qjhr / GHSA-g7r4-m6w7-qqqr tops out at 0.28.0). Build-only transitive dep via Astro→Vite; not in shipped static output. Mirrors the main repo's SHA-158 fix.",
-    "esbuild": "^0.28.1"
+    "comment": "Build-only transitive advisory pins, not in shipped output. esbuild: GHSA-gv7w-rqvm-qjhr / GHSA-g7r4-m6w7-qqqr (via Astro→Vite); mirrors the main repo's SHA-158 fix. path-to-regexp: GHSA-9wv6-86v2-598j ReDoS (via @astrojs/vercel→@vercel/routing-utils, which already aliases the patched 6.3.0 internally); avoids the audit-fix downgrade to the Astro-5 adapter.",
+    "esbuild": "^0.28.1",
+    "path-to-regexp": "^6.3.0"
   }
 }

@@ -1,0 +1,56 @@
+---
+/**
+ * /subscribe/confirmed — where Buttondown sends people after they click the
+ * double opt-in confirmation link (SHA-167). Keeps that final step first-party
+ * and on-brand instead of dropping onto Buttondown's generic hosted page.
+ * Configure the redirect target in the Buttondown account settings.
+ *
+ * Transactional landing page — kept out of search via noindex + the sitemap
+ * filter in astro.config.mjs.
+ */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import Button from "../../components/Button.astro";
+import GemMark from "../../components/GemMark.astro";
+import Icon from "../../components/Icon.astro";
+
+const title = "You're subscribed | Seekstone";
+const description = "Your subscription to Seekstone release updates is confirmed.";
+---
+
+<Base title={title} description={description}>
+	<meta slot="head" name="robots" content="noindex" />
+	<Nav />
+	<main>
+		<section class="section">
+			<div class="container container--narrow">
+				<div class="head head--center">
+					<GemMark size={64} glow spark animated />
+					<span class="eyebrow eyebrow--center"><Icon name="check" size={13} /> Subscription confirmed</span>
+					<h1 class="cf__h1">You're on the list.</h1>
+					<p>
+						Thanks for confirming. You'll get release notes and the occasional deep dive —
+						about one email a month, never more. A short welcome note is on its way.
+					</p>
+					<div class="cf__btns">
+						<Button variant="primary" size="lg" href="/#install">
+							Get Seekstone
+							<Icon slot="iconRight" name="arrowRight" size={17} />
+						</Button>
+						<Button variant="secondary" size="lg" href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer" data-analytics="GitHub Click">
+							<Icon slot="iconLeft" name="github" size={17} />
+							View source
+						</Button>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Base>
+
+<style is:global>
+	.cf__h1 { font-size: var(--text-4xl); font-weight: 800; line-height: 1.04; letter-spacing: -0.045em; color: var(--text-primary); text-wrap: balance; }
+	.cf__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
+</style>

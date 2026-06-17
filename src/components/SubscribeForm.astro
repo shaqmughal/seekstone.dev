@@ -1,0 +1,145 @@
+---
+/**
+ * SubscribeForm — footer email capture for release updates (SHA-167).
+ *
+ * Posts to the first-party /api/subscribe proxy (key stays server-side). JS
+ * progressively enhances it into an inline fetch with "check your inbox" /
+ * error states; without JS the form still submits and the subscriber is
+ * created. The `company` field is a honeypot — hidden from people, irresistible
+ * to bots, dropped server-side.
+ */
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+---
+
+<form class="sub" method="POST" action="/api/subscribe" novalidate>
+	<div class="sub__head">
+		<span class="eyebrow"><Icon name="sparkles" size={13} /> Stay in the loop</span>
+		<p class="sub__lead">Release notes and the occasional deep dive. ~1 email a month, no spam.</p>
+	</div>
+
+	<div class="sub__row">
+		<label class="sub__field">
+			<span class="sub__sr">Email address</span>
+			<input
+				class="sub__input"
+				type="email"
+				name="email"
+				inputmode="email"
+				autocomplete="email"
+				placeholder="you@domain.com"
+				required
+			/>
+		</label>
+		<Button variant="primary" type="submit" class="sub__btn" data-analytics="Newsletter Subscribe">
+			Subscribe
+			<Icon slot="iconRight" name="arrowRight" size={15} />
+		</Button>
+	</div>
+
+	{/* Honeypot: visually + a11y hidden, never autofilled. A filled value === bot. */}
+	<div class="sub__hp" aria-hidden="true">
+		<label>Company<input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+	</div>
+
+	<p class="sub__consent">By subscribing you agree to receive release updates. Unsubscribe anytime.</p>
+	<p class="sub__status" role="status" aria-live="polite" hidden></p>
+</form>
+
+<script>
+	// Progressive enhancement: intercept submit, post via fetch, swap inline
+	// states in place of a full navigation. The baseline (no JS) POST still works.
+	document.querySelectorAll<HTMLFormElement>("form.sub").forEach((form) => {
+		const status = form.querySelector<HTMLParagraphElement>(".sub__status");
+		const button = form.querySelector<HTMLButtonElement>(".sub__btn");
+		if (!status || !button) return;
+
+		const setStatus = (message: string, tone: "ok" | "error") => {
+			status.textContent = message;
+			status.dataset.tone = tone;
+			status.hidden = false;
+		};
+
+		form.addEventListener("submit", async (e) => {
+			e.preventDefault();
+			status.hidden = true;
+			button.setAttribute("aria-disabled", "true");
+
+			try {
+				const res = await fetch(form.action, {
+					method: "POST",
+					body: new FormData(form),
+					headers: { accept: "application/json" },
+				});
+				const data = (await res.json().catch(() => ({}))) as {
+					ok?: boolean;
+					alreadySubscribed?: boolean;
+					error?: string;
+				};
+
+				if (res.ok && data.ok) {
+					form.reset();
+					setStatus(
+						data.alreadySubscribed
+							? "You're already on the list — thanks!"
+							: "Check your inbox to confirm your subscription.",
+						"ok",
+					);
+				} else {
+					setStatus(data.error ?? "Something went wrong. Please try again.", "error");
+				}
+			} catch {
+				setStatus("Network error. Please try again.", "error");
+			} finally {
+				button.removeAttribute("aria-disabled");
+			}
+		});
+	});
+</script>
+
+<style is:global>
+	.sub { display: flex; flex-direction: column; gap: 0.85rem; max-width: 30rem; }
+	.sub__head { display: flex; flex-direction: column; gap: 0.4rem; }
+	.sub__lead { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--text-muted); max-width: 36ch; }
+
+	.sub__row { display: flex; gap: 0.5rem; }
+	.sub__field { flex: 1 1 auto; min-width: 0; }
+	.sub__sr {
+		position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+		overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+	}
+	.sub__input {
+		width: 100%; height: var(--control-lg, 48px); padding: 0 0.9rem;
+		font-family: var(--font-sans); font-size: var(--text-sm, 0.8125rem);
+		color: var(--text-primary); background: rgba(180, 166, 255, 0.04);
+		border: 1px solid var(--border-strong, rgba(180, 166, 255, 0.2));
+		border-radius: var(--radius-md, 10px); outline: none;
+		transition: border-color var(--dur-fast, 120ms) var(--ease-out),
+			background var(--dur-fast, 120ms) var(--ease-out),
+			box-shadow var(--dur-fast, 120ms) var(--ease-out);
+	}
+	.sub__input::placeholder { color: var(--text-faint); }
+	.sub__input:hover { border-color: var(--border-violet, rgba(124, 92, 255, 0.45)); }
+	.sub__input:focus-visible {
+		border-color: var(--border-violet, rgba(124, 92, 255, 0.45));
+		background: rgba(180, 166, 255, 0.07);
+		box-shadow: var(--focus-ring);
+	}
+	.sub__btn { flex: 0 0 auto; height: var(--control-lg, 48px); }
+
+	/* Honeypot — removed from layout, a11y tree, and tab order. */
+	.sub__hp {
+		position: absolute; left: -9999px; width: 1px; height: 1px;
+		overflow: hidden;
+	}
+
+	.sub__consent { margin: 0; font-size: 0.75rem; line-height: 1.5; color: var(--text-faint); }
+	.sub__status { margin: 0; font-size: 0.8125rem; line-height: 1.5; font-weight: 500; }
+	.sub__status[data-tone="ok"] { color: var(--green-400); }
+	.sub__status[data-tone="error"] { color: var(--red-400); }
+
+	@media (max-width: 480px) {
+		.sub__row { flex-direction: column; align-items: stretch; }
+		.sub__btn { width: 100%; }
+	}
+</style>
