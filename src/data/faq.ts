@@ -16,7 +16,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Do I need the Local REST API plugin?",
-		a: "No. Seekstone bypasses it entirely — that's the source of the ~575× payload reduction. No plugins are required at all.",
+		a: "No. Seekstone bypasses it entirely — that's the source of the up-to-~30,000× payload reduction. No plugins are required at all.",
 	},
 	{
 		q: "Which AI clients does it support?",
@@ -32,6 +32,6 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "How big a vault can it handle?",
-		a: "It has been profiled against vaults with thousands of notes. The in-memory index is a few MB and starts in a few seconds.",
+		a: "It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes, and search stays in single-digit milliseconds even at 10k. The in-memory index is a few MB and starts in a few seconds.",
 	},
 ];

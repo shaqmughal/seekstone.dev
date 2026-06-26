@@ -145,11 +145,11 @@
 }
 .has-spot:hover::after { opacity: 1; }
 
-/* Pillars aren't interactive Cards — give them the same hover lift. */
-.pillar { transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
-.pillar:hover { transform: translateY(-3px); border-color: var(--border-violet); box-shadow: var(--ring-inset), 0 18px 44px -20px rgba(0,0,0,0.7); }
-.pillar__icon { transition: transform var(--dur-base) var(--ease-spring); }
-.pillar:hover .pillar__icon { transform: translateY(-2px) scale(1.06) rotate(-4deg); }
+/* Pillars + the /benchmarks feature cards aren't interactive Cards — give them the same hover lift. */
+.pillar, .bm__trade, .bm__tier { transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+.pillar:hover, .bm__trade:hover, .bm__tier:hover { transform: translateY(-3px); border-color: var(--border-violet); box-shadow: var(--ring-inset), 0 18px 44px -20px rgba(0,0,0,0.7); }
+.pillar__icon, .bm__trade-icon { transition: transform var(--dur-base) var(--ease-spring); }
+.pillar:hover .pillar__icon, .bm__trade:hover .bm__trade-icon { transform: translateY(-2px) scale(1.06) rotate(-4deg); }
 
 /* Tool icon reacts to its card's hover. */
 .tool__icon { transition: transform var(--dur-base) var(--ease-spring), background var(--dur-base); }

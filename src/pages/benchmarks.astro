@@ -16,15 +16,15 @@ import Icon from "../components/Icon.astro";
 
 const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
-	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and four other servers. 575× smaller search payloads, measured on a real vault with an open-source harness.";
+	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and four other servers, across 1k / 5k / 10k-note vaults. Up to ~30,000× smaller search payloads, fully reproducible with an open-source harness.";
 
-// Payload/feature comparison. Figures trace to the landing page (SHA-106
-// Benchmark stats + the FAQ); the latency range is the span shown in the
-// reused <Benchmark/> chart below.
+// Seekstone vs the Obsidian Local REST API plugin on the committed 10,000-note
+// vault. Source: packages/harness/fixtures/baseline-reports/scaling/benchmark-scaling.md.
 const COMPARE: [metric: string, seekstone: string, rest: string][] = [
-	["Search payload, median", "~3 KB", "~1.75 MB"],
-	["Context tokens per search", "~800", "~459,000"],
-	["Warm search latency", "1.4–3.2 ms", "58–219 ms"],
+	["Search payload (mean, 10k vault)", "~3 KB", "62.6 MB"],
+	["Worst-case payload (broad query)", "~3 KB", "245 MB"],
+	["Context tokens (broad query)", "~760", "65.7 million"],
+	["Warm search latency (10k vault)", "1–8 ms", "~575 ms"],
 	["Obsidian app required", "No", "Yes"],
 	["Local REST API plugin required", "No", "Yes"],
 	["Network calls", "Zero", "HTTP to localhost"],
@@ -32,10 +32,52 @@ const COMPARE: [metric: string, seekstone: string, rest: string][] = [
 	["Frontmatter write safety", "Byte-identical", "Varies"],
 ];
 
+// How each server scales as the vault grows (1k → 5k → 10k notes) — the heart
+// of the story. Seekstone stays flat on both payload and latency; the proxies
+// climb. Same source file as COMPARE.
+const SIZES = ["1k", "5k", "10k"] as const;
+type ScaleRow = { name: string; vals: [string, string, string]; you?: boolean };
+const SCALE_PAYLOAD: ScaleRow[] = [
+	{ name: "Seekstone", vals: ["2.3 KB", "2.6 KB", "3.0 KB"], you: true },
+	{ name: "mcpvault", vals: ["1.7 KB", "1.9 KB", "2.2 KB"] },
+	{ name: "obsidian-mcp-server", vals: ["55 KB", "47 KB", "47 KB"] },
+	{ name: "obsidian-mcp-pro", vals: ["25 KB", "84 KB", "114 KB"] },
+	{ name: "obsidian-mcp", vals: ["18 KB", "105 KB", "201 KB"] },
+	{ name: "mcp-obsidian", vals: ["9.8 MB", "45 MB", "95 MB"] },
+];
+const SCALE_LATENCY: ScaleRow[] = [
+	{ name: "Seekstone", vals: ["1.1 ms", "3.2 ms", "7.5 ms"], you: true },
+	{ name: "obsidian-mcp-pro", vals: ["46 ms", "213 ms", "430 ms"] },
+	{ name: "obsidian-mcp-server", vals: ["82 ms", "356 ms", "732 ms"] },
+	{ name: "obsidian-mcp", vals: ["82 ms", "405 ms", "811 ms"] },
+	{ name: "mcpvault", vals: ["99 ms", "466 ms", "971 ms"] },
+	{ name: "mcp-obsidian", vals: ["164 ms", "740 ms", "1,550 ms"] },
+];
+
+// Three architectures, three scaling behaviours. The frame that makes the
+// tables legible — and puts Seekstone alone in the top tier.
+const TIERS: { tier: string; who: string; body: string }[] = [
+	{
+		tier: "In-process index",
+		who: "Seekstone",
+		body: "Holds a warm full-text index and returns ranked excerpts. Flat on both payload and latency — a few KB and a few ms at any vault size.",
+	},
+	{
+		tier: "Subprocess scanners",
+		who: "mcpvault · obsidian-mcp · obsidian-mcp-pro",
+		body: "Spawn a process and scan the disk per query. Latency climbs with the vault — from tens of ms to over a second at 10,000 notes.",
+	},
+	{
+		tier: "REST proxies",
+		who: "Local REST API · mcp-obsidian",
+		body: "Forward to Obsidian's HTTP API, which returns full note content for every hit — tens of megabytes per search, growing with the vault.",
+	},
+];
+
 const REPRO = `git clone https://github.com/shaqmughal/seekstone
-cd seekstone
-npm install
-npm run harness -- bench --runs 20`;
+cd seekstone && npm install
+npm run harness -- bench --backend fs \\
+  --vault packages/harness/fixtures/vault`;
 
 // Honest accounting — qualitative only; no unverified figures invented.
 const TRADEOFFS: [icon: string, title: string, body: string][] = [
@@ -66,9 +108,10 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					<span class="eyebrow eyebrow--center"><Icon name="gauge" size={13} /> Reproducible benchmark</span>
 					<h1 class="bm__h1">Benchmarked against<br />the whole field.</h1>
 					<p>
-						Every number on this page comes from an open-source harness run on a real
-						1,955-note vault, 20 runs per query. Nothing here is a marketing estimate —
-						clone the repo and verify each figure on your own vault.
+						Every number on this page comes from an open-source harness run on committed
+						vaults of 1,000, 5,000, and 10,000 notes — public-domain content, 20 runs per
+						query. Nothing here is a marketing estimate — the vaults ship in the repo, so
+						clone it and reproduce each figure exactly.
 					</p>
 				</div>
 			</div>
@@ -85,8 +128,8 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					<h2>Latency is nice. Payload is the point.</h2>
 					<p>
 						The Obsidian Local REST API plugin returns full note content for every search
-						hit — megabytes the model has to read. Seekstone returns short ranked excerpts.
-						Same query, ~575× less to send.
+						hit — tens of megabytes the model has to read. Seekstone returns short ranked
+						excerpts. Same query, up to ~30,000× less to send at 10,000 notes.
 					</p>
 				</div>
 				<Card padding="lg" class="bm__tablecard">
@@ -114,8 +157,83 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					</div>
 				</Card>
 				<p class="bm__note">
-					REST and subprocess servers span 58–219 ms median search latency in the chart
-					above; Seekstone's in-process index serves the same queries in 1.4–3.2 ms.
+					REST and subprocess servers span ~430–1,550 ms warm search latency at 10,000
+					notes in the chart above; Seekstone's in-process index serves the same queries
+					in single-digit milliseconds — and the gap only widens as the vault grows.
+				</p>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="scaling">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="gauge" size={13} /> The whole point</span>
+					<h2>Watch what happens as your vault grows.</h2>
+					<p>
+						A real vault only gets bigger — and that's where the architectures diverge.
+						Seekstone holds a warm in-process index, so it stays flat on <em>both</em> payload
+						and latency, while REST-proxy and full-scan servers climb with every note.
+					</p>
+				</div>
+
+				<div class="bm__tiers">
+					{
+						TIERS.map((t) => (
+							<Card padding="lg" class="bm__tier">
+								<span class="bm__tier-tier">{t.tier}</span>
+								<span class="bm__tier-who">{t.who}</span>
+								<p class="bm__tier-body">{t.body}</p>
+							</Card>
+						))
+					}
+				</div>
+
+				<h3 class="bm__scale-h">Search payload — bytes per query <span class="bm__lower">lower is better</span></h3>
+				<Card padding="lg" class="bm__tablecard">
+					<div class="bm__tablewrap">
+						<table class="bm__table bm__table--scale">
+							<thead>
+								<tr><th>Server</th>{SIZES.map((s) => <th>{s} notes</th>)}</tr>
+							</thead>
+							<tbody>
+								{
+									SCALE_PAYLOAD.map((r) => (
+										<tr class={r.you ? "is-you" : ""}>
+											<td class={r.you ? "bm__col-you" : "bm__metric"}>{r.name}</td>
+											{r.vals.map((v) => <td class={r.you ? "bm__col-you" : "bm__rest"}>{v}</td>)}
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+				</Card>
+
+				<h3 class="bm__scale-h bm__scale-h--gap">Warm search latency — milliseconds <span class="bm__lower">lower is better</span></h3>
+				<Card padding="lg" class="bm__tablecard">
+					<div class="bm__tablewrap">
+						<table class="bm__table bm__table--scale">
+							<thead>
+								<tr><th>Server</th>{SIZES.map((s) => <th>{s} notes</th>)}</tr>
+							</thead>
+							<tbody>
+								{
+									SCALE_LATENCY.map((r) => (
+										<tr class={r.you ? "is-you" : ""}>
+											<td class={r.you ? "bm__col-you" : "bm__metric"}>{r.name}</td>
+											{r.vals.map((v) => <td class={r.you ? "bm__col-you" : "bm__rest"}>{v}</td>)}
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+				</Card>
+
+				<p class="bm__note">
+					At 10,000 notes that's a <strong>~30,000× payload difference</strong>, and Seekstone is
+					<strong>58–208× faster</strong> than the proxies — both gaps widening with scale.
+					Seekstone is the only server that stays flat on <em>both</em> axes.
 				</p>
 			</div>
 		</section>
@@ -132,7 +250,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					</p>
 				</div>
 				<ul class="bm__method">
-					<li><span class="bm__k">Vault</span><span>1,955 notes, mixed frontmatter density — a real working vault, not a synthetic best case.</span></li>
+					<li><span class="bm__k">Vaults</span><span>Committed 1,000 / 5,000 / 10,000-note vaults generated from the public-domain 1911 Encyclopædia Britannica — the same size distribution as a real PKM vault, and byte-for-byte reproducible.</span></li>
 					<li><span class="bm__k">Runs</span><span>20 per query; warm latency reported as the median (p50).</span></li>
 					<li><span class="bm__k">Payload</span><span>Bytes measured on the actual MCP tool response, not an idealized excerpt.</span></li>
 					<li><span class="bm__k">Field</span><span>Compared against obsidian-mcp-server, mcp-obsidian, obsidian-mcp-pro, mcpvault, and obsidian-mcp.</span></li>
@@ -182,6 +300,19 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 	.bm__table thead .bm__col-you { color: var(--violet-300); }
 	.bm__rest { font-family: var(--font-mono); color: var(--text-muted); }
 	.bm__note { margin-top: 1rem; font-size: 0.8125rem; line-height: 1.6; color: var(--text-faint); }
+	.bm__note strong { color: var(--text-secondary); font-weight: 700; }
+
+	.bm__scale-h { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary); margin: 0 0 0.85rem; }
+	.bm__scale-h--gap { margin-top: 2rem; }
+	.bm__lower { font-weight: 400; color: var(--text-faint); font-size: 0.8125rem; margin-left: 0.4rem; }
+	.bm__table--scale th:not(:first-child), .bm__table--scale td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+
+	.bm__tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2.5rem; }
+	.bm__tier { gap: 0.4rem; }
+	.bm__tier-tier { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.015em; color: var(--text-primary); }
+	.bm__tier-who { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-faint); margin-bottom: 0.5rem; }
+	.bm__tier-body { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+	@media (max-width: 900px) { .bm__tiers { grid-template-columns: 1fr; } }
 
 	.bm__method { list-style: none; margin: 0 0 1.5rem; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
 	.bm__method li { display: grid; grid-template-columns: 88px 1fr; gap: 1rem; align-items: baseline; font-size: 0.9375rem; line-height: 1.55; color: var(--text-secondary); }
@@ -190,9 +321,9 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 
 	.bm__tradeoffs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
 	.bm__trade { gap: 0.9rem; }
-	.bm__trade-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; color: var(--violet-200); background: var(--accent-soft); border: 1px solid rgba(124, 92, 255, 0.22); }
-	.bm__trade-title { margin: 0.3rem 0 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
-	.bm__trade-body { margin: 0; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+	.bm__trade-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; color: var(--amber-300); background: var(--spark-soft); border: 1px solid rgba(245, 158, 11, 0.22); }
+	.bm__trade-title { margin: 0.3rem 0 0; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+	.bm__trade-body { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 
 	@media (max-width: 900px) { .bm__tradeoffs { grid-template-columns: 1fr; } }
 	@media (max-width: 600px) { .bm__method li { grid-template-columns: 1fr; gap: 0.15rem; } }

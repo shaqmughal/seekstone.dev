@@ -247,7 +247,7 @@
   /* ---- 4. Card cursor spotlight ----------------------------- */
   function setupSpotlight() {
     if (reduce || !finePointer) return;
-    var cards = document.querySelectorAll('.pillar, .tool, .bench__chart, .inst__card');
+    var cards = document.querySelectorAll('.pillar, .tool, .bench__chart, .inst__card, .bm__trade, .bm__tier');
     cards.forEach(function (card) {
       card.classList.add('has-spot');
       card.addEventListener('pointermove', function (e) {
