@@ -8,15 +8,17 @@ import Badge from "./Badge.astro";
 import Metric from "./Metric.astro";
 import Icon from "./Icon.astro";
 
+// Warm search latency at 10,000 notes (mean across queries). Source:
+// packages/harness/fixtures/baseline-reports/scaling/benchmark-scaling.md.
 const BENCH = [
-	{ name: "Seekstone", arch: "in-process index", ms: 2.4, you: true },
-	{ name: "obsidian-mcp-server", arch: "REST API", ms: 58 },
-	{ name: "mcp-obsidian", arch: "REST API", ms: 81 },
-	{ name: "obsidian-mcp-pro", arch: "fs subprocess", ms: 104 },
-	{ name: "mcpvault", arch: "fs subprocess", ms: 199 },
-	{ name: "obsidian-mcp", arch: "fs subprocess", ms: 219 },
+	{ name: "Seekstone", arch: "in-process index", ms: 7.5, you: true },
+	{ name: "obsidian-mcp-pro", arch: "fs subprocess", ms: 430 },
+	{ name: "obsidian-mcp-server", arch: "REST API", ms: 732 },
+	{ name: "obsidian-mcp", arch: "fs subprocess", ms: 811 },
+	{ name: "mcpvault", arch: "fs subprocess", ms: 971 },
+	{ name: "mcp-obsidian", arch: "REST API", ms: 1550 },
 ];
-const BMAX = 224;
+const BMAX = 1600;
 const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 ---
 
@@ -25,18 +27,18 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 		<div class="head head--center">
 			<span class="eyebrow eyebrow--center"><Icon name="gauge" size={13} /> Benchmarked, not claimed</span>
 			<h2>The only Obsidian MCP server<br />with <span class="grad">published numbers.</span></h2>
-			<p>Measured against 5 popular servers on a real vault — 1,955 notes, 20 runs each. The harness is open source; run it on your own vault and verify every figure.</p>
+			<p>Measured against 5 popular servers across 1,000 / 5,000 / 10,000-note vaults — public-domain content, fully reproducible, 20 runs each. The harness and the vaults are open source; clone the repo and verify every figure.</p>
 		</div>
 
 		<div class="bench__stats">
-			<Card variant="glow" padding="lg"><Metric value="575×" label="smaller search payloads" sub="~3 KB vs ~1.75 MB via REST" accent="gradient" size="lg" /></Card>
-			<Card padding="lg"><Metric value="1.4–3.2" unit="ms" label="warm search latency" sub="in-process MiniSearch index" accent="green" size="lg" /></Card>
-			<Card padding="lg"><Metric value="160×" label="faster than the slowest" sub="no subprocess, no HTTP" accent="violet" size="lg" /></Card>
+			<Card variant="glow" padding="lg"><Metric value="30,000×" label="smaller search payloads" sub="~3 KB vs up to 95 MB at 10k notes" accent="gradient" size="lg" /></Card>
+			<Card padding="lg"><Metric value="7.5" unit="ms" label="warm search at 10,000 notes" sub="stays flat as your vault grows" accent="green" size="lg" /></Card>
+			<Card padding="lg"><Metric value="208×" label="faster than the slowest" sub="and the gap widens with scale" accent="violet" size="lg" /></Card>
 		</div>
 
 		<Card padding="lg" class="bench__chart">
 			<div class="bench__chart-head">
-				<span class="bench__chart-title">Warm search latency — median <span class="bench__lower">lower is better</span></span>
+				<span class="bench__chart-title">Warm search latency at 10,000 notes <span class="bench__lower">lower is better</span></span>
 				<Badge variant="neutral" mono>milliseconds</Badge>
 			</div>
 			<div class="bench__rows">
