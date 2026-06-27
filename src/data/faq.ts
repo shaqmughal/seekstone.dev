@@ -16,7 +16,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Do I need the Local REST API plugin?",
-		a: "No. Seekstone bypasses it entirely — that's the source of the up-to-~30,000× payload reduction. No plugins are required at all.",
+		a: "No. Seekstone bypasses it entirely — that's the source of the up-to-~47,000× payload reduction. No plugins are required at all.",
 	},
 	{
 		q: "Which AI clients does it support?",

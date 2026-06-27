@@ -30,7 +30,7 @@
 
   <!-- Stat pill -->
   <rect x="84" y="452" width="734" height="70" rx="35" fill="#1a1726" stroke="#4c2fb8" stroke-width="1.5"/>
-  <text x="118" y="496" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="600" fill="#c8c3da"><tspan fill="#fbbf24" font-weight="700">575×</tspan> smaller payloads than the REST plugin</text>
+  <text x="118" y="496" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="600" fill="#c8c3da"><tspan fill="#fbbf24" font-weight="700">800×</tspan> smaller payloads than the REST plugin</text>
 
   <!-- Footer note -->
   <text x="86" y="586" font-family="'JetBrains Mono', ui-monospace, Menlo, monospace" font-size="25" fill="#8b84a3">npx seekstone init<tspan fill="#4f4868">&#160;&#160;·&#160;&#160;</tspan>MIT licensed<tspan fill="#4f4868">&#160;·&#160;</tspan>no telemetry</text>
