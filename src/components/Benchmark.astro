@@ -11,11 +11,11 @@ import Icon from "./Icon.astro";
 // Warm search latency at 10,000 notes (mean across queries). Source:
 // packages/harness/fixtures/baseline-reports/scaling/benchmark-scaling.md.
 const BENCH = [
-	{ name: "Seekstone", arch: "in-process index", ms: 7.5, you: true },
+	{ name: "Seekstone", arch: "in-process index", ms: 6.2, you: true },
 	{ name: "obsidian-mcp-pro", arch: "fs subprocess", ms: 430 },
 	{ name: "obsidian-mcp-server", arch: "REST API", ms: 732 },
 	{ name: "obsidian-mcp", arch: "fs subprocess", ms: 811 },
-	{ name: "mcpvault", arch: "fs subprocess", ms: 971 },
+	{ name: "mcpvault", arch: "fs subprocess", ms: 958 },
 	{ name: "mcp-obsidian", arch: "REST API", ms: 1550 },
 ];
 const BMAX = 1600;
@@ -31,9 +31,9 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 		</div>
 
 		<div class="bench__stats">
-			<Card variant="glow" padding="lg"><Metric value="30,000×" label="smaller search payloads" sub="~3 KB vs up to 95 MB at 10k notes" accent="gradient" size="lg" /></Card>
-			<Card padding="lg"><Metric value="7.5" unit="ms" label="warm search at 10,000 notes" sub="stays flat as your vault grows" accent="green" size="lg" /></Card>
-			<Card padding="lg"><Metric value="208×" label="faster than the slowest" sub="and the gap widens with scale" accent="violet" size="lg" /></Card>
+			<Card variant="glow" padding="lg"><Metric value="47,000×" label="smaller search payloads" sub="~2 KB vs up to 95 MB at 10k notes" accent="gradient" size="lg" /></Card>
+			<Card padding="lg"><Metric value="6.2" unit="ms" label="warm search at 10,000 notes" sub="stays flat as your vault grows" accent="green" size="lg" /></Card>
+			<Card padding="lg"><Metric value="251×" label="faster than the slowest" sub="and the gap widens with scale" accent="violet" size="lg" /></Card>
 		</div>
 
 		<Card padding="lg" class="bench__chart">
@@ -68,7 +68,7 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 						One broad search via the REST plugin returns <strong>65.7&nbsp;million tokens</strong> at
 						10,000 notes — about <strong>328× larger than Claude's entire&nbsp;~200K-token context
 						window</strong>. The result can't even be sent. Seekstone returns the same search in
-						<strong>~760&nbsp;tokens</strong>.
+						<strong>~570&nbsp;tokens</strong>.
 					</p>
 				</div>
 			</div>

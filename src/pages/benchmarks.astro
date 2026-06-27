@@ -16,15 +16,15 @@ import Icon from "../components/Icon.astro";
 
 const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
-	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and four other servers, across 1k / 5k / 10k-note vaults. Up to ~30,000× smaller search payloads, fully reproducible with an open-source harness.";
+	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and four other servers, across 1k / 5k / 10k-note vaults. Up to ~47,000× smaller search payloads, fully reproducible with an open-source harness.";
 
 // Seekstone vs the Obsidian Local REST API plugin on the committed 10,000-note
 // vault. Source: packages/harness/fixtures/baseline-reports/scaling/benchmark-scaling.md.
 const COMPARE: [metric: string, seekstone: string, rest: string][] = [
-	["Search payload (mean, 10k vault)", "~3 KB", "62.6 MB"],
-	["Worst-case payload (broad query)", "~3 KB", "245 MB"],
-	["Context tokens (broad query)", "~760", "65.7 million"],
-	["Warm search latency (10k vault)", "1–8 ms", "~575 ms"],
+	["Search payload (mean, 10k vault)", "~2 KB", "62.6 MB"],
+	["Worst-case payload (broad query)", "~2 KB", "245 MB"],
+	["Context tokens (broad query)", "~570", "65.7 million"],
+	["Warm search latency (10k vault)", "1–6 ms", "~575 ms"],
 	["Obsidian app required", "No", "Yes"],
 	["Local REST API plugin required", "No", "Yes"],
 	["Network calls", "Zero", "HTTP to localhost"],
@@ -38,7 +38,7 @@ const COMPARE: [metric: string, seekstone: string, rest: string][] = [
 const SIZES = ["1k", "5k", "10k"] as const;
 type ScaleRow = { name: string; vals: [string, string, string]; you?: boolean };
 const SCALE_PAYLOAD: ScaleRow[] = [
-	{ name: "Seekstone", vals: ["2.3 KB", "2.6 KB", "3.0 KB"], you: true },
+	{ name: "Seekstone", vals: ["1.6 KB", "1.8 KB", "2.0 KB"], you: true },
 	{ name: "mcpvault", vals: ["1.7 KB", "1.9 KB", "2.2 KB"] },
 	{ name: "obsidian-mcp-server", vals: ["55 KB", "47 KB", "47 KB"] },
 	{ name: "obsidian-mcp-pro", vals: ["25 KB", "84 KB", "114 KB"] },
@@ -46,11 +46,11 @@ const SCALE_PAYLOAD: ScaleRow[] = [
 	{ name: "mcp-obsidian", vals: ["9.8 MB", "45 MB", "95 MB"] },
 ];
 const SCALE_LATENCY: ScaleRow[] = [
-	{ name: "Seekstone", vals: ["1.1 ms", "3.2 ms", "7.5 ms"], you: true },
+	{ name: "Seekstone", vals: ["1.1 ms", "3.1 ms", "6.2 ms"], you: true },
 	{ name: "obsidian-mcp-pro", vals: ["46 ms", "213 ms", "430 ms"] },
 	{ name: "obsidian-mcp-server", vals: ["82 ms", "356 ms", "732 ms"] },
 	{ name: "obsidian-mcp", vals: ["82 ms", "405 ms", "811 ms"] },
-	{ name: "mcpvault", vals: ["99 ms", "466 ms", "971 ms"] },
+	{ name: "mcpvault", vals: ["96 ms", "467 ms", "958 ms"] },
 	{ name: "mcp-obsidian", vals: ["164 ms", "740 ms", "1,550 ms"] },
 ];
 
@@ -129,7 +129,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					<p>
 						The Obsidian Local REST API plugin returns full note content for every search
 						hit — tens of megabytes the model has to read. Seekstone returns short ranked
-						excerpts. Same query, up to ~30,000× less to send at 10,000 notes.
+						excerpts. Same query, up to ~47,000× less to send at 10,000 notes.
 					</p>
 				</div>
 				<Card padding="lg" class="bm__tablecard">
@@ -231,8 +231,8 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 				</Card>
 
 				<p class="bm__note">
-					At 10,000 notes that's a <strong>~30,000× payload difference</strong>, and Seekstone is
-					<strong>58–208× faster</strong> than the proxies — both gaps widening with scale.
+					At 10,000 notes that's a <strong>~47,000× payload difference</strong>, and Seekstone is
+					<strong>70–251× faster</strong> than the proxies — both gaps widening with scale.
 					Seekstone is the only server that stays flat on <em>both</em> axes.
 				</p>
 			</div>

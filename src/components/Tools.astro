@@ -10,7 +10,7 @@ import Icon from "./Icon.astro";
 type Tool = [name: string, icon: string, desc: string, danger?: boolean];
 
 const READ: Tool[] = [
-	["search", "search", "Full-text search returning ranked ~200-char excerpts — not full notes."],
+	["search", "search", "Full-text search returning ranked excerpts (~120 chars, tunable) — not full notes."],
 	["read_note", "fileText", "Read a note by path. Return a single section, block, or line range."],
 	["list_notes", "list", "List notes, optionally filtered by folder prefix or tag."],
 	["list_tags", "tag", "Every tag in the vault, sorted by usage count or alphabetically."],
