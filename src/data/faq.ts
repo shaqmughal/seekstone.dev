@@ -20,7 +20,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Which AI clients does it support?",
-		a: "Any client that speaks the Model Context Protocol over stdio — Claude Desktop, Claude Code, Cursor, Windsurf, Continue, and more.",
+		a: "Any client that speaks the Model Context Protocol over stdio — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Continue, and more.",
 	},
 	{
 		q: "Is it safe to use on my vault?",
