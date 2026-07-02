@@ -55,7 +55,7 @@ You may not have access to all of these; they are recorded so you can dig deeper
   dark canvas `#1E1E2E`, typeface **Inter**, story of "durability, privacy, user ownership."
 - **Live domains** that will point at this site: `seekstone.dev`, `getseekstone.com`,
   `bestobsidianmcp.com`.
-- **npm:** `obsidian-mcp-seekstone` (discoverable name) and `seekstone` (short name).
+- **npm:** `seekstone` (the former `obsidian-mcp-seekstone` alias is deprecated).
 
 > Explore the repos above to build higher-fidelity work — the README in `shaqmughal/seekstone`
 > is the single best source of voice and verified figures.
@@ -75,7 +75,7 @@ a builder's bluntness about performance.
 - **Casing.** **Sentence case everywhere** — headlines, buttons, nav. The only ALL-CAPS is the
   letter-spaced **eyebrow/overline** (`OPEN SOURCE · MIT · OBSIDIAN MCP`). Tool names, package
   names, env vars, and commands are always lowercase `mono` (`search`, `patch_frontmatter`,
-  `SEEKSTONE_VAULT`, `npx -y obsidian-mcp-seekstone`).
+  `SEEKSTONE_VAULT`, `npx -y seekstone`).
 - **Numbers are the argument.** Lead with the figure, set in monospace: **"575× smaller,"
   "1.4 ms," "160× faster," "16 tools."** Always terse (`575×`, never "575 times smaller").
   Never invent a number — every figure traces to the repo's published, reproducible benchmark.

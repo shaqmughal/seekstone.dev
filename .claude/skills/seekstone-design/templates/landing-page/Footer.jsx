@@ -41,7 +41,6 @@ function Footer() {
           </div>
           <div className="ftr__col">
             <span className="ftr__h">Packages</span>
-            <a href="https://www.npmjs.com/package/obsidian-mcp-seekstone" target="_blank" rel="noreferrer">npm · obsidian-mcp-seekstone</a>
             <a href="https://www.npmjs.com/package/seekstone" target="_blank" rel="noreferrer">npm · seekstone</a>
             <a href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer">GitHub</a>
           </div>

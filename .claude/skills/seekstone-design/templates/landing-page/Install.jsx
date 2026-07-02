@@ -6,7 +6,7 @@ const CONFIG_JSON = `{
   "mcpServers": {
     "seekstone": {
       "command": "npx",
-      "args": ["-y", "obsidian-mcp-seekstone"],
+      "args": ["-y", "seekstone"],
       "env": { "SEEKSTONE_VAULT": "/path/to/your/vault" }
     }
   }
@@ -40,14 +40,14 @@ function Install() {
     cli: (
       <div className="inst__panel">
         <p className="inst__lead">Auto-detects your vault, validates it, and patches Claude Desktop for you.</p>
-        <ICode prompt code="npx -y obsidian-mcp-seekstone init" />
+        <ICode prompt code="npx -y seekstone init" />
         <span className="inst__note">Add <code>--write</code> to patch in place, or <code>--vault</code> to choose.</span>
       </div>
     ),
     code: (
       <div className="inst__panel">
         <p className="inst__lead">One command configures Claude Code end-to-end.</p>
-        <ICode chrome title="Terminal" code={'claude mcp add seekstone \\\n  --env SEEKSTONE_VAULT=/path/to/vault \\\n  -- npx -y obsidian-mcp-seekstone'} />
+        <ICode chrome title="Terminal" code={'claude mcp add seekstone \\\n  --env SEEKSTONE_VAULT=/path/to/vault \\\n  -- npx -y seekstone'} />
       </div>
     ),
     manual: (
@@ -83,8 +83,7 @@ function Install() {
 
         <div className="inst__pkgs">
           <span className="inst__pkglabel">Installs as</span>
-          <IBadge variant="violet" mono icon={<IIcon name="package" size={12} />}>obsidian-mcp-seekstone</IBadge>
-          <IBadge variant="neutral" mono icon={<IIcon name="package" size={12} />}>seekstone</IBadge>
+          <IBadge variant="violet" mono icon={<IIcon name="package" size={12} />}>seekstone</IBadge>
           <IBadge variant="outline" mono>Node ≥ 22</IBadge>
         </div>
       </div>
