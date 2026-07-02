@@ -3,6 +3,8 @@
  * (SHA-112). Everything an Open Graph tag, Twitter card, or JSON-LD block
  * needs lives here so copy and URLs never drift between pages.
  */
+import { VERSION } from "./version";
+
 export const SITE = {
 	name: "Seekstone",
 	domain: "seekstone.dev",
@@ -16,7 +18,7 @@ export const SITE = {
 	author: { name: "Shaq Mughal", url: "https://github.com/shaqmughal" },
 	repo: "https://github.com/shaqmughal/seekstone",
 	npm: "https://www.npmjs.com/package/seekstone",
-	// Surfaced as JSON-LD softwareVersion. Bump on each release — mirrors the
-	// `latest` dist-tag of the `seekstone` npm package (0.6.2 as of 2026-06-14).
-	version: "0.6.2",
+	// Surfaced as JSON-LD softwareVersion and the footer badge. Resolved at
+	// build time from the npm `latest` dist-tag — see src/version.ts (SHA-165).
+	version: VERSION,
 } as const;
