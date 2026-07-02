@@ -66,8 +66,8 @@
               items={[{id:'cli',label:'Guided CLI'},{id:'code',label:'Claude Code'},{id:'npx',label:'One-liner'}]}
               renderPanel={(id) => {
                 const cmd = {
-                  cli: 'npx -y obsidian-mcp-seekstone init',
-                  code: 'claude mcp add seekstone -- npx -y obsidian-mcp-seekstone',
+                  cli: 'npx -y seekstone init',
+                  code: 'claude mcp add seekstone -- npx -y seekstone',
                   npx: 'npx -y seekstone',
                 }[id];
                 return <CodeBlock prompt code={cmd} />;

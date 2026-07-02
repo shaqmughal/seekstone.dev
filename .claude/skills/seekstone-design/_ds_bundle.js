@@ -914,10 +914,6 @@ function Footer() {
   }, /*#__PURE__*/React.createElement("span", {
     className: "ftr__h"
   }, "Packages"), /*#__PURE__*/React.createElement("a", {
-    href: "https://www.npmjs.com/package/obsidian-mcp-seekstone",
-    target: "_blank",
-    rel: "noreferrer"
-  }, "npm \xB7 obsidian-mcp-seekstone"), /*#__PURE__*/React.createElement("a", {
     href: "https://www.npmjs.com/package/seekstone",
     target: "_blank",
     rel: "noreferrer"
@@ -1059,7 +1055,7 @@ function Hero() {
     className: "hero__install rise rise-4"
   }, /*#__PURE__*/React.createElement(HCode, {
     prompt: true,
-    code: "npx -y obsidian-mcp-seekstone init"
+    code: "npx -y seekstone init"
   })), /*#__PURE__*/React.createElement("div", {
     className: "trust hero__trust rise rise-4"
   }, /*#__PURE__*/React.createElement("span", {
@@ -1115,7 +1111,7 @@ const CONFIG_JSON = `{
   "mcpServers": {
     "seekstone": {
       "command": "npx",
-      "args": ["-y", "obsidian-mcp-seekstone"],
+      "args": ["-y", "seekstone"],
       "env": { "SEEKSTONE_VAULT": "/path/to/your/vault" }
     }
   }
@@ -1158,7 +1154,7 @@ function Install() {
       className: "inst__lead"
     }, "Auto-detects your vault, validates it, and patches Claude Desktop for you."), /*#__PURE__*/React.createElement(ICode, {
       prompt: true,
-      code: "npx -y obsidian-mcp-seekstone init"
+      code: "npx -y seekstone init"
     }), /*#__PURE__*/React.createElement("span", {
       className: "inst__note"
     }, "Add ", /*#__PURE__*/React.createElement("code", null, "--write"), " to patch in place, or ", /*#__PURE__*/React.createElement("code", null, "--vault"), " to choose.")),
@@ -1169,7 +1165,7 @@ function Install() {
     }, "One command configures Claude Code end-to-end."), /*#__PURE__*/React.createElement(ICode, {
       chrome: true,
       title: "Terminal",
-      code: 'claude mcp add seekstone \\\n  --env SEEKSTONE_VAULT=/path/to/vault \\\n  -- npx -y obsidian-mcp-seekstone'
+      code: 'claude mcp add seekstone \\\n  --env SEEKSTONE_VAULT=/path/to/vault \\\n  -- npx -y seekstone'
     })),
     manual: /*#__PURE__*/React.createElement("div", {
       className: "inst__panel"
@@ -1229,13 +1225,6 @@ function Install() {
     className: "inst__pkglabel"
   }, "Installs as"), /*#__PURE__*/React.createElement(IBadge, {
     variant: "violet",
-    mono: true,
-    icon: /*#__PURE__*/React.createElement(IIcon, {
-      name: "package",
-      size: 12
-    })
-  }, "obsidian-mcp-seekstone"), /*#__PURE__*/React.createElement(IBadge, {
-    variant: "neutral",
     mono: true,
     icon: /*#__PURE__*/React.createElement(IIcon, {
       name: "package",

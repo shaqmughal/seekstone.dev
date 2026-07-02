@@ -35,7 +35,7 @@ function Hero() {
         </div>
 
         <div className="hero__install rise rise-4">
-          <HCode prompt code="npx -y obsidian-mcp-seekstone init" />
+          <HCode prompt code="npx -y seekstone init" />
         </div>
 
         <div className="trust hero__trust rise rise-4">
