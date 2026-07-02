@@ -1,8 +1,9 @@
 ---
 /**
  * Footer — closing CTA band + footer links. Ported from the seekstone-design skill.
- * Version badge set to the current published release (skill draft said v1.0).
+ * Version badge shows the published npm release via SITE.version (SHA-165).
  */
+import { SITE } from "../consts";
 import GemMark from "./GemMark.astro";
 import Button from "./Button.astro";
 import Badge from "./Badge.astro";
@@ -45,7 +46,7 @@ import SubscribeForm from "./SubscribeForm.astro";
 			<p class="ftr__tag">The fastest Obsidian MCP server for Claude.</p>
 			<div class="ftr__badges">
 				<Badge variant="spark">MIT</Badge>
-				<Badge variant="neutral" mono>v0.6.2</Badge>
+				<Badge variant="neutral" mono>v{SITE.version}</Badge>
 			</div>
 			<a class="ftr__bmc" href="https://buymeacoffee.com/shaqmughal" target="_blank" rel="noreferrer" data-analytics="BMC Click">
 				<Icon name="coffee" size={15} />
