@@ -23,6 +23,18 @@ const CONFIG_JSON = `{
 const CODE_CMD = `claude mcp add seekstone \\
   --env SEEKSTONE_VAULT=/path/to/vault \\
   -- npx -y seekstone`;
+
+// One-click MCP deep links — same encoded config as the README (SHA-204/233).
+// Both install a placeholder vault path; the panels tell users to set
+// SEEKSTONE_VAULT afterwards. The init CLI remains the auto-detect path.
+const CURSOR_DEEPLINK =
+	"https://cursor.com/install-mcp?name=seekstone&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsInNlZWtzdG9uZSJdLCJlbnYiOnsiU0VFS1NUT05FX1ZBVUxUIjoiL2Fic29sdXRlL3BhdGgvdG8veW91ci92YXVsdCJ9fQ%3D%3D";
+const VSCODE_DEEPLINK =
+	"https://vscode.dev/redirect?url=vscode:mcp/install?%7B%22name%22%3A%22seekstone%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22seekstone%22%5D%2C%22env%22%3A%7B%22SEEKSTONE_VAULT%22%3A%22%2Fabsolute%2Fpath%2Fto%2Fyour%2Fvault%22%7D%7D";
+
+const VSCODE_CLI = `code --add-mcp '{"name":"seekstone","command":"npx",
+  "args":["-y","seekstone"],
+  "env":{"SEEKSTONE_VAULT":"/path/to/vault"}}'`;
 ---
 
 <section class="section" id="install">
@@ -31,7 +43,7 @@ const CODE_CMD = `claude mcp add seekstone \\
 		<div class="head head--center">
 			<span class="eyebrow eyebrow--center"><Icon name="terminal" size={13} /> 30 seconds to first search</span>
 			<h2>Pick your way in.</h2>
-			<p>Two npm names, one server. Works with Claude Desktop, Claude Code, Cursor, Windsurf — any MCP-over-stdio client.</p>
+			<p>One npm package, one server. Works with Claude Desktop, Claude Code, Cursor, VS Code, Windsurf — any MCP-over-stdio client.</p>
 		</div>
 
 		<Card variant="raised" padding="lg" class="inst__card">
@@ -41,6 +53,8 @@ const CODE_CMD = `claude mcp add seekstone \\
 					{ id: "oneclick", label: "One-click" },
 					{ id: "cli", label: "Guided CLI" },
 					{ id: "code", label: "Claude Code" },
+					{ id: "cursor", label: "Cursor" },
+					{ id: "vscode", label: "VS Code" },
 					{ id: "manual", label: "Manual" },
 				]}
 			>
@@ -66,8 +80,36 @@ const CODE_CMD = `claude mcp add seekstone \\
 				</div>
 
 				<div class="ss-tabs__panel inst__panel" data-panel="code" hidden>
-					<p class="inst__lead">One command configures Claude Code end-to-end.</p>
+					<p class="inst__lead">One command auto-detects your vault and configures Claude Code end-to-end.</p>
+					<CodeBlock prompt code="npx -y seekstone init --client code --write" analytics="Copy Claude Code Install Command" />
+					<span class="inst__note">Prefer to set the vault path explicitly?</span>
 					<CodeBlock chrome title="Terminal" code={CODE_CMD} analytics="Copy Config" />
+				</div>
+
+				<div class="ss-tabs__panel inst__panel" data-panel="cursor" hidden>
+					<p class="inst__lead">Install from your browser, then set <code>SEEKSTONE_VAULT</code> to your vault path in Cursor's MCP settings.</p>
+					<div class="inst__row">
+						<Button variant="spark" href={CURSOR_DEEPLINK} target="_blank" rel="noreferrer" data-analytics="Cursor Deeplink Install">
+							<Icon slot="iconLeft" name="arrowRight" size={16} />
+							Install in Cursor
+						</Button>
+						<span class="inst__note">Opens Cursor via deep link</span>
+					</div>
+					<span class="inst__note">Or let the CLI auto-detect your vault and patch <code>~/.cursor/mcp.json</code> (with a backup):</span>
+					<CodeBlock prompt code="npx -y seekstone init --client cursor --write" analytics="Copy Cursor Install Command" />
+				</div>
+
+				<div class="ss-tabs__panel inst__panel" data-panel="vscode" hidden>
+					<p class="inst__lead">Install from your browser, then set <code>SEEKSTONE_VAULT</code> to your vault path when VS Code opens the server config.</p>
+					<div class="inst__row">
+						<Button variant="spark" href={VSCODE_DEEPLINK} target="_blank" rel="noreferrer" data-analytics="VS Code Deeplink Install">
+							<Icon slot="iconLeft" name="arrowRight" size={16} />
+							Install in VS Code
+						</Button>
+						<span class="inst__note">Opens VS Code via deep link</span>
+					</div>
+					<span class="inst__note">Or add it from the terminal:</span>
+					<CodeBlock chrome title="Terminal" code={VSCODE_CLI} analytics="Copy VS Code Install Command" />
 				</div>
 
 				<div class="ss-tabs__panel inst__panel" data-panel="manual" hidden>
@@ -88,6 +130,9 @@ const CODE_CMD = `claude mcp add seekstone \\
 <style is:global>
 	#install .head { margin-bottom: 2.25rem; }
 	.inst__card { margin-top: 0.5rem; }
+	/* Six tabs overflow a phone-width card; scroll the list instead of wrapping. */
+	.inst__card .ss-tabs__list { overflow-x: auto; scrollbar-width: none; }
+	.inst__card .ss-tabs__list::-webkit-scrollbar { display: none; }
 	.inst__panel { display: flex; flex-direction: column; gap: 1.1rem; padding-top: 0.25rem; }
 	.inst__lead { margin: 0; font-size: 0.9375rem; color: var(--text-secondary); }
 	.inst__lead code, .inst__note code, .inst__step code { font-family: var(--font-mono); font-size: 0.85em; color: var(--violet-200); background: var(--accent-soft); padding: 0.1em 0.4em; border-radius: 5px; }
