@@ -18,8 +18,12 @@ const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
 	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and four other servers, across 1k / 5k / 10k-note vaults. Up to ~47,000× smaller search payloads, fully reproducible with an open-source harness.";
 
-// Seekstone vs the Obsidian Local REST API plugin on the committed 10,000-note
-// vault. Source: packages/harness/fixtures/baseline-reports/scaling/benchmark-scaling.md.
+// Seekstone vs the Obsidian Local REST API plugin measured DIRECTLY over HTTP
+// (the `rest` harness backend) on the committed 10,000-note vault — the
+// lower-bound baseline. REST-proxy MCP servers that wrap the plugin return
+// more (mcp-obsidian: 370.9 MB / 97.8M tokens on the same broad query — the
+// headline figure in the <Benchmark/> fit card and the repo README).
+// Source: packages/harness/fixtures/baseline-reports/scaling/10000/benchmark-rest.md.
 const COMPARE: [metric: string, seekstone: string, rest: string][] = [
 	["Search payload (mean, 10k vault)", "~2 KB", "62.6 MB"],
 	["Worst-case payload (broad query)", "~2 KB", "245 MB"],
@@ -156,6 +160,12 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 						</table>
 					</div>
 				</Card>
+				<p class="bm__note">
+					This table measures the Local REST API plugin's HTTP API directly — the lower
+					bound for any server built on it. MCP servers that proxy the plugin add
+					JSON-RPC encoding on top: the same broad query via mcp-obsidian peaked at
+					370.9&nbsp;MB / 97.8&nbsp;million tokens in a single tool call.
+				</p>
 				<p class="bm__note">
 					REST and subprocess servers span ~430–1,550 ms warm search latency at 10,000
 					notes in the chart above; Seekstone's in-process index serves the same queries
