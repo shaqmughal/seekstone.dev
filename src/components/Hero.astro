@@ -29,10 +29,14 @@ import Icon from "./Icon.astro";
 		</h1>
 
 		<p class="hero__sub rise rise-3">
-			Seekstone is the fastest Obsidian MCP server for Claude — filesystem-direct,
-			no plugins, no app required. Searches return in <strong>single-digit&nbsp;ms</strong> — even on a
+			Seekstone is the fastest way to connect Claude to Obsidian — a filesystem-direct
+			Obsidian MCP server, no plugins, no app required. Searches return in <strong>single-digit&nbsp;ms</strong> — even on a
 			<strong> 10,000-note</strong> vault — with <strong>up to 47,000× smaller</strong> payloads, so Claude
 			reads your whole note library without burning its context.
+		</p>
+
+		<p class="hero__clients rise rise-3">
+			Works with Claude Desktop, Claude Code, Cursor, ChatGPT, and any MCP client.
 		</p>
 
 		<div class="hero__cta rise rise-3">
@@ -53,7 +57,7 @@ import Icon from "./Icon.astro";
 		<div class="trust hero__trust rise rise-4">
 			<span class="trust__item"><Icon name="zap" size={15} /> 70–251× faster</span>
 			<span class="trust__item"><Icon name="plug" size={15} /> No plugins required</span>
-			<span class="trust__item"><Icon name="shield" size={15} /> No network calls</span>
+			<span class="trust__item"><Icon name="shield" size={15} /> Works offline</span>
 			<span class="trust__item"><Icon name="hardDrive" size={15} /> macOS · Linux · Windows</span>
 		</div>
 	</div>
@@ -68,6 +72,7 @@ import Icon from "./Icon.astro";
 	@media (prefers-reduced-motion: no-preference) { .hero__grad { animation: ssShimmer 8s linear infinite; } }
 	.hero__sub { margin: 1.4rem 0 0; max-width: 60ch; font-size: var(--text-md); line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 	.hero__sub strong { color: var(--violet-200); font-weight: 600; }
+	.hero__clients { margin: 0.9rem 0 0; max-width: 60ch; font-size: 0.9375rem; color: var(--text-muted); text-wrap: balance; }
 	.hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
 	.hero__install { width: 100%; max-width: 440px; margin-top: 2rem; }
 	.hero__trust { justify-content: center; margin-top: 2.25rem; }
