@@ -1,0 +1,69 @@
+---
+/**
+ * Compare — the requirements head-to-head, mirroring the README's
+ * above-the-fold table (see src/data/comparison.ts for the sync contract).
+ * A real <table> on purpose: GEO surfaces extract tables verbatim.
+ */
+import Card from "./Card.astro";
+import Icon from "./Icon.astro";
+import { COMPARE_COLUMNS, COMPARE_ROWS } from "../data/comparison";
+---
+
+<section class="section section--tight compare" id="compare">
+	<div class="container relativ">
+		<div class="head head--center">
+			<span class="eyebrow eyebrow--center"><Icon name="shield" size={13} /> Same vault, different requirements</span>
+			<h2>No plugin. No app.<br /><span class="grad">No context tax.</span></h2>
+			<p>What each architecture demands of you — and what it costs your model. Same queries, same committed vaults, 20 runs each.</p>
+		</div>
+
+		<Card variant="raised" padding="lg" class="compare__card">
+			<div class="compare__scroll">
+				<table class="compare__table">
+					<thead>
+						<tr>
+							<th scope="col"><span class="visually-hidden">Requirement</span></th>
+							<th scope="col" class="compare__you">{COMPARE_COLUMNS.seekstone}</th>
+							<th scope="col">{COMPARE_COLUMNS.omcp} <span class="compare__note">{COMPARE_COLUMNS.omcpNote}</span></th>
+							<th scope="col">{COMPARE_COLUMNS.rest}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							COMPARE_ROWS.map((row) => (
+								<tr>
+									<th scope="row">{row.label}</th>
+									<td class="compare__you">{row.seekstone}</td>
+									<td>{row.omcp}</td>
+									<td>{row.rest}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+			<p class="compare__foot">
+				Full methodology and the six-server comparison on the
+				<a href="/benchmarks">benchmarks page</a> — reproducible from the open-source
+				<a href="https://github.com/shaqmughal/seekstone/tree/main/packages/harness" target="_blank" rel="noreferrer">harness</a>.
+			</p>
+		</Card>
+	</div>
+</section>
+
+<style is:global>
+	#compare .head { margin-bottom: 2.25rem; }
+	.compare__scroll { overflow-x: auto; }
+	.compare__table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; min-width: 560px; }
+	.compare__table th, .compare__table td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+	.compare__table thead th { font-size: 0.8125rem; font-weight: 700; color: var(--text-primary); letter-spacing: 0.01em; border-bottom: 1px solid var(--border-default); white-space: nowrap; }
+	.compare__table tbody tr:last-child th, .compare__table tbody tr:last-child td { border-bottom: none; }
+	.compare__table tbody th { font-weight: 600; color: var(--text-secondary); }
+	.compare__table td { color: var(--text-muted); }
+	.compare__table .compare__you { color: var(--green-400); font-weight: 600; }
+	.compare__table thead .compare__you { color: var(--violet-200); }
+	.compare__note { display: block; font-size: 0.6875rem; font-weight: 400; color: var(--text-faint); }
+	.compare__foot { margin: 1.1rem 0 0; font-size: 0.8125rem; color: var(--text-muted); }
+	.compare__foot a { color: var(--violet-300); }
+	.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>

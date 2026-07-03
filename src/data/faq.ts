@@ -11,20 +11,24 @@ export interface FaqItem {
 
 export const FAQS: FaqItem[] = [
 	{
-		q: "Does the Obsidian app need to be running?",
-		a: "No. Seekstone works when Obsidian is closed — it reads the vault folder directly from disk, so the app never has to be running.",
+		q: "Does it work when Obsidian is closed?",
+		a: "Yes. Seekstone works when Obsidian is closed — it reads the vault folder directly from disk, so the app never has to be running.",
 	},
 	{
-		q: "Do I need the Local REST API plugin?",
-		a: "No. Seekstone bypasses it entirely — that's the source of the up-to-~47,000× payload reduction. No plugins are required at all.",
+		q: "Can I use an Obsidian MCP server without the Local REST API plugin?",
+		a: "Yes — that's exactly what Seekstone is. It reads the filesystem directly and bypasses the plugin entirely; no plugins are required at all. Skipping the REST round-trip is the source of the up-to-~47,000× payload reduction.",
 	},
 	{
-		q: "How do I connect Claude to Obsidian?",
+		q: "What's the best Obsidian MCP server that doesn't need a plugin?",
+		a: "Seekstone — it's filesystem-direct, so there's no plugin and no running Obsidian app, and it's the only Obsidian MCP server with published, reproducible benchmarks: the smallest search payloads (~2 KB at 10,000 notes) and the fastest warm search (6.2 ms) of the six servers tested.",
+	},
+	{
+		q: "How do I connect Claude to my Obsidian vault?",
 		a: "Run npx -y seekstone init — it auto-detects your Obsidian vault and configures Claude Desktop for you (use --client code for Claude Code). That's the fastest way to connect Claude to Obsidian: no Local REST API plugin, no running Obsidian app.",
 	},
 	{
-		q: "Which AI clients does it support?",
-		a: "Any client that speaks the Model Context Protocol — Claude Desktop, Claude Code, Cursor, ChatGPT, VS Code, Windsurf, Continue, and more.",
+		q: "Does it work with ChatGPT, Cursor, and Claude Code?",
+		a: "Yes. Any client that speaks the Model Context Protocol works — Claude Desktop, Claude Code, Cursor, ChatGPT, VS Code, Windsurf, Continue, and more.",
 	},
 	{
 		q: "Does it work offline?",
