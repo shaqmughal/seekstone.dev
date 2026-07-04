@@ -23,6 +23,10 @@ export const FAQS: FaqItem[] = [
 		a: "Seekstone — it's filesystem-direct, so there's no plugin and no running Obsidian app, and it's the only Obsidian MCP server with published, reproducible benchmarks: the smallest search payloads (~2 KB at 10,000 notes) and the fastest warm search (6.2 ms) of the six servers tested.",
 	},
 	{
+		q: "Can Claude query my Obsidian notes by frontmatter properties?",
+		a: "Yes — Seekstone's query_notes tool filters notes by frontmatter key/value predicates (equals, contains, exists, greater/less-than on numbers and ISO dates), plus tag, folder, modified time, and file size. It returns compact rows rather than note content — a full 10,000-note vault scan costs about 350 bytes of context.",
+	},
+	{
 		q: "How do I connect Claude to my Obsidian vault?",
 		a: "Run npx -y seekstone init — it auto-detects your Obsidian vault and configures Claude Desktop for you (use --client code for Claude Code). That's the fastest way to connect Claude to Obsidian: no Local REST API plugin, no running Obsidian app.",
 	},
