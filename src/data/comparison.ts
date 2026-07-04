@@ -46,4 +46,10 @@ export const COMPARE_ROWS: CompareRow[] = [
 		omcp: "732 ms (~118× slower)",
 		rest: "up to 1,550 ms",
 	},
+	{
+		label: "Structured frontmatter queries",
+		seekstone: "Built-in (query_notes) — property/date/size predicates, ~350 B answers",
+		omcp: "JSONLogic via REST",
+		rest: "Varies",
+	},
 ];
