@@ -1,0 +1,46 @@
+---
+/**
+ * Demo — the SHA-50 recording embedded as silent looping video (SHA-107).
+ * Mirrors the README's demo GIF placement: right after the head-to-head
+ * table, visual proof before the deep numbers. MP4 over GIF on purpose —
+ * same edit, half the bytes, sharper text.
+ */
+import Card from "./Card.astro";
+import Icon from "./Icon.astro";
+---
+
+<section class="section section--tight demo" id="demo">
+	<div class="container relativ">
+		<div class="head head--center">
+			<span class="eyebrow eyebrow--center"><Icon name="zap" size={13} /> See it in action</span>
+			<h2>Ask in plain English.<br /><span class="grad">Answers from your vault.</span></h2>
+		</div>
+
+		<Card variant="raised" padding="lg" class="demo__card">
+			<video
+				class="demo__video"
+				src="/demo/seekstone-demo.mp4"
+				width="1000"
+				height="1060"
+				autoplay
+				loop
+				muted
+				playsinline
+				preload="metadata"
+				aria-label="Claude Desktop searching an Obsidian vault using the Seekstone MCP server, then answering a structured frontmatter query about finished books"
+			></video>
+			<p class="demo__caption">
+				Claude Desktop on a real vault — one ranked full-text search, one structured
+				<code>query_notes</code> frontmatter query. Tool-call waits are time-lapsed 6×;
+				prompts and answers play in real time.
+			</p>
+		</Card>
+	</div>
+</section>
+
+<style is:global>
+	.demo__card { max-width: 760px; margin: 0 auto; }
+	.demo__video { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--border-subtle); }
+	.demo__caption { margin: 1rem 0 0; font-size: 0.875rem; line-height: 1.6; color: var(--text-secondary); text-align: center; text-wrap: pretty; }
+	.demo__caption code { font-size: 0.8125rem; }
+</style>
