@@ -73,6 +73,8 @@ import SubscribeForm from "./SubscribeForm.astro";
 		<span>© 2026 Seekstone · MIT License · <a href="/privacy">Privacy</a></span>
 		<span class="ftr__made">Built for <a href="https://obsidian.md" target="_blank" rel="noreferrer">Obsidian</a> + <a href="https://modelcontextprotocol.io" target="_blank" rel="noreferrer">MCP</a></span>
 	</div>
+
+	<p class="ftr__sig">Made with <span role="img" aria-label="love">❤️</span> for the <a href="https://obsidian.md/community" target="_blank" rel="noreferrer">Obsidian community</a></p>
 </footer>
 
 <style is:global>
@@ -99,5 +101,8 @@ import SubscribeForm from "./SubscribeForm.astro";
 	.ftr__bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding-block: 1.5rem 2.5rem; border-top: 1px solid var(--border-subtle); font-size: 0.8125rem; color: var(--text-faint); }
 	.ftr__bottom a { color: var(--text-muted); transition: color var(--dur-fast); }
 	.ftr__bottom a:hover { color: var(--violet-300); }
+	.ftr__sig { margin: 0; padding-block: 0 var(--space-7); text-align: center; font-size: var(--text-sm); color: var(--text-faint); }
+	.ftr__sig a { color: var(--text-muted); transition: color var(--dur-fast); }
+	.ftr__sig a:hover { color: var(--violet-300); }
 	@media (max-width: 760px) { .ftr__inner { grid-template-columns: 1fr; gap: 2rem; } .ftr__cols { grid-template-columns: repeat(2, 1fr); } }
 </style>
