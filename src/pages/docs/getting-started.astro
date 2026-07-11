@@ -11,6 +11,7 @@ import Nav from "../../components/Nav.astro";
 import Footer from "../../components/Footer.astro";
 import Icon from "../../components/Icon.astro";
 import Button from "../../components/Button.astro";
+import Card from "../../components/Card.astro";
 import CodeBlock from "../../components/CodeBlock.astro";
 
 const title = "Getting started — install Seekstone in any MCP client | Seekstone";
@@ -95,7 +96,8 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="check" size={13} /> Before you start</span>
 					<h2>Two things every install needs.</h2>
 				</div>
-				<ul class="gs__defs">
+				<Card padding="lg" class="gs__card">
+					<ul class="gs__defs">
 					<li>
 						<span class="gs__k">Node.js ≥ 22</span>
 						<span>
@@ -113,7 +115,8 @@ const CLIENTS: { id: string; label: string }[] = [
 							detects it for you.
 						</span>
 					</li>
-				</ul>
+					</ul>
+				</Card>
 			</div>
 		</section>
 
@@ -123,6 +126,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="terminal" size={13} /> CLI</span>
 					<h2>Claude Code</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					Anthropic's agentic coding tool for the terminal. One command auto-detects your vault
 					and configures Claude Code end-to-end:
@@ -137,6 +141,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						connected. Then ask Claude: <em>"List a few notes from my vault."</em>
 					</span>
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -146,6 +151,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="sparkles" size={13} /> Desktop app</span>
 					<h2>Claude Desktop</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					Anthropic's desktop app for macOS and Windows. Three ways in, easiest first.
 				</p>
@@ -180,6 +186,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						in the toolbar. Then ask Claude: <em>"List a few notes from my vault."</em>
 					</span>
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -189,6 +196,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="filePen" size={13} /> Editor</span>
 					<h2>Cursor</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					The AI code editor. Install from your browser, then set <code>SEEKSTONE_VAULT</code> to
 					your vault's absolute path in Cursor's MCP settings (the link installs a placeholder):
@@ -216,6 +224,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						the agent: <em>"List a few notes from my vault."</em>
 					</span>
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -225,6 +234,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="braces" size={13} /> Editor</span>
 					<h2>VS Code (GitHub Copilot)</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					Requires VS Code 1.102+ — seekstone appears in Copilot Chat's <strong>Agent mode</strong> tools
 					picker. Install from your browser, then set <code>SEEKSTONE_VAULT</code> when VS Code opens
@@ -256,6 +266,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						tools are listed. Then ask: <em>"List a few notes from my vault."</em>
 					</span>
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -265,6 +276,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="zap" size={13} /> Editor</span>
 					<h2>Windsurf</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					The agentic IDE by Codeium. Add the standard block to
 					<code>~/.codeium/windsurf/mcp_config.json</code> (create the file if it doesn't exist),
@@ -278,6 +290,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						shows green. Then ask Cascade: <em>"List a few notes from my vault."</em>
 					</span>
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -287,6 +300,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="listTree" size={13} /> VS Code extension</span>
 					<h2>Cline</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					The open-source autonomous coding agent for VS Code. Open Cline, click the
 					<strong>MCP Servers</strong> icon → <strong>Configure MCP Servers</strong>, and add the
@@ -300,6 +314,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						ask Cline: <em>"List a few notes from my vault."</em>
 					</span>
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -309,6 +324,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="package" size={13} /> Everything else</span>
 					<h2>Any other MCP client</h2>
 				</div>
+				<Card variant="raised" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					Zed, JetBrains AI Assistant, ChatGPT desktop, LibreChat — Seekstone is a standard MCP
 					stdio server, so any MCP-compatible client can run it. Use the same three ingredients in
@@ -320,6 +336,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					Client not covered here? The <a href={`https://github.com/shaqmughal/seekstone#install`} target="_blank" rel="noreferrer">README's install section</a>
 					stays the canonical, most up-to-date reference.
 				</p>
+				</Card>
 			</div>
 		</section>
 
@@ -329,6 +346,7 @@ const CLIENTS: { id: string; label: string }[] = [
 					<span class="eyebrow"><Icon name="zap" size={13} /> After installing</span>
 					<h2>What happens next.</h2>
 				</div>
+				<Card variant="glow" padding="lg" class="gs__card">
 				<p class="gs__desc">
 					Restart your client. On startup Seekstone walks the vault, builds an in-memory full-text
 					index — a few seconds for thousands of notes — and keeps it live as you edit. All 17
@@ -345,6 +363,7 @@ const CLIENTS: { id: string; label: string }[] = [
 						<Icon slot="iconRight" name="arrowRight" size={15} />
 					</Button>
 				</div>
+				</Card>
 			</div>
 		</section>
 	</main>
@@ -359,6 +378,8 @@ const CLIENTS: { id: string; label: string }[] = [
 	.gs__defs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.1rem; }
 	.gs__defs li { display: grid; grid-template-columns: 160px 1fr; gap: 1rem; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); }
 	.gs__k { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 600; color: var(--violet-200); }
+	.gs__card { margin-top: 1.75rem; }
+	.gs__card > :last-child { margin-bottom: 0; }
 	.gs__desc { margin: 0 0 1rem; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); max-width: 62ch; }
 	.gs__desc + .ss-code { margin-bottom: 1.25rem; }
 	.gs__h3 { margin: 1.75rem 0 0.75rem; font-size: var(--text-md); font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
