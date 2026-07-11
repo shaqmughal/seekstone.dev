@@ -46,7 +46,7 @@ import SubscribeForm from "./SubscribeForm.astro";
 			<p class="ftr__tag">The fastest Obsidian MCP server for Claude.</p>
 			<div class="ftr__badges">
 				<Badge variant="spark">MIT</Badge>
-				<Badge variant="neutral" mono>v{SITE.version}</Badge>
+				<a href="/changelog" aria-label="Changelog"><Badge variant="neutral" mono>v{SITE.version}</Badge></a>
 			</div>
 			<a class="ftr__bmc" href="https://buymeacoffee.com/shaqmughal" target="_blank" rel="noreferrer" data-analytics="BMC Click">
 				<Icon name="coffee" size={15} />
@@ -60,6 +60,7 @@ import SubscribeForm from "./SubscribeForm.astro";
 				<a href="/#tools">Tools</a>
 				<a href="/#install">Install</a>
 				<a href="/docs/getting-started">Docs</a>
+				<a href="/changelog">Changelog</a>
 				<a href="/#faq">FAQ</a>
 			</div>
 			<div class="ftr__col">

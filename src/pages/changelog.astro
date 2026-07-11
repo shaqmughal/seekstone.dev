@@ -1,0 +1,129 @@
+---
+/**
+ * /changelog — release history fetched from GitHub Releases at build time
+ * (SHA-118). Signals active maintenance: version, date, and the changesets
+ * release notes per entry, each linking to the full GitHub release. If the
+ * build-time fetch failed (rate limit, outage), RELEASES is empty and the
+ * page renders a fallback card linking to GitHub — it never 404s.
+ */
+import { marked } from "marked";
+import Badge from "../components/Badge.astro";
+import Button from "../components/Button.astro";
+import Card from "../components/Card.astro";
+import Footer from "../components/Footer.astro";
+import Icon from "../components/Icon.astro";
+import Nav from "../components/Nav.astro";
+import { SITE } from "../consts";
+import Base from "../layouts/Base.astro";
+import { RELEASES } from "../releases";
+
+const title = "Changelog — Seekstone release history | Seekstone";
+const description =
+	"Every Seekstone release: new tools, payload optimizations, and fixes. Fetched straight from GitHub Releases, updated automatically on every publish.";
+
+const dateFmt = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "UTC" });
+
+// Release bodies are changesets output from our own repo — trusted content,
+// rendered to HTML at build time.
+const entries = RELEASES.map((r) => ({
+	...r,
+	date: dateFmt.format(new Date(r.publishedAt)),
+	bodyHtml: marked.parse(r.bodyMd) as string,
+}));
+---
+
+<Base title={title} description={description} ogType="article">
+	<Nav />
+	<main>
+		<section class="section section--tight">
+			<div class="container container--narrow">
+				<div class="head head--center">
+					<span class="eyebrow eyebrow--center"><Icon name="zap" size={13} /> Changelog</span>
+					<h1 class="chl__h1">Shipping, continuously.</h1>
+					<p>
+						Every Seekstone release, straight from GitHub — this page rebuilds automatically on
+						each publish. Current version: <code class="chl__current">v{SITE.version}</code>.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight">
+			<div class="container container--narrow">
+				{
+					entries.length === 0 ? (
+						<Card variant="raised" padding="lg" class="chl__card">
+							<p class="chl__fallback">
+								Release history couldn't be loaded during this build. The full history is always
+								available on GitHub.
+							</p>
+							<div>
+								<Button
+									variant="secondary"
+									href="https://github.com/shaqmughal/seekstone/releases"
+									target="_blank"
+									rel="noreferrer"
+								>
+									<Icon slot="iconLeft" name="github" size={16} />
+									View releases on GitHub
+								</Button>
+							</div>
+						</Card>
+					) : (
+						<div class="chl__list">
+							{entries.map((r, i) => (
+								<article>
+									<Card variant={i === 0 ? "glow" : "raised"} padding="lg" class="chl__card">
+										<header class="chl__head">
+											<h2 class="chl__version">v{r.version}</h2>
+											{i === 0 && <Badge variant="spark">Latest</Badge>}
+											<time class="chl__date" datetime={r.publishedAt}>
+												{r.date}
+											</time>
+										</header>
+										<div class="chl__body" set:html={r.bodyHtml} />
+										<a
+											class="chl__gh"
+											href={r.url}
+											target="_blank"
+											rel="noreferrer"
+											data-analytics="Changelog GitHub Release Click"
+										>
+											View on GitHub
+											<Icon name="arrowRight" size={14} />
+										</a>
+									</Card>
+								</article>
+							))}
+						</div>
+					)
+				}
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Base>
+
+<style is:global>
+	.chl__h1 { font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.04em; color: var(--text-primary); margin: 0.75rem 0 0; }
+	.chl__current { font-family: var(--font-mono); font-size: 0.85em; color: var(--violet-200); background: var(--accent-soft); padding: 0.1em 0.4em; border-radius: 5px; }
+	.chl__list { display: flex; flex-direction: column; gap: 1.5rem; }
+	.chl__head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+	.chl__version { margin: 0; font-family: var(--font-mono); font-size: var(--text-lg); font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+	.chl__date { margin-left: auto; font-size: 0.8125rem; color: var(--text-muted); }
+	.chl__fallback { margin: 0 0 1rem; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); }
+	/* Prose styles for the marked-rendered changesets body. */
+	.chl__body { font-size: 0.9375rem; line-height: 1.65; color: var(--text-secondary); }
+	.chl__body h3 { margin: 1rem 0 0.5rem; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+	.chl__body h3:first-child { margin-top: 0; }
+	.chl__body p { margin: 0.5rem 0; max-width: 68ch; }
+	.chl__body ul { margin: 0.5rem 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+	.chl__body li { max-width: 68ch; }
+	.chl__body code { font-family: var(--font-mono); font-size: 0.85em; color: var(--violet-200); background: var(--accent-soft); padding: 0.1em 0.4em; border-radius: 5px; }
+	.chl__body pre { margin: 0.75rem 0; padding: 0.85rem 1rem; overflow-x: auto; background: var(--bg-sunken); border: 1px solid var(--border-default); border-radius: var(--radius-md); }
+	.chl__body pre code { background: none; padding: 0; color: var(--neutral-100, #e1ddee); font-size: 0.8125rem; }
+	.chl__body a { color: var(--violet-300); text-decoration: underline; text-underline-offset: 2px; }
+	.chl__body a:hover { color: var(--violet-200); }
+	.chl__gh { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1rem; font-size: 0.875rem; font-weight: 600; color: var(--violet-300); transition: color var(--dur-fast); }
+	.chl__gh:hover { color: var(--violet-200); }
+</style>
