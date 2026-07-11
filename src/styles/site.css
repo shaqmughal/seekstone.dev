@@ -7,6 +7,12 @@
 .ss-site { background: transparent; color: var(--text-primary); overflow-x: hidden; position: relative; z-index: 1; }
 .ss-site * { box-sizing: border-box; }
 
+/* In-page anchors (nav → /#tools, docs client picker) glide instead of jump,
+   and land clear of the 64px sticky nav. Honors prefers-reduced-motion. */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+[id] { scroll-margin-top: 84px; }
+
 /* ============================================================
    Ambient aurora — a slow, low-opacity light field that lives
    FIXED behind all content (injected by anim.js). Pure black
