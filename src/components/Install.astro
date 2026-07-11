@@ -124,6 +124,9 @@ const VSCODE_CLI = `code --add-mcp '{"name":"seekstone","command":"npx",
 			<Badge variant="violet" mono icon="package">seekstone</Badge>
 			<Badge variant="outline" mono>Node ≥ 22</Badge>
 		</div>
+		<p class="inst__docs">
+			Using Windsurf, Cline, or another client? <a href="/docs/getting-started">Read the full install guide →</a>
+		</p>
 	</div>
 </section>
 
@@ -143,4 +146,7 @@ const VSCODE_CLI = `code --add-mcp '{"name":"seekstone","command":"npx",
 	.inst__note { font-size: 0.8125rem; color: var(--text-muted); }
 	.inst__pkgs { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.75rem; }
 	.inst__pkglabel { font-size: 0.8125rem; color: var(--text-faint); margin-right: 0.2rem; }
+	.inst__docs { margin: 1rem 0 0; text-align: center; font-size: 0.875rem; color: var(--text-muted); }
+	.inst__docs a { color: var(--violet-300); transition: color var(--dur-fast); }
+	.inst__docs a:hover { color: var(--violet-200); }
 </style>
