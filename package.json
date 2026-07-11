@@ -18,7 +18,8 @@
     "@fontsource/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@vercel/analytics": "^2.0.1",
-    "astro": "^6.4.6"
+    "astro": "^6.4.6",
+    "marked": "^18.0.6"
   },
   "overrides": {
     "comment": "Build-only transitive advisory pins, not in shipped output. esbuild: GHSA-gv7w-rqvm-qjhr / GHSA-g7r4-m6w7-qqqr (via Astro→Vite); mirrors the main repo's SHA-158 fix. path-to-regexp: GHSA-9wv6-86v2-598j ReDoS (via @astrojs/vercel→@vercel/routing-utils, which already aliases the patched 6.3.0 internally); avoids the audit-fix downgrade to the Astro-5 adapter.",
