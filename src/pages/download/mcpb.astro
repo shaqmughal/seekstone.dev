@@ -1,0 +1,62 @@
+---
+/**
+ * /download/mcpb — countable download route for the Claude Desktop bundle
+ * (SHA-240). A real (noindex) page rather than a server-side 302: Vercel Web
+ * Analytics counts client-side, so a page view — with referrer — is the only
+ * thing the free tier can measure. The meta refresh points at a file
+ * attachment, so the browser starts the download without leaving this page
+ * and the analytics beacon always gets time to land.
+ *
+ * The GitHub `releases/latest/download/...` URL tracks the newest release
+ * automatically — this route never needs updating when a version ships.
+ * Direct GitHub links elsewhere (README, releases page) stay untouched.
+ */
+import Button from "../../components/Button.astro";
+import Card from "../../components/Card.astro";
+import GemMark from "../../components/GemMark.astro";
+import Icon from "../../components/Icon.astro";
+import Base from "../../layouts/Base.astro";
+
+const MCPB_URL = "https://github.com/shaqmughal/seekstone/releases/latest/download/seekstone.mcpb";
+
+const title = "Downloading Seekstone… | Seekstone";
+const description = "Your seekstone.mcpb download for Claude Desktop is starting.";
+---
+
+<Base title={title} description={description}>
+	<Fragment slot="head">
+		<meta name="robots" content="noindex" />
+		<meta http-equiv="refresh" content={`1;url=${MCPB_URL}`} />
+	</Fragment>
+	<main class="dl">
+		<div class="container container--narrow">
+			<Card variant="raised" padding="lg" class="dl__card">
+				<GemMark size={44} spark />
+				<h1 class="dl__h1">Your download is starting…</h1>
+				<p class="dl__sub">
+					Grabbing the latest <code>seekstone.mcpb</code> from GitHub Releases. When it lands,
+					open it with Claude Desktop and pick your Obsidian vault — no terminal, no Node.js.
+				</p>
+				<div class="dl__row">
+					<Button variant="spark" href={MCPB_URL}>
+						<Icon slot="iconLeft" name="download" size={16} />
+						Download didn't start?
+					</Button>
+					<Button variant="secondary" href="/docs/getting-started#claude-desktop">
+						Install instructions
+						<Icon slot="iconRight" name="arrowRight" size={15} />
+					</Button>
+				</div>
+			</Card>
+		</div>
+	</main>
+</Base>
+
+<style is:global>
+	.dl { display: grid; place-items: center; min-height: 80vh; padding-block: 3rem; }
+	.dl__card { align-items: center; text-align: center; max-width: 480px; margin-inline: auto; }
+	.dl__h1 { margin: 1.1rem 0 0; font-size: var(--text-xl); font-weight: 800; letter-spacing: -0.03em; color: var(--text-primary); }
+	.dl__sub { margin: 0.75rem 0 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); }
+	.dl__sub code { font-family: var(--font-mono); font-size: 0.85em; color: var(--violet-200); background: var(--accent-soft); padding: 0.1em 0.4em; border-radius: 5px; }
+	.dl__row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; }
+</style>

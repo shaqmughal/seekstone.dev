@@ -15,10 +15,11 @@ export default defineConfig({
 	// a server function to keep the Buttondown API key off the client.
 	adapter: vercel(),
 	// Keep noindex/internal pages (e.g. /styleguide, the /subscribe/* transactional
-	// pages) out of the sitemap.
+	// pages, the /download/* counter pages) out of the sitemap.
 	integrations: [
 		sitemap({
-			filter: (page) => !page.includes('/styleguide') && !page.includes('/subscribe'),
+			filter: (page) =>
+				!page.includes('/styleguide') && !page.includes('/subscribe') && !page.includes('/download'),
 		}),
 	],
 });
