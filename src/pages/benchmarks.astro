@@ -16,7 +16,7 @@ import Icon from "../components/Icon.astro";
 
 const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
-	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and four other servers, across 1k / 5k / 10k-note vaults. Up to ~47,000× smaller search payloads, fully reproducible with an open-source harness.";
+	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and five other servers, across 1k / 5k / 10k-note vaults. Up to ~47,000× smaller search payloads, fully reproducible with an open-source harness.";
 
 // Seekstone vs the Obsidian Local REST API plugin measured DIRECTLY over HTTP
 // (the `rest` harness backend) on the committed 10,000-note vault — the
@@ -242,7 +242,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 
 				<p class="bm__note">
 					At 10,000 notes that's a <strong>~47,000× payload difference</strong>, and Seekstone is
-					<strong>70–251× faster</strong> than the proxies — both gaps widening with scale.
+					<strong>70–250× faster</strong> than the proxies — both gaps widening with scale.
 					Seekstone is the only server that stays flat on <em>both</em> axes.
 				</p>
 			</div>
