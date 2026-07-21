@@ -27,13 +27,13 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 		<div class="head head--center">
 			<span class="eyebrow eyebrow--center"><Icon name="gauge" size={13} /> Benchmarked, not claimed</span>
 			<h2>The only Obsidian MCP server<br />with <span class="grad">published numbers.</span></h2>
-			<p>Measured against 5 popular servers across 1,000 / 5,000 / 10,000-note vaults — public-domain content, fully reproducible, 20 runs each. The harness and the vaults are open source; clone the repo and verify every figure.</p>
+			<p>Measured against 5 other popular servers — 6 servers total — across 1,000 / 5,000 / 10,000-note vaults — public-domain content, fully reproducible, 20 runs each. The harness and the vaults are open source; clone the repo and verify every figure.</p>
 		</div>
 
 		<div class="bench__stats">
 			<Card variant="glow" padding="lg"><Metric value="47,000×" label="smaller search payloads" sub="~2 KB vs up to 95 MB at 10k notes" accent="gradient" size="lg" /></Card>
 			<Card padding="lg"><Metric value="6.2" unit="ms" label="warm search at 10,000 notes" sub="stays flat as your vault grows" accent="green" size="lg" /></Card>
-			<Card padding="lg"><Metric value="251×" label="faster than the slowest" sub="and the gap widens with scale" accent="violet" size="lg" /></Card>
+			<Card padding="lg"><Metric value="250×" label="faster than the slowest" sub="and the gap widens with scale" accent="violet" size="lg" /></Card>
 		</div>
 
 		<Card padding="lg" class="bench__chart">

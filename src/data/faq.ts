@@ -32,7 +32,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Does it work with ChatGPT, Cursor, and Claude Code?",
-		a: "Yes. Any client that speaks the Model Context Protocol works — Claude Desktop, Claude Code, Cursor, ChatGPT, VS Code, Windsurf, Continue, and more.",
+		a: "Any client that speaks MCP over stdio works — Claude Desktop, Claude Code, Cursor, VS Code, Windsurf, Continue, and more. ChatGPT is the exception for now: it connects to MCP servers remotely, and Seekstone is local-only today (a remote transport is on the roadmap).",
 	},
 	{
 		q: "Does it work offline?",
