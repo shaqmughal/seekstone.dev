@@ -64,6 +64,12 @@ import SubscribeForm from "./SubscribeForm.astro";
 				<a href="/#faq">FAQ</a>
 			</div>
 			<div class="ftr__col">
+				<span class="ftr__h">Compare</span>
+				<a href="/vs/obsidian-mcp-server">vs obsidian-mcp-server</a>
+				<a href="/vs/mcp-obsidian">vs mcp-obsidian</a>
+				<a href="/vs/mcpvault">vs mcpvault</a>
+			</div>
+			<div class="ftr__col">
 				<span class="ftr__h">Packages</span>
 				<a href="https://www.npmjs.com/package/seekstone" target="_blank" rel="noreferrer" data-analytics="npm Click">npm · seekstone</a>
 				<a href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer" data-analytics="GitHub Click">GitHub</a>
@@ -94,13 +100,13 @@ import SubscribeForm from "./SubscribeForm.astro";
 	.cta__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
 	.ftr { background: var(--bg-base); }
 	.ftr__sub { padding-block: 2.75rem; }
-	.ftr__inner { display: grid; grid-template-columns: 1.3fr 2fr; gap: 2.5rem; padding-block: 3.5rem 2.5rem; }
+	.ftr__inner { display: grid; grid-template-columns: 1.1fr 2.6fr; gap: 2.5rem; padding-block: 3.5rem 2.5rem; }
 	.ftr__lockup { display: inline-flex; align-items: center; gap: 0.55rem; font-weight: 600; font-size: 1.1rem; letter-spacing: -0.03em; color: var(--violet-100); }
 	.ftr__tag { margin: 0.9rem 0 1rem; font-size: 0.875rem; color: var(--text-muted); max-width: 32ch; }
 	.ftr__badges { display: flex; gap: 0.5rem; }
 	.ftr__bmc { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 1rem; padding: 0.45rem 0.8rem; border-radius: var(--radius-sm); font-size: 0.8125rem; font-weight: 600; color: var(--amber-300); border: 1px solid rgba(245, 158, 11, 0.28); background: rgba(245, 158, 11, 0.05); transition: background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast); }
 	.ftr__bmc:hover { color: var(--amber-400); border-color: rgba(245, 158, 11, 0.5); background: rgba(245, 158, 11, 0.1); }
-	.ftr__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+	.ftr__cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
 	.ftr__col { display: flex; flex-direction: column; gap: 0.7rem; }
 	.ftr__h { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.15rem; }
 	.ftr__col a { font-size: 0.875rem; color: var(--text-secondary); transition: color var(--dur-fast); }

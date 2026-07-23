@@ -1,0 +1,289 @@
+---
+/**
+ * /vs/[slug] — competitor-capture pages (SHA-221). One statically generated
+ * page per benchmarked competitor, targeting "<name> alternative" / "seekstone
+ * vs <name>" queries. All copy and figures come from src/data/competitors.ts
+ * (single source, traces to the harness scaling report); this template only
+ * lays them out. Honest by design: every page names where the competitor
+ * genuinely wins.
+ */
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import Button from "../../components/Button.astro";
+import Card from "../../components/Card.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+import Icon from "../../components/Icon.astro";
+import { COMPETITORS, SEEKSTONE_SCALE } from "../../data/competitors";
+
+export function getStaticPaths() {
+	return COMPETITORS.map((c) => ({ params: { slug: c.slug }, props: { c } }));
+}
+
+const { c } = Astro.props;
+const SIZES = ["1k", "5k", "10k"] as const;
+
+const REPRO = `git clone https://github.com/shaqmughal/seekstone
+cd seekstone && npm install
+npm run harness -- bench --backend fs \\
+  --vault packages/harness/fixtures/vault`;
+
+const INSTALL = `npx -y seekstone init`;
+
+// FAQPage JSON-LD — same GEO play as the landing page FAQ (SHA-113).
+const faqSchema = {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	mainEntity: c.faq.map((f) => ({
+		"@type": "Question",
+		name: f.q,
+		acceptedAnswer: { "@type": "Answer", text: f.a },
+	})),
+};
+---
+
+<Base title={c.metaTitle} description={c.metaDescription} ogType="article" jsonLd={faqSchema}>
+	<Nav />
+	<main>
+		<section class="section section--tight">
+			<div class="container container--narrow">
+				<div class="head head--center">
+					<span class="eyebrow eyebrow--center"><Icon name="gauge" size={13} /> Head-to-head, benchmarked</span>
+					<h1 class="vs__h1">Seekstone vs {c.name}<span class="vs__dot">.</span></h1>
+					<p>{c.verdict}</p>
+					<p class="vs__note vs__note--center">
+						Every number below comes from an open-source harness run on committed 1,000 /
+						5,000 / 10,000-note vaults — reproducible, not estimated. Full methodology on the
+						<a href="/benchmarks">benchmarks page</a>; {c.name} lives at
+						<a href={c.repo} target="_blank" rel="noreferrer">{c.author}/{c.name}</a>.
+					</p>
+					<div class="vs__btns">
+						<Button variant="primary" size="lg" href="/#install">
+							Get Seekstone
+							<Icon slot="iconRight" name="arrowRight" size={17} />
+						</Button>
+						<Button variant="secondary" size="lg" href="/benchmarks">Full benchmarks</Button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="at-a-glance">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="gauge" size={13} /> At a glance</span>
+					<h2>The comparison in one table.</h2>
+				</div>
+				<Card padding="lg" class="vs__tablecard">
+					<div class="vs__tablewrap">
+						<table class="vs__table">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="vs__col-you">Seekstone</th>
+									<th>{c.name}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{
+									c.rows.map((r) => (
+										<tr>
+											<td class="vs__metric">{r.label}</td>
+											<td class="vs__col-you">{r.seekstone}</td>
+											<td class="vs__rest">{r.them}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+				</Card>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="scaling">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="gauge" size={13} /> Scaling</span>
+					<h2>What happens as your vault grows.</h2>
+					<p>
+						A vault only gets bigger. Here's both servers on the same committed vaults at
+						1,000, 5,000, and 10,000 notes — payload first, then warm latency.
+					</p>
+				</div>
+
+				<h3 class="vs__scale-h">Search payload — per query <span class="vs__lower">lower is better</span></h3>
+				<Card padding="lg" class="vs__tablecard">
+					<div class="vs__tablewrap">
+						<table class="vs__table vs__table--scale">
+							<thead>
+								<tr><th>Server</th>{SIZES.map((s) => <th>{s} notes</th>)}</tr>
+							</thead>
+							<tbody>
+								<tr class="is-you">
+									<td class="vs__col-you">Seekstone</td>
+									{SEEKSTONE_SCALE.payload.map((v) => <td class="vs__col-you">{v}</td>)}
+								</tr>
+								<tr>
+									<td class="vs__metric">{c.name}</td>
+									{c.payload.map((v) => <td class="vs__rest">{v}</td>)}
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</Card>
+
+				<h3 class="vs__scale-h vs__scale-h--gap">Warm search latency <span class="vs__lower">lower is better</span></h3>
+				<Card padding="lg" class="vs__tablecard">
+					<div class="vs__tablewrap">
+						<table class="vs__table vs__table--scale">
+							<thead>
+								<tr><th>Server</th>{SIZES.map((s) => <th>{s} notes</th>)}</tr>
+							</thead>
+							<tbody>
+								<tr class="is-you">
+									<td class="vs__col-you">Seekstone</td>
+									{SEEKSTONE_SCALE.latency.map((v) => <td class="vs__col-you">{v}</td>)}
+								</tr>
+								<tr>
+									<td class="vs__metric">{c.name}</td>
+									{c.latency.map((v) => <td class="vs__rest">{v}</td>)}
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</Card>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="why">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="search" size={13} /> The architecture</span>
+					<h2>Why the numbers differ.</h2>
+				</div>
+				{c.why.map((p) => <p class="vs__prose">{p}</p>)}
+			</div>
+		</section>
+
+		<section class="section section--tight" id="edge">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="shield" size={13} /> Honest accounting</span>
+					<h2>Where {c.name} has the edge.</h2>
+					<p>No tool wins every axis, and a comparison that pretends otherwise isn't worth your trust.</p>
+				</div>
+				<div class="vs__edges">
+					{
+						c.edge.map((e) => (
+							<Card padding="lg" class="vs__edge">
+								<h3 class="vs__edge-title">{e.title}</h3>
+								<p class="vs__edge-body">{e.body}</p>
+							</Card>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="reproduce">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="terminal" size={13} /> Don't take our word for it</span>
+					<h2>Reproduce every figure.</h2>
+					<p>
+						The harness, the query set, and all three vaults are committed to the Seekstone
+						repo. Nothing on this page is a marketing estimate.
+					</p>
+				</div>
+				<div class="vs__repro">
+					<CodeBlock chrome title="Terminal" code={REPRO} />
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="switch">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="plug" size={13} /> Switching</span>
+					<h2>Trying Seekstone takes about 30 seconds.</h2>
+					<p>
+						Seekstone is a standard MCP stdio server — it works in any client that runs
+						{c.name}, side by side with your current setup, and doesn't touch your notes
+						until you ask it to. Guided setup below, or see the
+						<a href="/docs/getting-started">per-client install guides</a>.
+					</p>
+				</div>
+				<div class="vs__repro">
+					<CodeBlock chrome title="Terminal" code={INSTALL} />
+				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="faq">
+			<div class="container container--narrow">
+				<div class="head">
+					<span class="eyebrow"><Icon name="check" size={13} /> FAQ</span>
+					<h2>Common questions.</h2>
+				</div>
+				<div class="vs__faqs">
+					{
+						c.faq.map((f) => (
+							<Card padding="lg" class="vs__faq">
+								<h3 class="vs__faq-q">{f.q}</h3>
+								<p class="vs__faq-a">{f.a}</p>
+							</Card>
+						))
+					}
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</Base>
+
+<style is:global>
+	.vs__h1 { font-size: var(--text-4xl); font-weight: 800; line-height: 1.04; letter-spacing: -0.045em; color: var(--text-primary); text-wrap: balance; }
+	.vs__dot { color: var(--violet-300); }
+	.vs__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 2rem; }
+	.vs__note { margin-top: 1rem; font-size: 0.8125rem; line-height: 1.6; color: var(--text-faint); }
+	.vs__note--center { max-width: 58ch; margin-inline: auto; }
+	.vs__note a { color: var(--text-muted); text-decoration: underline; text-underline-offset: 2px; }
+	.vs__note a:hover { color: var(--violet-300); }
+
+	#at-a-glance .head, #scaling .head, #why .head, #edge .head, #reproduce .head, #switch .head, #faq .head { margin-bottom: 2rem; }
+
+	.vs__tablecard { padding: 0.5rem; }
+	.vs__tablewrap { overflow-x: auto; }
+	.vs__table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+	.vs__table th, .vs__table td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+	.vs__table tbody tr:last-child td { border-bottom: none; }
+	.vs__table thead th { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-faint); }
+	.vs__metric { color: var(--text-secondary); }
+	.vs__table .vs__col-you { font-family: var(--font-mono); font-weight: 600; color: var(--violet-200); background: rgba(124, 92, 255, 0.06); }
+	.vs__table thead .vs__col-you { color: var(--violet-300); }
+	.vs__rest { font-family: var(--font-mono); color: var(--text-muted); }
+
+	.vs__scale-h { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary); margin: 0 0 0.85rem; }
+	.vs__scale-h--gap { margin-top: 2rem; }
+	.vs__lower { font-weight: 400; color: var(--text-faint); font-size: 0.8125rem; margin-left: 0.4rem; }
+	.vs__table--scale th, .vs__table--scale td { white-space: nowrap; }
+	.vs__table--scale th:not(:first-child), .vs__table--scale td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+
+	.vs__prose { margin: 0 0 1.1rem; font-size: 0.9375rem; line-height: 1.7; color: var(--text-secondary); text-wrap: pretty; }
+	.vs__prose:last-child { margin-bottom: 0; }
+
+	.vs__edges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+	.vs__edge { gap: 0.6rem; }
+	.vs__edge-title { margin: 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
+	.vs__edge-body { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+
+	.vs__repro { max-width: 560px; }
+
+	.vs__faqs { display: flex; flex-direction: column; gap: 1rem; }
+	.vs__faq { gap: 0.5rem; }
+	.vs__faq-q { margin: 0; font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.015em; color: var(--text-primary); }
+	.vs__faq-a { margin: 0; font-size: 0.9375rem; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty; }
+
+	@media (max-width: 900px) { .vs__edges { grid-template-columns: 1fr; } }
+</style>
