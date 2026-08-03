@@ -16,7 +16,7 @@ import Icon from "../components/Icon.astro";
 
 const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
-	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and five other servers, across 1k / 5k / 10k-note vaults. Up to ~47,000× smaller search payloads, fully reproducible with an open-source harness.";
+	"Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and seven other servers, across 1k / 5k / 10k-note vaults. Up to ~47,000× smaller search payloads, fully reproducible with an open-source harness.";
 
 // Seekstone vs the Obsidian Local REST API plugin measured DIRECTLY over HTTP
 // (the `rest` harness backend) on the committed 10,000-note vault — the
@@ -44,6 +44,8 @@ type ScaleRow = { name: string; vals: [string, string, string]; you?: boolean };
 const SCALE_PAYLOAD: ScaleRow[] = [
 	{ name: "Seekstone", vals: ["1.6 KB", "1.8 KB", "2.0 KB"], you: true },
 	{ name: "mcpvault", vals: ["1.7 KB", "1.9 KB", "2.2 KB"] },
+	{ name: "obsidian-mcp-rs", vals: ["5.4 KB", "5.8 KB", "6.2 KB"] },
+	{ name: "obsidian-tc", vals: ["4.6 KB", "6.8 KB", "7.2 KB"] },
 	{ name: "obsidian-mcp-server", vals: ["55 KB", "47 KB", "47 KB"] },
 	{ name: "obsidian-mcp-pro", vals: ["25 KB", "84 KB", "114 KB"] },
 	{ name: "obsidian-mcp", vals: ["18 KB", "105 KB", "201 KB"] },
@@ -51,11 +53,13 @@ const SCALE_PAYLOAD: ScaleRow[] = [
 ];
 const SCALE_LATENCY: ScaleRow[] = [
 	{ name: "Seekstone", vals: ["1.1 ms", "3.1 ms", "6.2 ms"], you: true },
+	{ name: "obsidian-mcp-rs", vals: ["6.9 ms", "19 ms", "37 ms"] },
 	{ name: "obsidian-mcp-pro", vals: ["46 ms", "213 ms", "430 ms"] },
 	{ name: "obsidian-mcp-server", vals: ["82 ms", "356 ms", "732 ms"] },
 	{ name: "obsidian-mcp", vals: ["82 ms", "405 ms", "811 ms"] },
 	{ name: "mcpvault", vals: ["96 ms", "467 ms", "958 ms"] },
 	{ name: "mcp-obsidian", vals: ["164 ms", "740 ms", "1,550 ms"] },
+	{ name: "obsidian-tc", vals: ["264 ms", "1,302 ms", "2,714 ms"] },
 ];
 
 // Three architectures, three scaling behaviours. The frame that makes the
@@ -68,8 +72,13 @@ const TIERS: { tier: string; who: string; body: string }[] = [
 	},
 	{
 		tier: "Subprocess scanners",
-		who: "mcpvault · obsidian-mcp · obsidian-mcp-pro",
-		body: "Spawn a process and scan the disk per query. Latency climbs with the vault — from tens of ms to over a second at 10,000 notes.",
+		who: "mcpvault · obsidian-mcp · obsidian-mcp-pro · obsidian-mcp-rs",
+		body: "Spawn a process and scan the disk per query. Latency climbs with the vault — the fastest (obsidian-mcp-rs, Rust) is still ~6× slower than Seekstone at 10,000 notes; the rest run tens of ms to over a second.",
+	},
+	{
+		tier: "Database platforms",
+		who: "obsidian-tc",
+		body: "SQLite index behind a governance pipeline. Search runs ~2.7 s warm at 10,000 notes, and its read envelope returns each note's content twice.",
 	},
 	{
 		tier: "REST proxies",
