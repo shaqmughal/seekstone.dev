@@ -1,6 +1,6 @@
 ---
 /**
- * Tools — 17 tools, one warm index. Read/Write tab switcher over a card grid.
+ * Tools — 18 tools, one warm index. Read/Write tab switcher over a card grid.
  * Ported from the seekstone-design skill. Tool names/descriptions match the README.
  */
 import Card from "./Card.astro";
@@ -12,6 +12,7 @@ type Tool = [name: string, icon: string, desc: string, danger?: boolean];
 const READ: Tool[] = [
 	["search", "search", "Full-text search returning ranked excerpts (~120 chars, tunable) — not full notes."],
 	["query_notes", "filter", "Structured queries — frontmatter, date & size predicates. Whole-vault answers in ~350 B."],
+	["context_pack", "package", "Answer-ready context for a question in one call — ranked excerpts + linked neighbors, hard byte cap."],
 	["read_note", "fileText", "Read a note by path. Return a single section, block, or line range."],
 	["list_notes", "list", "List notes, optionally filtered by folder prefix or tag."],
 	["list_tags", "tag", "Every tag in the vault, sorted by usage count or alphabetically."],
@@ -26,22 +27,22 @@ const WRITE: Tool[] = [
 	["patch_frontmatter", "braces", "Edit YAML in place — key order, quote style and comments preserved."],
 	["patch_note", "filePen", "Insert text immediately after a heading, frontmatter untouched."],
 	["replace_in_note", "replace", "Replace the first occurrence of a phrase, with a dry-run preview."],
-	["move_note", "move", "Move or rename a note; destination directories created automatically."],
+	["move_note", "move", "Move or rename a note — wikilinks pointing at it are rewritten so nothing breaks."],
 	["append_periodic_note", "calendarPlus", "Append to today's periodic note, creating it from a template."],
-	["delete_note", "trash", "Permanently delete a note. Irreversible — only when you ask.", true],
+	["delete_note", "trash", "Move a note to .trash/ — recoverable, Obsidian-compatible. permanent: true to skip.", true],
 ];
 ---
 
 <section class="section" id="tools">
 	<div class="container">
 		<div class="head head--center">
-			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 17 tools · one warm index</span>
+			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 18 tools · one warm index</span>
 			<h2>Everything Claude needs<br />to <span class="grad">work your vault.</span></h2>
 			<p>Everything an Obsidian AI assistant needs — read and write, link-graph and periodic notes, the broadest toolset of any Obsidian MCP server. Four capabilities no other tested server even ships.</p>
 		</div>
 
 		<div class="tools__tabswrap">
-			<Tabs items={[{ id: "read", label: "Read · 9", icon: "search" }, { id: "write", label: "Write · 8", icon: "filePen" }]}>
+			<Tabs items={[{ id: "read", label: "Read · 10", icon: "search" }, { id: "write", label: "Write · 8", icon: "filePen" }]}>
 				{
 					[
 						{ id: "read", items: READ },
