@@ -241,7 +241,7 @@ export const COMPETITORS: Competitor[] = [
 		],
 		why: [
 			"Seekstone and mcpvault agree on the big architectural call — filesystem-direct, excerpts-not-documents — which is why both sit in the ~2 KB payload class while REST proxies climb into the megabytes. The difference is what happens per query: mcpvault spawns a subprocess and scans the vault each time, so its warm latency grows 10× from a 1k-note vault (96 ms) to a 10k-note vault (958 ms). Seekstone builds its full-text index once, keeps it live with a file watcher, and answers from memory: 6.2 ms at 10,000 notes, barely moving with scale.",
-			"The second difference is tool depth. Seekstone ships 17 tools, including several no other benchmarked server offers: query_notes for structured frontmatter queries that answer in a few hundred bytes, get_backlinks and get_links for graph navigation, outline_note for section-level reads, and list_tags — plus periodic-notes support that works with Obsidian closed.",
+			"The second difference is tool depth. Seekstone ships 18 tools, including several no other benchmarked server offers: query_notes for structured frontmatter queries that answer in a few hundred bytes, context_pack for one-call byte-budgeted context assembly, get_backlinks and get_links for graph navigation, outline_note for section-level reads, and list_tags — plus periodic-notes support that works with Obsidian closed.",
 		],
 		faq: [
 			{
