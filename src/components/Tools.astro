@@ -1,6 +1,6 @@
 ---
 /**
- * Tools — 18 tools, one warm index. Read/Write tab switcher over a card grid.
+ * Tools — 19 tools, one warm index. Read/Write tab switcher over a card grid.
  * Ported from the seekstone-design skill. Tool names/descriptions match the README.
  */
 import Card from "./Card.astro";
@@ -28,6 +28,7 @@ const WRITE: Tool[] = [
 	["patch_note", "filePen", "Insert text immediately after a heading, frontmatter untouched."],
 	["replace_in_note", "replace", "Replace the first occurrence of a phrase, with a dry-run preview."],
 	["move_note", "move", "Move or rename a note — wikilinks pointing at it are rewritten so nothing breaks."],
+	["rename_heading", "heading", "Rename a heading — every [[note#heading]] wikilink and embed across the vault is rewritten so references keep working."],
 	["append_periodic_note", "calendarPlus", "Append to today's periodic note, creating it from a template."],
 	["delete_note", "trash", "Move a note to .trash/ — recoverable, Obsidian-compatible. permanent: true to skip.", true],
 ];
@@ -36,13 +37,13 @@ const WRITE: Tool[] = [
 <section class="section" id="tools">
 	<div class="container">
 		<div class="head head--center">
-			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 18 tools · one warm index</span>
+			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 19 tools · one warm index</span>
 			<h2>Everything Claude needs<br />to <span class="grad">work your vault.</span></h2>
 			<p>Everything an Obsidian AI assistant needs — read and write, link-graph and periodic notes, the broadest toolset of any Obsidian MCP server. Four capabilities no other tested server even ships.</p>
 		</div>
 
 		<div class="tools__tabswrap">
-			<Tabs items={[{ id: "read", label: "Read · 10", icon: "search" }, { id: "write", label: "Write · 8", icon: "filePen" }]}>
+			<Tabs items={[{ id: "read", label: "Read · 10", icon: "search" }, { id: "write", label: "Write · 9", icon: "filePen" }]}>
 				{
 					[
 						{ id: "read", items: READ },
