@@ -106,8 +106,8 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 	],
 	[
 		"search",
-		"It's lexical, not semantic.",
-		"Search is fuzzy + prefix matching, not embedding-based semantic search. That's deliberate: no local model, no API key, no extra dependency — at the cost of pure meaning-based recall.",
+		"Semantic search is opt-in, not default.",
+		"Keyword search (fuzzy + prefix) is the default. Since 0.15.0, semantic and hybrid modes search by meaning through a small local embedding model — a one-time ~30 MB download via seekstone fetch-model, after which nothing ever leaves your machine. If you never opt in, nothing is downloaded and the default stays exactly this lean.",
 	],
 ];
 ---
