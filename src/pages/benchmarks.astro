@@ -13,6 +13,7 @@ import Benchmark from "../components/Benchmark.astro";
 import Card from "../components/Card.astro";
 import CodeBlock from "../components/CodeBlock.astro";
 import Icon from "../components/Icon.astro";
+import Metric from "../components/Metric.astro";
 
 const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
@@ -28,11 +29,11 @@ const COMPARE: [metric: string, seekstone: string, rest: string][] = [
 	["Search payload (mean, 10k vault)", "~2 KB", "62.6 MB"],
 	["Worst-case payload (broad query)", "~2 KB", "245 MB"],
 	["Context tokens (broad query)", "~570", "65.7 million"],
-	["Warm search latency (10k vault)", "1–6 ms", "~575 ms"],
+	["Warm keyword search (10k vault)", "6.2 ms mean (1.2–18.7 across queries)", "~575 ms mean"],
 	["Obsidian app required", "No", "Yes"],
 	["Local REST API plugin required", "No", "Yes"],
 	["Network calls", "Zero", "HTTP to localhost"],
-	["Search matching", "Fuzzy + prefix", "Exact / plugin-dependent"],
+	["Search matching", "Fuzzy + prefix · optional local semantic", "Exact / plugin-dependent"],
 	["Frontmatter write safety", "Byte-identical", "Varies"],
 ];
 
@@ -53,7 +54,7 @@ const SCALE_PAYLOAD: ScaleRow[] = [
 ];
 const SCALE_LATENCY: ScaleRow[] = [
 	{ name: "Seekstone", vals: ["1.1 ms", "3.1 ms", "6.2 ms"], you: true },
-	{ name: "obsidian-mcp-rs", vals: ["6.9 ms", "19 ms", "37 ms"] },
+	{ name: "obsidian-mcp-rs", vals: ["6.1 ms", "19 ms", "37 ms"] },
 	{ name: "obsidian-mcp-pro", vals: ["46 ms", "213 ms", "430 ms"] },
 	{ name: "obsidian-mcp-server", vals: ["82 ms", "356 ms", "732 ms"] },
 	{ name: "obsidian-mcp", vals: ["82 ms", "405 ms", "811 ms"] },
@@ -73,7 +74,7 @@ const TIERS: { tier: string; who: string; body: string }[] = [
 	{
 		tier: "Subprocess scanners",
 		who: "mcpvault · obsidian-mcp · obsidian-mcp-pro · obsidian-mcp-rs",
-		body: "Spawn a process and scan the disk per query. Latency climbs with the vault — the fastest (obsidian-mcp-rs, Rust) is still ~6× slower than Seekstone at 10,000 notes; the rest run tens of ms to over a second.",
+		body: "Spawn a process and scan the disk per query. Latency climbs with the vault — the fastest (obsidian-mcp-rs, Rust) is still ~6× slower than Seekstone at 10,000 notes; the rest run ~430–960 ms at 10k notes.",
 	},
 	{
 		tier: "Database platforms",
@@ -102,12 +103,12 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 	[
 		"zap",
 		"The first query is the slow one.",
-		"Cold start warms the index in a few seconds. Every query after that is the millisecond latency you see above — but the very first call pays for the index build.",
+		"Cold start pays for the index build before the millisecond latencies above: a few seconds on a typical vault, tens of seconds on our 10,000-note benchmark vault. Enabling semantic search adds a background embedding pass on top (~20 s at 10k — cached per-vault, so restarts reload it instantly).",
 	],
 	[
 		"search",
 		"Semantic search is opt-in, not default.",
-		"Keyword search (fuzzy + prefix) is the default. Since 0.15.0, semantic and hybrid modes search by meaning through a small local embedding model — a one-time ~30 MB download via seekstone fetch-model, after which nothing ever leaves your machine. If you never opt in, nothing is downloaded and the default stays exactly this lean.",
+		"Keyword search (fuzzy + prefix) is the default. Since 0.15.0, semantic and hybrid modes search by meaning through a small local embedding model: run npx -y seekstone fetch-model once (~30 MB, checksum-verified) and set SEEKSTONE_SEMANTIC=1. The costs, plainly: the one-time download, a background embedding pass at startup, and a per-vault vector cache under ~/.cache/seekstone. After that nothing ever leaves your machine — and if you never opt in, none of it exists.",
 	],
 ];
 ---
@@ -140,9 +141,10 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					<span class="eyebrow"><Icon name="gauge" size={13} /> Where it's actually won</span>
 					<h2>Latency is nice. Payload is the point.</h2>
 					<p>
-						The Obsidian Local REST API plugin returns full note content for every search
-						hit — tens of megabytes the model has to read. Seekstone returns short ranked
-						excerpts. Same query, up to ~47,000× less to send at 10,000 notes.
+						REST-proxy servers return full note content for every search hit — tens of
+						megabytes the model has to read. Seekstone returns short ranked excerpts.
+						Same query, up to ~47,000× less to send at 10,000 notes (the plugin's HTTP
+						API alone is ~31,000×; proxy envelopes push it higher).
 					</p>
 				</div>
 				<Card padding="lg" class="bm__tablecard">
@@ -172,13 +174,14 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 				<p class="bm__note">
 					This table measures the Local REST API plugin's HTTP API directly — the lower
 					bound for any server built on it. MCP servers that proxy the plugin add
-					JSON-RPC encoding on top: the same broad query via mcp-obsidian peaked at
-					370.9&nbsp;MB / 97.8&nbsp;million tokens in a single tool call.
+					JSON-RPC encoding on top: the same broad query via mcp-obsidian averaged
+					370.9&nbsp;MB / 97.8&nbsp;million tokens per call.
 				</p>
 				<p class="bm__note">
-					REST and subprocess servers span ~430–1,550 ms warm search latency at 10,000
-					notes in the chart above; Seekstone's in-process index serves the same queries
-					in single-digit milliseconds — and the gap only widens as the vault grows.
+					The rest of the field spans ~430–2,714 ms warm search latency at 10,000 notes
+					in the chart above (one exception: obsidian-mcp-rs at 37 ms); Seekstone's
+					in-process index serves the same queries in single-digit milliseconds — and
+					the gap only widens as the vault grows.
 				</p>
 			</div>
 		</section>
@@ -270,13 +273,38 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 				</div>
 				<ul class="bm__method">
 					<li><span class="bm__k">Vaults</span><span>Committed 1,000 / 5,000 / 10,000-note vaults generated from the public-domain 1911 Encyclopædia Britannica — the same size distribution as a real PKM vault, and byte-for-byte reproducible.</span></li>
-					<li><span class="bm__k">Runs</span><span>20 per query; warm latency reported as the median (p50).</span></li>
+					<li><span class="bm__k">Runs</span><span>20 per query; warm latency reported as the mean of per-query medians (run 1 excluded as cold).</span></li>
 					<li><span class="bm__k">Payload</span><span>Bytes measured on the actual MCP tool response, not an idealized excerpt.</span></li>
-					<li><span class="bm__k">Field</span><span>Compared against obsidian-mcp-server, mcp-obsidian, obsidian-mcp-pro, mcpvault, and obsidian-mcp.</span></li>
+					<li><span class="bm__k">Field</span><span>Compared against obsidian-mcp-server, mcp-obsidian, obsidian-mcp-pro, obsidian-mcp-rs, obsidian-tc, mcpvault, and obsidian-mcp.</span></li>
 				</ul>
 				<div class="bm__repro">
 					<CodeBlock chrome title="Terminal" code={REPRO} />
 				</div>
+			</div>
+		</section>
+
+		<section class="section section--tight" id="semantic">
+			<div class="container container--narrow">
+				<div class="head head--center">
+					<span class="eyebrow eyebrow--center"><Icon name="search" size={13} /> New in 0.15.0</span>
+					<h2>Semantic search, measured the same way.</h2>
+					<p>
+						Opt-in meaning-based search through a small local embedding model — fully in-process,
+						offline at runtime, no API key, no native modules. We evaluated it on the same committed
+						10,000-note vault with a 50-query golden set before shipping it.
+					</p>
+				</div>
+				<div class="bench__stats">
+					<Card variant="glow" padding="lg"><Metric value="70%" label="hit@5 on description-style queries" sub="vs 30% for keyword search alone" accent="gradient" size="lg" /></Card>
+					<Card padding="lg"><Metric value="~14" unit="ms" label="warm semantic search at 10k notes" sub="brute-force scan, no ANN index needed" accent="green" size="lg" /></Card>
+					<Card padding="lg"><Metric value="100%" label="exact-title lookups kept" sub="hybrid mode routes them to keyword search" accent="violet" size="lg" /></Card>
+				</div>
+				<p class="bm__note">
+					Numbers from the committed <a href="https://github.com/shaqmughal/seekstone/blob/main/packages/harness/fixtures/baseline-reports/retrieval-eval.md" target="_blank" rel="noreferrer">retrieval-quality baseline</a> —
+					a single synthetic vault and our own golden query set, so treat them as a first
+					measurement, not a cross-server comparison (we haven't benchmarked competitors'
+					semantic quality yet). Reproducible: <code>npm run harness -- retrieval --shipped</code>.
+				</p>
 			</div>
 		</section>
 
