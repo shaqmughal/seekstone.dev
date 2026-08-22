@@ -9,7 +9,7 @@
  * something unexpected, so a registry blip can never fail the build. It may
  * lag behind `latest`; it is NOT the value to bump on release.
  */
-const FALLBACK_VERSION = "0.7.2";
+const FALLBACK_VERSION = "0.15.0";
 
 const REGISTRY_URL = "https://registry.npmjs.org/seekstone/latest";
 

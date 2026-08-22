@@ -20,7 +20,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "What's the best Obsidian MCP server that doesn't need a plugin?",
-		a: "Seekstone — it's filesystem-direct, so there's no plugin and no running Obsidian app, and it's the only Obsidian MCP server with published, reproducible benchmarks: the smallest search payloads (~2 KB at 10,000 notes) and the fastest warm search (6.2 ms) of the six servers tested.",
+		a: "Seekstone — it's filesystem-direct, so there's no plugin and no running Obsidian app, and it's the only Obsidian MCP server with published, reproducible benchmarks: the smallest search payloads (~2 KB at 10,000 notes) and the fastest warm keyword search (6.2 ms mean) of the eight servers tested.",
 	},
 	{
 		q: "Can Claude query my Obsidian notes by frontmatter properties?",
@@ -36,11 +36,11 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Does it work offline?",
-		a: "Yes. Seekstone works offline — your vault is read straight from local disk, with zero network calls and no cloud services involved.",
+		a: "Yes. Seekstone runs fully offline — your vault is read straight from local disk, with no network calls at runtime and no cloud services involved. (Enabling the optional semantic search downloads a small ~30 MB model once, checksum-verified; after that, semantic search is offline too.)",
 	},
 	{
 		q: "Is it safe to use on my vault?",
-		a: "Seekstone only modifies files when you explicitly call a write tool. It makes no network requests, and the vault path is sandboxed — no tool can read or write outside it.",
+		a: "Seekstone only modifies files when you explicitly call a write tool, and its Write-Safety Contract — eight named guarantees, each backed by a test that runs in CI — covers atomic writes, recoverable deletes, and byte-identical frontmatter. The running server makes no network requests, the vault path is sandboxed, and you can go further: SEEKSTONE_READ_ONLY=1 removes the write tools entirely, and SEEKSTONE_WRITE_PATHS restricts writes to folders you allow.",
 	},
 	{
 		q: "Does it work on Windows?",
@@ -48,6 +48,6 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "How big a vault can it handle?",
-		a: "It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes, and search stays in single-digit milliseconds even at 10k. The in-memory index is a few MB and starts in a few seconds.",
+		a: "It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes; warm keyword search averages 6.2 ms at 10k (semantic ~14 ms). At that scale the cold index build takes tens of seconds and the process stays under ~100 MB of memory; typical personal vaults index in a few seconds.",
 	},
 ];

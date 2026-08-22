@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Seekstone — the fastest Obsidian MCP server for Claude">
-  <title>Seekstone — the fastest Obsidian MCP server for Claude</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Seekstone — the fastest Obsidian MCP server in open benchmarks">
+  <title>Seekstone — the fastest Obsidian MCP server in open benchmarks</title>
   <defs>
     <radialGradient id="glow" cx="18%" cy="22%" r="70%">
       <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.26"/>
@@ -26,7 +26,7 @@
 
   <!-- Headline -->
   <text x="84" y="318" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2" fill="#f1eefb">The fastest Obsidian MCP</text>
-  <text x="84" y="398" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2" fill="#f1eefb">server for Claude.</text>
+  <text x="84" y="398" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="68" font-weight="700" letter-spacing="-2" fill="#f1eefb">server in open benchmarks.</text>
 
   <!-- Stat pill -->
   <rect x="84" y="452" width="882" height="70" rx="35" fill="#1a1726" stroke="#4c2fb8" stroke-width="1.5"/>

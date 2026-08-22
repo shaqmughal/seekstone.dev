@@ -10,9 +10,9 @@ export const SITE = {
 	domain: "seekstone.dev",
 	url: "https://seekstone.dev",
 	// Default <title> / description. Per-page values override via Base props.
-	title: "Seekstone — the fastest Obsidian MCP server for Claude",
+	title: "Seekstone — the fastest Obsidian MCP server in open benchmarks",
 	description:
-		"Seekstone is a filesystem-direct Obsidian MCP server for Claude. Search and edit your vault in milliseconds, with up to ~47,000× smaller payloads (2 KB vs tens of MB) than REST-proxy servers. No plugins, no Obsidian app required.",
+		"Seekstone is a filesystem-direct Obsidian MCP server for Claude. Keyword and local semantic search in milliseconds, with up to ~47,000× smaller payloads (2 KB vs tens of MB) than the REST-proxy servers we benchmarked. No plugins, no Obsidian app required.",
 	// 1200×630 social card served from /public. See public/og-image.svg source.
 	ogImage: "/og-image.png",
 	author: { name: "Shaq Mughal", url: "https://github.com/shaqmughal" },

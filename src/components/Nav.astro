@@ -8,10 +8,13 @@ import GemMark from "./GemMark.astro";
 import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 
+import { STARS } from "../github";
+
 interface Props {
 	stars?: string;
 }
-const { stars = "1.2k" } = Astro.props;
+// Real build-time star count; undefined (API failure) hides the number.
+const { stars = STARS } = Astro.props;
 
 // Root-relative so they resolve from any page (e.g. /benchmarks), not just home.
 // "Benchmarks" links to the dedicated page; the rest jump to home-page sections.
@@ -36,7 +39,7 @@ const links: [string, string][] = [
 		<div class="ss-nav__actions">
 			<a class="ss-nav__ghost hide-md" href="https://github.com/shaqmughal/seekstone" target="_blank" rel="noreferrer" data-analytics="GitHub Click">
 				<Icon name="github" size={16} />
-				<span>{stars}</span>
+				{stars && <span>{stars}</span>}
 			</a>
 			<Button variant="primary" size="sm" href="/#install">
 				Get Seekstone
