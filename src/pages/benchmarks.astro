@@ -314,17 +314,19 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					</p>
 				</div>
 				<Card padding="lg" class="bm__tablecard">
-					<table class="bm__table">
-						<thead>
-							<tr><th>Semantic search</th><th>hit@5</th><th>Latency (p50)</th><th>Payload/query</th><th>Cold index</th><th>Needs</th></tr>
-						</thead>
-						<tbody>
-							<tr><td><strong>Seekstone hybrid</strong></td><td>72%</td><td><strong>14 ms</strong></td><td><strong>~2 KB</strong></td><td><strong>22 s</strong></td><td><strong>Nothing — in-process, offline</strong></td></tr>
-							<tr><td>obsidian-tc semantic</td><td><strong>90%</strong></td><td>165 ms</td><td>15.4 KB</td><td>26.5 min</td><td>Ollama server + native modules + Node ≥ 24</td></tr>
-							<tr><td>obsidian-tc GraphRAG</td><td><strong>92%</strong></td><td>2.7 s (p99 14.7 s)</td><td>14.5 KB</td><td>(same)</td><td>(same)</td></tr>
-							<tr><td>obsidian-mcp-pro</td><td colspan="4">Failed — could not index the 10k-note vault (crashed after ~15 min of embedding)</td><td>Ollama or OpenAI</td></tr>
-						</tbody>
-					</table>
+					<div class="bm__tablewrap">
+						<table class="bm__table">
+							<thead>
+								<tr><th>Semantic search</th><th>hit@5</th><th>Latency (p50)</th><th>Payload/query</th><th>Cold index</th><th>Needs</th></tr>
+							</thead>
+							<tbody>
+								<tr><td><strong>Seekstone hybrid</strong></td><td>72%</td><td><strong>14 ms</strong></td><td><strong>~2 KB</strong></td><td><strong>22 s</strong></td><td><strong>Nothing — in-process, offline</strong></td></tr>
+								<tr><td>obsidian-tc semantic</td><td><strong>90%</strong></td><td>165 ms</td><td>15.4 KB</td><td>26.5 min</td><td>Ollama server + native modules + Node ≥ 24</td></tr>
+								<tr><td>obsidian-tc GraphRAG</td><td><strong>92%</strong></td><td>2.7 s (p99 14.7 s)</td><td>14.5 KB</td><td>(same)</td><td>(same)</td></tr>
+								<tr><td>obsidian-mcp-pro</td><td colspan="4">Failed — could not index the 10k-note vault (crashed after ~15 min of embedding)</td><td>Ollama or OpenAI</td></tr>
+							</tbody>
+						</table>
+					</div>
 				</Card>
 				<p class="bm__note">
 					The honest read: obsidian-tc's semantic search is <strong>more accurate</strong> —
