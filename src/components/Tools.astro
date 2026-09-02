@@ -1,6 +1,6 @@
 ---
 /**
- * Tools — 19 tools, one warm index. Read/Write tab switcher over a card grid.
+ * Tools — 21 tools, one warm index. Read/Write tab switcher over a card grid.
  * Ported from the seekstone-design skill. Tool names/descriptions match the README.
  */
 import Card from "./Card.astro";
@@ -19,7 +19,8 @@ const READ: Tool[] = [
 	["outline_note", "listTree", "Heading & block structure — cheap navigation before a targeted read."],
 	["get_backlinks", "link", "Find all notes that link to a given note."],
 	["get_links", "link", "List all outgoing wikilinks and markdown links from a note."],
-	["get_periodic_note", "calendar", "Read any date's daily / weekly / monthly note — Obsidian closed."],
+	["get_periodic_note", "calendar", "Read any date's daily / weekly / monthly / quarterly / yearly note — Obsidian closed."],
+	["list_writes", "list", "Recent writes from the journal — seq, tool, touched paths, and whether each is still undoable. Metadata only, never note content."],
 ];
 const WRITE: Tool[] = [
 	["create_note", "filePlus", "Create a note with optional frontmatter; parent dirs made for you."],
@@ -30,20 +31,21 @@ const WRITE: Tool[] = [
 	["move_note", "move", "Move or rename a note — wikilinks pointing at it are rewritten so nothing breaks."],
 	["rename_heading", "heading", "Rename a heading — every [[note#heading]] wikilink and embed across the vault is rewritten so references keep working."],
 	["append_periodic_note", "calendarPlus", "Append to today's periodic note, creating it from a template."],
-	["delete_note", "trash", "Move a note to .trash/ — recoverable, Obsidian-compatible. permanent: true for an unrecoverable delete.", true],
+	["delete_note", "trash", "Move a note to .trash/ — recoverable, Obsidian-compatible. permanent: true skips the trash; the write journal still lets undo_write restore it.", true],
+	["undo_write", "shield", "Revert any journaled write — every touched file restored byte-identical: multi-file moves and renames whole, deletes even if permanent."],
 ];
 ---
 
 <section class="section" id="tools">
 	<div class="container">
 		<div class="head head--center">
-			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 19 tools · one warm index</span>
+			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 21 tools · one warm index</span>
 			<h2>Everything Claude needs<br />to <span class="grad">work your vault.</span></h2>
 			<p>Everything an Obsidian AI assistant needs — read and write, link-graph and periodic notes, the broadest toolset in our benchmark set — including fully-local semantic search, periodic notes that work with Obsidian closed, and byte-identical frontmatter edits.</p>
 		</div>
 
 		<div class="tools__tabswrap">
-			<Tabs items={[{ id: "read", label: "Read · 10", icon: "search" }, { id: "write", label: "Write · 9", icon: "filePen" }]}>
+			<Tabs items={[{ id: "read", label: "Read · 11", icon: "search" }, { id: "write", label: "Write · 10", icon: "filePen" }]}>
 				{
 					[
 						{ id: "read", items: READ },

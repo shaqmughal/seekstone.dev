@@ -185,7 +185,7 @@ export const COMPETITORS: Competitor[] = [
 			},
 			{
 				q: "Do both servers edit notes safely?",
-				a: "Seekstone's write path is verified byte-for-byte by its open-source harness — the Write-Safety Contract's eight guarantees each link to the code and the test that proves them, and the same suite runs against other filesystem-direct servers (the comparison matrix is committed in the repo). obsidian-mcp-server is REST-based and outside that suite, so we make no claim about its write safety — the harness is public if you want to run that comparison.",
+				a: "Seekstone's write path is verified byte-for-byte by its open-source harness — the Write-Safety Contract's ten guarantees each link to the code and the test that proves them, and the same suite runs against other filesystem-direct servers (the comparison matrix is committed in the repo). obsidian-mcp-server is REST-based and outside that suite, so we make no claim about its write safety — the harness is public if you want to run that comparison.",
 			},
 		],
 	},
@@ -241,7 +241,7 @@ export const COMPETITORS: Competitor[] = [
 		],
 		why: [
 			"Seekstone and mcpvault agree on the big architectural call — filesystem-direct, excerpts-not-documents — which is why both sit in the ~2 KB payload class while REST proxies climb into the megabytes. The difference is what happens per query: mcpvault spawns a subprocess and scans the vault each time, so its warm latency grows 10× from a 1k-note vault (96 ms) to a 10k-note vault (958 ms). Seekstone builds its full-text index once, keeps it live with a file watcher, and answers from memory: 6.2 ms at 10,000 notes, barely moving with scale.",
-			"The second difference is tool depth. Seekstone ships 19 tools, including several no other benchmarked server offers: query_notes for structured frontmatter queries that answer in a few hundred bytes, context_pack for one-call byte-budgeted context assembly, get_backlinks and get_links for graph navigation, outline_note for section-level reads, and list_tags — plus periodic-notes support that works with Obsidian closed, and (since 0.15.0) fully-local semantic search through an in-process embedding model — the only benchmarked server that offers it offline (our head-to-head semantic comparison, losses included, is committed in the repo).",
+			"The second difference is tool depth. Seekstone ships 21 tools, including several no other benchmarked server offers: query_notes for structured frontmatter queries that answer in a few hundred bytes, context_pack for one-call byte-budgeted context assembly, get_backlinks and get_links for graph navigation, outline_note for section-level reads, and list_tags — plus periodic-notes support that works with Obsidian closed, and (since 0.15.0) fully-local semantic search through an in-process embedding model — the only benchmarked server that offers it offline (our head-to-head semantic comparison, losses included, is committed in the repo).",
 		],
 		faq: [
 			{
