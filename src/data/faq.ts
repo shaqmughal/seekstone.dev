@@ -40,7 +40,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Is it safe to use on my vault?",
-		a: "Seekstone only modifies files when you explicitly call a write tool, and its Write-Safety Contract — eight named guarantees, each backed by a test that runs in CI — covers atomic writes, recoverable deletes, and byte-identical frontmatter. The running server makes no network requests, the vault path is sandboxed, and you can go further: SEEKSTONE_READ_ONLY=1 removes the write tools entirely, and SEEKSTONE_WRITE_PATHS restricts writes to folders you allow.",
+		a: "Seekstone only modifies files when you explicitly call a write tool, and its Write-Safety Contract — ten named guarantees, each backed by a test that runs in CI — covers atomic writes, recoverable deletes, byte-identical frontmatter, a write journal that makes every write reversible (undo_write), and an optional hash-verifiable audit log. The running server makes no network requests, the vault path is sandboxed, and you can go further: SEEKSTONE_READ_ONLY=1 removes the write tools entirely, and SEEKSTONE_WRITE_PATHS restricts writes to folders you allow.",
 	},
 	{
 		q: "Does it work on Windows?",
