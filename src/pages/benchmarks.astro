@@ -103,7 +103,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 	[
 		"zap",
 		"The first query is the slow one.",
-		"Cold start pays for the index build before the millisecond latencies above: a few seconds on a typical vault, tens of seconds on our 10,000-note benchmark vault. Enabling semantic search adds a background embedding pass on top (~20 s at 10k — cached per-vault, so restarts reload it instantly).",
+		"Cold start pays for the index build before the millisecond latencies above: a few seconds on a typical vault, tens of seconds on our 10,000-note benchmark vault. Enabling semantic search adds a background embedding pass on top (~40 s at 10k — cached per-vault, so restarts reload it instantly).",
 	],
 	[
 		"search",
@@ -286,7 +286,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 		<section class="section section--tight" id="semantic">
 			<div class="container container--narrow">
 				<div class="head head--center">
-					<span class="eyebrow eyebrow--center"><Icon name="search" size={13} /> Re-benchmarked 2026-08-31</span>
+					<span class="eyebrow eyebrow--center"><Icon name="search" size={13} /> Re-benchmarked 2026-09-04</span>
 					<h2>Semantic search, measured the same way.</h2>
 					<p>
 						Opt-in meaning-based search through a small local embedding model — fully in-process,
@@ -296,8 +296,8 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					</p>
 				</div>
 				<div class="bench__stats">
-					<Card variant="glow" padding="lg"><Metric value="74%" label="hit@5 on description-style queries" sub="vs 18% for keyword search alone (default model)" accent="gradient" size="lg" /></Card>
-					<Card padding="lg"><Metric value="~15" unit="ms" label="warm semantic search at 10k notes" sub="default model; the opt-in quality model measures 64 ms" accent="green" size="lg" /></Card>
+					<Card variant="glow" padding="lg"><Metric value="88%" label="hit@5 on description-style queries" sub="vs 18% for keyword search alone (default model)" accent="gradient" size="lg" /></Card>
+					<Card padding="lg"><Metric value="~35" unit="ms" label="warm semantic search at 10k notes" sub="default model; the opt-in quality model measures 63 ms" accent="green" size="lg" /></Card>
 					<Card padding="lg"><Metric value="100%" label="exact-title lookups kept" sub="hybrid mode routes them to keyword search" accent="violet" size="lg" /></Card>
 				</div>
 				<p class="bm__note">
@@ -321,11 +321,11 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 								<tr><th>Semantic search</th><th>hit@5 (150q)</th><th>held-out</th><th>Latency (p50)</th><th>Payload/query</th><th>Cold index</th><th>Needs</th></tr>
 							</thead>
 							<tbody>
-								<tr><td><strong>Seekstone quality mode</strong> (opt-in 32M + MaxSim)</td><td>88.7%</td><td>91.7%</td><td><strong>64 ms</strong></td><td><strong>~2 KB</strong></td><td><strong>52 s</strong></td><td><strong>Nothing — in-process, offline</strong></td></tr>
-								<tr><td>Seekstone default (8M)</td><td>74%</td><td>81.7%</td><td><strong>15 ms</strong></td><td><strong>~2 KB</strong></td><td><strong>44 s</strong></td><td><strong>Nothing — in-process, offline</strong></td></tr>
-								<tr><td>obsidian-tc semantic</td><td>89.3%</td><td>88.3%</td><td>222 ms</td><td>15.6 KB</td><td>34 min</td><td>Ollama server + native modules + Node ≥ 24</td></tr>
-								<tr><td>obsidian-tc GraphRAG</td><td><strong>92.0%</strong></td><td><strong>95.0%</strong></td><td>850 ms (p95 5.7 s)</td><td>14.9 KB</td><td>(same)</td><td>(same)</td></tr>
-								<tr><td>obsidian-mcp-pro</td><td colspan="5">Failed — could not index the 10k-note vault (crashed after ~21 min of embedding)</td><td>Ollama or OpenAI</td></tr>
+								<tr><td><strong>Seekstone quality mode</strong> (opt-in 32M + MaxSim)</td><td>88.7%</td><td>91.7%</td><td><strong>63 ms</strong></td><td><strong>~2 KB</strong></td><td><strong>38 s</strong></td><td><strong>Nothing — in-process, offline</strong></td></tr>
+								<tr><td>Seekstone default (8M + MaxSim)</td><td>84.0%</td><td>85.0%</td><td><strong>35 ms</strong></td><td><strong>~2 KB</strong></td><td><strong>41 s</strong></td><td><strong>Nothing — in-process, offline</strong></td></tr>
+								<tr><td>obsidian-tc semantic</td><td>89.3%</td><td>88.3%</td><td>222 ms</td><td>15.9 KB</td><td>36 min</td><td>Ollama server + native modules + Node ≥ 24</td></tr>
+								<tr><td>obsidian-tc GraphRAG</td><td><strong>92.0%</strong></td><td><strong>95.0%</strong></td><td>833 ms (p95 4.0 s)</td><td>15.3 KB</td><td>(same)</td><td>(same)</td></tr>
+								<tr><td>obsidian-mcp-pro</td><td colspan="5">Failed — could not index the 10k-note vault (crashed after ~23 min of embedding)</td><td>Ollama or OpenAI</td></tr>
 							</tbody>
 						</table>
 					</div>
@@ -333,7 +333,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 				<p class="bm__note">
 					The honest read, both directions: Seekstone's quality mode now <strong>beats
 					obsidian-tc's plain semantic search on the held-out split</strong> (91.7% vs 88.3%) —
-					offline, in-process, no second server, a 52-second index against their 34-minute one.
+					offline, in-process, no second server, a 38-second index against their 36-minute one.
 					But tc's GraphRAG mode is still <strong>the most accurate we benchmarked</strong>
 					(95.0% held-out), and it pays with 13× our median latency, ~7× the payload, and an
 					Ollama server you install, run, and keep a 137M-parameter model loaded in. We

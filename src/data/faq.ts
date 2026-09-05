@@ -48,6 +48,6 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "How big a vault can it handle?",
-		a: "It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes; warm keyword search averages 6.2 ms at 10k (semantic ~14 ms). At that scale the cold index build takes tens of seconds and the process stays under ~100 MB of memory; typical personal vaults index in a few seconds.",
+		a: "It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes; warm keyword search averages 6.2 ms at 10k (semantic ~35 ms with the MaxSim rerank). At that scale the cold index build takes tens of seconds and the process stays under ~100 MB of memory; typical personal vaults index in a few seconds.",
 	},
 ];
