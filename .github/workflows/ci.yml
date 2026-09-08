@@ -24,3 +24,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Retired marketing claims must not resurface in prose (structured
+      # figures come from src/data/benchmarks.json and cannot drift).
+      - run: npm run check:phrases
+      # src/data/benchmarks.json must match the seekstone repo's canonical
+      # copy. Network — GitHub Actions only, never part of `npm run build`
+      # (the Vercel build must not depend on it).
+      - run: npm run check:benchmarks

@@ -5,9 +5,14 @@
  */
 import Card from "./Card.astro";
 import Icon from "./Icon.astro";
+import { fmtInt, query10k } from "../data/benchmarks";
+
+// The `church` query at 10k notes: the Local REST API plugin measured directly vs Seekstone.
+const restTokens = fmtInt(Math.round(query10k("rest", "church").payloadTokens / 1000) * 1000);
+const seekTokens = fmtInt(query10k("seekstone", "church").payloadTokens);
 
 const PILLARS: [icon: string, title: string, body: string][] = [
-	["zap", "Your context is precious.", "Most servers return full note content for every hit — megabytes your model has to read. Seekstone returns short ranked excerpts, so a query that cost 872,000 tokens via the REST plugin costs about 507."],
+	["zap", "Your context is precious.", `Most servers return full note content for every hit — megabytes your model has to read. Seekstone returns short ranked excerpts, so a query that cost ${restTokens} tokens via the REST plugin costs about ${seekTokens}.`],
 	["shield", "Your vault stays yours.", "No Obsidian app, no Local REST API plugin, no cloud. Seekstone reads files straight from disk, makes no network calls while running, and sends no telemetry. Writes only ever happen when you ask."],
 	["hardDrive", "Your files, forever.", "Plain Markdown on your machine — nothing to lock you in. Frontmatter edits are byte-identical by design: key order, quote style and comments preserved, proven by the test harness."],
 ];

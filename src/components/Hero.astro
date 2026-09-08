@@ -5,6 +5,7 @@
  * Copy/figures kept faithful to the README.
  */
 import GemMark from "./GemMark.astro";
+import { HEADLINE, multiplier, SEMANTIC_MS } from "../data/benchmarks";
 import Button from "./Button.astro";
 import CodeBlock from "./CodeBlock.astro";
 import Icon from "./Icon.astro";
@@ -31,8 +32,8 @@ import Icon from "./Icon.astro";
 		<p class="hero__sub rise rise-3">
 			Seekstone is the fastest way to connect Claude to Obsidian — a filesystem-direct
 			Obsidian MCP server, no plugins, no app required. Keyword search in <strong>single-digit&nbsp;ms</strong>,
-			meaning-based semantic search in <strong>~14&nbsp;ms</strong> — even on a
-			<strong> 10,000-note</strong> vault — with <strong>up to 47,000× smaller</strong> payloads than the
+			meaning-based semantic search in <strong>~{SEMANTIC_MS}&nbsp;ms</strong> — even on a
+			<strong> 10,000-note</strong> vault — with <strong>up to {multiplier(HEADLINE.contextTax.display)} smaller</strong> payloads than the
 			REST-proxy servers we benchmarked, so Claude reads your whole note library without burning its context.
 		</p>
 
@@ -56,7 +57,7 @@ import Icon from "./Icon.astro";
 		</div>
 
 		<div class="trust hero__trust rise rise-4">
-			<span class="trust__item"><Icon name="zap" size={15} /> Up to 440× faster than any server we tested</span>
+			<span class="trust__item"><Icon name="zap" size={15} /> Up to {HEADLINE.slowest.display}× faster than any server we tested</span>
 			<span class="trust__item"><Icon name="plug" size={15} /> No plugins required</span>
 			<span class="trust__item"><Icon name="shield" size={15} /> 100% local — offline at runtime</span>
 			<span class="trust__item"><Icon name="hardDrive" size={15} /> macOS · Linux · Windows</span>
