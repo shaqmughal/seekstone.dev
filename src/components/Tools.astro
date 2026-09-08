@@ -1,11 +1,14 @@
 ---
 /**
- * Tools — 21 tools, one warm index. Read/Write tab switcher over a card grid.
- * Ported from the seekstone-design skill. Tool names/descriptions match the README.
+ * Tools — one warm index, every tool. Read/Write tab switcher over a card grid.
+ * Ported from the seekstone-design skill. Tool names/descriptions match the README;
+ * the counts are derived from the card lists and must agree with benchmarks.json
+ * (which the main repo derives from dispatch.ts) — the build fails otherwise.
  */
 import Card from "./Card.astro";
 import Tabs from "./Tabs.astro";
 import Icon from "./Icon.astro";
+import { TOOLS } from "../data/benchmarks";
 
 type Tool = [name: string, icon: string, desc: string, danger?: boolean];
 
@@ -34,18 +37,25 @@ const WRITE: Tool[] = [
 	["delete_note", "trash", "Move a note to .trash/ — recoverable, Obsidian-compatible. permanent: true skips the trash; the write journal still lets undo_write restore it.", true],
 	["undo_write", "shield", "Revert any journaled write — every touched file restored byte-identical: multi-file moves and renames whole, deletes even if permanent."],
 ];
+
+if (READ.length !== TOOLS.read || WRITE.length !== TOOLS.write) {
+	throw new Error(
+		`Tools.astro lists ${READ.length} read + ${WRITE.length} write tools, but benchmarks.json says ${TOOLS.read} + ${TOOLS.write} — the tool cards and the vendored benchmarks.json are out of step`,
+	);
+}
+const TOTAL = READ.length + WRITE.length;
 ---
 
 <section class="section" id="tools">
 	<div class="container">
 		<div class="head head--center">
-			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> 21 tools · one warm index</span>
+			<span class="eyebrow eyebrow--center"><Icon name="database" size={13} /> {TOTAL} tools · one warm index</span>
 			<h2>Everything Claude needs<br />to <span class="grad">work your vault.</span></h2>
 			<p>Everything an Obsidian AI assistant needs — read and write, link-graph and periodic notes, the broadest toolset in our benchmark set — including fully-local semantic search, periodic notes that work with Obsidian closed, and byte-identical frontmatter edits.</p>
 		</div>
 
 		<div class="tools__tabswrap">
-			<Tabs items={[{ id: "read", label: "Read · 11", icon: "search" }, { id: "write", label: "Write · 10", icon: "filePen" }]}>
+			<Tabs items={[{ id: "read", label: `Read · ${READ.length}`, icon: "search" }, { id: "write", label: `Write · ${WRITE.length}`, icon: "filePen" }]}>
 				{
 					[
 						{ id: "read", items: READ },

@@ -10,7 +10,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:benchmarks": "node scripts/check-benchmarks-sync.mjs",
+    "check:phrases": "node scripts/check-retired-phrases.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",

@@ -2,8 +2,24 @@
  * FAQ content — the single source for both the visible accordion (Faq.astro)
  * and the FAQPage JSON-LD (SHA-113). Sharing one array guarantees the
  * structured data Google and AI engines read never drifts from what visitors
- * actually see. Answers trace to the README FAQ.
+ * actually see. Answers trace to the README FAQ; every figure is read from
+ * src/data/benchmarks.json (SHA-327).
  */
+import {
+	BIG,
+	fmtKB0,
+	fmtMsUnit,
+	GUARANTEES,
+	HEADLINE,
+	multiplier,
+	numberWord,
+	SEEKSTONE,
+	SEMANTIC_MS,
+	SERVERS,
+} from "./benchmarks";
+
+const seekMs = fmtMsUnit(SEEKSTONE.warmMs[BIG]);
+const payloadKB = fmtKB0(HEADLINE.payloadBytes10k);
 export interface FaqItem {
 	q: string;
 	a: string;
@@ -16,11 +32,11 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Can I use an Obsidian MCP server without the Local REST API plugin?",
-		a: "Yes — that's exactly what Seekstone is. It reads the filesystem directly and bypasses the plugin entirely; no plugins are required at all. Skipping the REST round-trip is the source of the up-to-~47,000× payload reduction.",
+		a: `Yes — that's exactly what Seekstone is. It reads the filesystem directly and bypasses the plugin entirely; no plugins are required at all. Skipping the REST round-trip is the source of the up-to-~${multiplier(HEADLINE.contextTax.display)} payload reduction.`,
 	},
 	{
 		q: "What's the best Obsidian MCP server that doesn't need a plugin?",
-		a: "Seekstone — it's filesystem-direct, so there's no plugin and no running Obsidian app, and it's the only Obsidian MCP server with published, reproducible benchmarks: the smallest search payloads (~2 KB at 10,000 notes) and the fastest warm keyword search (6.2 ms mean) of the eight servers tested.",
+		a: `Seekstone — it's filesystem-direct, so there's no plugin and no running Obsidian app, and it's the only Obsidian MCP server with published, reproducible benchmarks: the smallest search payloads (~${payloadKB} KB at 10,000 notes) and the fastest warm keyword search (${seekMs} mean) of the ${numberWord(SERVERS.length)} servers tested.`,
 	},
 	{
 		q: "Can Claude query my Obsidian notes by frontmatter properties?",
@@ -40,7 +56,7 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "Is it safe to use on my vault?",
-		a: "Seekstone only modifies files when you explicitly call a write tool, and its Write-Safety Contract — ten named guarantees, each backed by a test that runs in CI — covers atomic writes, recoverable deletes, byte-identical frontmatter, a write journal that makes every write reversible (undo_write), and an optional hash-verifiable audit log. The running server makes no network requests, the vault path is sandboxed, and you can go further: SEEKSTONE_READ_ONLY=1 removes the write tools entirely, and SEEKSTONE_WRITE_PATHS restricts writes to folders you allow.",
+		a: `Seekstone only modifies files when you explicitly call a write tool, and its Write-Safety Contract — ${numberWord(GUARANTEES)} named guarantees, each backed by a test that runs in CI — covers atomic writes, recoverable deletes, byte-identical frontmatter, a write journal that makes every write reversible (undo_write), and an optional hash-verifiable audit log. The running server makes no network requests, the vault path is sandboxed, and you can go further: SEEKSTONE_READ_ONLY=1 removes the write tools entirely, and SEEKSTONE_WRITE_PATHS restricts writes to folders you allow.`,
 	},
 	{
 		q: "Does it work on Windows?",
@@ -48,6 +64,6 @@ export const FAQS: FaqItem[] = [
 	},
 	{
 		q: "How big a vault can it handle?",
-		a: "It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes; warm keyword search averages 6.2 ms at 10k (semantic ~35 ms with the MaxSim rerank). At that scale the cold index build takes tens of seconds and the process stays under ~100 MB of memory; typical personal vaults index in a few seconds.",
+		a: `It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes; warm keyword search averages ${seekMs} at 10k (the shipped semantic pipeline, MaxSim rerank included, ~${SEMANTIC_MS} ms). At that scale the cold index build takes tens of seconds and the process stays under ~100 MB of memory; typical personal vaults index in a few seconds.`,
 	},
 ];

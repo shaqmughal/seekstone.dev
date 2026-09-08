@@ -1,11 +1,58 @@
 /**
  * Competitor-capture pages (SHA-221) — the single source for /vs/[slug].
- * One entry per benchmarked competitor; every figure traces to the harness
- * scaling report (packages/harness/fixtures/baseline-reports/scaling/
- * benchmark-scaling.md in the main repo) and the canonical messaging doc.
- * Fairness is the strategy: each entry names real strengths of the
- * competitor ("edge") — honest pages rank better and backfire less.
+ * One entry per benchmarked competitor; every figure is read from
+ * src/data/benchmarks.json (SHA-327), the vendored copy of the main repo's
+ * generated source of truth, so the prose below interpolates numbers rather
+ * than quoting them. Fairness is the strategy: each entry names real
+ * strengths of the competitor ("edge") — honest pages rank better and
+ * backfire less.
  */
+import {
+	type AdapterKey,
+	adapter,
+	BIG,
+	fmtBytesShort,
+	fmtKB0,
+	fmtMB1,
+	fmtMillions,
+	fmtMsUnit,
+	GUARANTEES,
+	HEADLINE,
+	multiplier,
+	numberWord,
+	SCALING,
+	SEEKSTONE,
+	TOOLS,
+} from "./benchmarks";
+
+const seekMs = fmtMsUnit(SEEKSTONE.warmMs[BIG]); // "5.2 ms"
+const seekKB = fmtBytesShort(SEEKSTONE.payloadBytes[BIG]); // "2.0 KB"
+const payloadKB = fmtKB0(HEADLINE.payloadBytes10k); // "2"
+const tax = multiplier(HEADLINE.contextTax.display); // "47,000×"
+const worstQuery = `${fmtMB1(HEADLINE.worstQuery.bytes)} (~${fmtMillions(HEADLINE.worstQuery.tokens)} tokens)`;
+const worstQueryShort = `${fmtMB1(HEADLINE.worstQuery.bytes)} / ~${(HEADLINE.worstQuery.tokens / 1e6).toFixed(1)}M tokens`;
+
+/** Per-competitor figures, formatted the way the README formats them. */
+function vs(key: AdapterKey) {
+	const a = adapter(key);
+	const triple = <T,>(xs: T[]) => xs as [T, T, T];
+	return {
+		payload: triple(a.payloadBytes.map(fmtBytesShort)),
+		latency: triple(a.warmMs.map(fmtMsUnit)),
+		payload10k: fmtBytesShort(a.payloadBytes[BIG]),
+		payload1k: fmtBytesShort(a.payloadBytes[0]),
+		ms10k: fmtMsUnit(a.warmMs[BIG]),
+		ms1k: fmtMsUnit(a.warmMs[0]),
+		slower: `~${a.vsSeekstone10k?.display}×`,
+		/** how much its own latency grows from 1k to 10k notes */
+		growth: `~${Math.round(a.warmMs[BIG] / a.warmMs[0])}×`,
+		/** its 10k payload over Seekstone's */
+		payloadRatio: `~${Math.round(a.payloadBytes[BIG] / SEEKSTONE.payloadBytes[BIG])}×`,
+	};
+}
+const MO = vs("mcp-obsidian");
+const OMS = vs("obsidian-mcp-server");
+const MV = vs("mcpvault");
 
 export interface VsRow {
 	label: string;
@@ -45,8 +92,8 @@ export interface Competitor {
 }
 
 export const SEEKSTONE_SCALE = {
-	payload: ["1.6 KB", "1.8 KB", "2.0 KB"] as [string, string, string],
-	latency: ["1.1 ms", "3.1 ms", "6.2 ms"] as [string, string, string],
+	payload: SEEKSTONE.payloadBytes.map(fmtBytesShort) as [string, string, string],
+	latency: SEEKSTONE.warmMs.map(fmtMsUnit) as [string, string, string],
 };
 
 export const COMPETITORS: Competitor[] = [
@@ -57,9 +104,9 @@ export const COMPETITORS: Competitor[] = [
 		repo: "https://github.com/MarkusPfundstein/mcp-obsidian",
 		metaTitle: "mcp-obsidian alternative — Seekstone vs mcp-obsidian benchmark | Seekstone",
 		metaDescription:
-			"Looking for an mcp-obsidian alternative? Head-to-head benchmark on a 10,000-note vault: 2 KB vs 95 MB search payloads, 6.2 ms vs 1,550 ms warm latency, no Local REST API plugin required. Reproducible with an open-source harness.",
+			`Looking for an mcp-obsidian alternative? Head-to-head benchmark on a 10,000-note vault: ${payloadKB} KB vs ${MO.payload10k} search payloads, ${seekMs} vs ${MO.ms10k} warm latency, no Local REST API plugin required. Reproducible with an open-source harness.`,
 		verdict:
-			"mcp-obsidian connects Claude to your vault by proxying Obsidian's Local REST API plugin — which returns full note content for every search hit. On our committed 10,000-note benchmark vault that meant 95 MB per search on average, and one broad query returned 370.9 MB (~97.8 million tokens) in a single tool call. Seekstone reads the vault from disk and returns ranked excerpts instead: ~2 KB for the same queries, with Obsidian closed.",
+			`mcp-obsidian connects Claude to your vault by proxying Obsidian's Local REST API plugin — which returns full note content for every search hit. On our committed 10,000-note benchmark vault that meant ${MO.payload10k} per search on average, and one broad query returned ${worstQuery} in a single tool call. Seekstone reads the vault from disk and returns ranked excerpts instead: ~${payloadKB} KB for the same queries, with Obsidian closed.`,
 		rows: [
 			{
 				label: "Architecture",
@@ -72,20 +119,20 @@ export const COMPETITORS: Competitor[] = [
 				seekstone: "Not needed — works with Obsidian closed",
 				them: "Required",
 			},
-			{ label: "Search payload @ 10k notes (mean)", seekstone: "2.0 KB", them: "95 MB" },
+			{ label: "Search payload @ 10k notes (mean)", seekstone: seekKB, them: MO.payload10k },
 			{
 				label: "Worst single query @ 10k notes",
-				seekstone: "~2 KB",
-				them: "370.9 MB / ~97.8M tokens",
+				seekstone: `~${payloadKB} KB`,
+				them: worstQueryShort,
 			},
 			{
 				label: "Warm search latency @ 10k notes",
-				seekstone: "6.2 ms",
-				them: "1,550 ms (~250× slower)",
+				seekstone: seekMs,
+				them: `${MO.ms10k} (${MO.slower} slower)`,
 			},
 		],
-		payload: ["9.8 MB", "45 MB", "95 MB"],
-		latency: ["164 ms", "740 ms", "1,550 ms"],
+		payload: MO.payload,
+		latency: MO.latency,
 		edge: [
 			{
 				title: "No index in memory.",
@@ -101,8 +148,8 @@ export const COMPETITORS: Competitor[] = [
 			},
 		],
 		why: [
-			"The payload gap is architectural, not a tuning issue. Obsidian's REST API returns the full content of every matching note, and mcp-obsidian forwards that to the model — so payload grows with your vault. At 1,000 notes it's 9.8 MB per search; at 10,000 notes it's 95 MB. Seekstone returns short ranked excerpts, so it stays ~2 KB at every size. That's up to a ~47,000× difference in what your context window has to absorb.",
-			"Latency follows the same logic: every mcp-obsidian query is an HTTP round-trip into the app, while Seekstone serves queries from a warm in-process full-text index kept live by a file watcher. At 10,000 notes that's 1,550 ms vs 6.2 ms warm — and the gap widens as the vault grows.",
+			`The payload gap is architectural, not a tuning issue. Obsidian's REST API returns the full content of every matching note, and mcp-obsidian forwards that to the model — so payload grows with your vault. At 1,000 notes it's ${MO.payload1k} per search; at 10,000 notes it's ${MO.payload10k}. Seekstone returns short ranked excerpts, so it stays ~${payloadKB} KB at every size. That's up to a ~${tax} difference in what your context window has to absorb.`,
+			`Latency follows the same logic: every mcp-obsidian query is an HTTP round-trip into the app, while Seekstone serves queries from a warm in-process full-text index kept live by a file watcher. At 10,000 notes that's ${MO.ms10k} vs ${seekMs} warm — and the gap widens as the vault grows.`,
 		],
 		faq: [
 			{
@@ -111,7 +158,7 @@ export const COMPETITORS: Competitor[] = [
 			},
 			{
 				q: "Why is mcp-obsidian's search payload so large?",
-				a: "It proxies Obsidian's Local REST API, which returns the full content of every matching note. On a 10,000-note vault that averaged 95 MB per search in our benchmark, with one broad query returning 370.9 MB (~97.8 million tokens) in a single tool call. Seekstone returns ranked excerpts instead — ~2 KB for the same queries.",
+				a: `It proxies Obsidian's Local REST API, which returns the full content of every matching note. On a 10,000-note vault that averaged ${MO.payload10k} per search in our benchmark, with one broad query returning ${worstQuery} in a single tool call. Seekstone returns ranked excerpts instead — ~${payloadKB} KB for the same queries.`,
 			},
 			{
 				q: "Do I need to uninstall anything to switch?",
@@ -127,9 +174,9 @@ export const COMPETITORS: Competitor[] = [
 		metaTitle:
 			"obsidian-mcp-server alternative — Seekstone vs obsidian-mcp-server | Seekstone",
 		metaDescription:
-			"Seekstone vs obsidian-mcp-server, benchmarked on a 10,000-note vault: 2 KB vs 47 KB search payloads, 6.2 ms vs 732 ms warm latency — and no Local REST API plugin or running Obsidian app required. Reproducible with an open-source harness.",
+			`Seekstone vs obsidian-mcp-server, benchmarked on a 10,000-note vault: ${payloadKB} KB vs ${OMS.payload10k} search payloads, ${seekMs} vs ${OMS.ms10k} warm latency — and no Local REST API plugin or running Obsidian app required. Reproducible with an open-source harness.`,
 		verdict:
-			"obsidian-mcp-server is the most-downloaded Obsidian MCP server and the strongest REST-proxy option we benchmarked — its payloads stay bounded where other proxies balloon. Seekstone's difference is structural: it reads the vault from disk, so there's no Local REST API plugin to install, no running Obsidian app to depend on, ~118× faster warm search, and ~23× smaller search payloads on the 10,000-note benchmark vault.",
+			`obsidian-mcp-server is the most-downloaded Obsidian MCP server and the strongest REST-proxy option we benchmarked — its payloads stay bounded where other proxies balloon. Seekstone's difference is structural: it reads the vault from disk, so there's no Local REST API plugin to install, no running Obsidian app to depend on, ${OMS.slower} faster warm search, and ${OMS.payloadRatio} smaller search payloads on the 10,000-note benchmark vault.`,
 		rows: [
 			{
 				label: "Architecture",
@@ -142,11 +189,11 @@ export const COMPETITORS: Competitor[] = [
 				seekstone: "Not needed — works with Obsidian closed",
 				them: "Required",
 			},
-			{ label: "Search payload @ 10k notes (mean)", seekstone: "2.0 KB", them: "47 KB" },
+			{ label: "Search payload @ 10k notes (mean)", seekstone: seekKB, them: OMS.payload10k },
 			{
 				label: "Warm search latency @ 10k notes",
-				seekstone: "6.2 ms",
-				them: "732 ms (~118× slower)",
+				seekstone: seekMs,
+				them: `${OMS.ms10k} (${OMS.slower} slower)`,
 			},
 			{
 				label: "Structured frontmatter queries",
@@ -154,8 +201,8 @@ export const COMPETITORS: Competitor[] = [
 				them: "JSONLogic via REST",
 			},
 		],
-		payload: ["55 KB", "47 KB", "47 KB"],
-		latency: ["82 ms", "356 ms", "732 ms"],
+		payload: OMS.payload,
+		latency: OMS.latency,
 		edge: [
 			{
 				title: "The most-downloaded option.",
@@ -163,7 +210,7 @@ export const COMPETITORS: Competitor[] = [
 			},
 			{
 				title: "Bounded payloads for a REST proxy.",
-				body: "Unlike other REST proxies, its search responses hold roughly flat (~47 KB) as the vault grows — the best payload discipline of any proxy we benchmarked.",
+				body: `Unlike other REST proxies, its search responses hold roughly flat (~${OMS.payload10k}) as the vault grows — the best payload discipline of any proxy we benchmarked.`,
 			},
 			{
 				title: "Leans on Obsidian's plugin ecosystem.",
@@ -171,13 +218,13 @@ export const COMPETITORS: Competitor[] = [
 			},
 		],
 		why: [
-			"obsidian-mcp-server is the REST proxy done well: it caps what it returns, so the payload story is bounded rather than catastrophic. The remaining ~23× payload gap and the dependency chain are structural — it can only answer while Obsidian is open with the Local REST API plugin installed, configured with an API key, and reachable over local HTTPS. Seekstone reads the vault directly from disk: nothing to install inside Obsidian, nothing that has to be running.",
-			"Latency is where the round-trips show: 732 ms warm search at 10,000 notes vs 6.2 ms from Seekstone's warm in-process index — and its latency grows ~9× from a 1k-note vault to a 10k-note vault, while Seekstone's barely moves. For an agent making many tool calls per task, milliseconds-vs-seconds compounds quickly.",
+			`obsidian-mcp-server is the REST proxy done well: it caps what it returns, so the payload story is bounded rather than catastrophic. The remaining ${OMS.payloadRatio} payload gap and the dependency chain are structural — it can only answer while Obsidian is open with the Local REST API plugin installed, configured with an API key, and reachable over local HTTPS. Seekstone reads the vault directly from disk: nothing to install inside Obsidian, nothing that has to be running.`,
+			`Latency is where the round-trips show: ${OMS.ms10k} warm search at 10,000 notes vs ${seekMs} from Seekstone's warm in-process index — and its latency grows ${OMS.growth} from a 1k-note vault to a 10k-note vault, while Seekstone's barely moves. For an agent making many tool calls per task, milliseconds-vs-seconds compounds quickly.`,
 		],
 		faq: [
 			{
 				q: "Is Seekstone a good alternative to obsidian-mcp-server?",
-				a: "If you want vault access without installing the Local REST API plugin or keeping Obsidian running, yes — that's the structural difference. On the 10,000-note benchmark vault Seekstone also returns ~23× smaller search payloads (2 KB vs 47 KB) and answers ~118× faster warm (6.2 ms vs 732 ms). Both are standard MCP stdio servers, so switching is a config change.",
+				a: `If you want vault access without installing the Local REST API plugin or keeping Obsidian running, yes — that's the structural difference. On the 10,000-note benchmark vault Seekstone also returns ${OMS.payloadRatio} smaller search payloads (${payloadKB} KB vs ${OMS.payload10k}) and answers ${OMS.slower} faster warm (${seekMs} vs ${OMS.ms10k}). Both are standard MCP stdio servers, so switching is a config change.`,
 			},
 			{
 				q: "What does obsidian-mcp-server do better?",
@@ -185,7 +232,7 @@ export const COMPETITORS: Competitor[] = [
 			},
 			{
 				q: "Do both servers edit notes safely?",
-				a: "Seekstone's write path is verified byte-for-byte by its open-source harness — the Write-Safety Contract's ten guarantees each link to the code and the test that proves them, and the same suite runs against other filesystem-direct servers (the comparison matrix is committed in the repo). obsidian-mcp-server is REST-based and outside that suite, so we make no claim about its write safety — the harness is public if you want to run that comparison.",
+				a: `Seekstone's write path is verified byte-for-byte by its open-source harness — the Write-Safety Contract's ${numberWord(GUARANTEES)} guarantees each link to the code and the test that proves them, and the same suite runs against other filesystem-direct servers (the comparison matrix is committed in the repo). obsidian-mcp-server is REST-based and outside that suite, so we make no claim about its write safety — the harness is public if you want to run that comparison.`,
 			},
 		],
 	},
@@ -196,9 +243,9 @@ export const COMPETITORS: Competitor[] = [
 		repo: "https://github.com/bitbonsai/mcpvault",
 		metaTitle: "mcpvault alternative — Seekstone vs mcpvault benchmark | Seekstone",
 		metaDescription:
-			"Seekstone vs mcpvault, benchmarked on a 10,000-note vault: both return ~2 KB excerpt payloads, but Seekstone's warm in-process index answers in 6.2 ms vs 958 ms — and adds structured queries, backlinks, and outline tools. Reproducible with an open-source harness.",
+			`Seekstone vs mcpvault, benchmarked on a 10,000-note vault: both return ~${payloadKB} KB excerpt payloads, but Seekstone's warm in-process index answers in ${seekMs} vs ${MV.ms10k} — and adds structured queries, backlinks, and outline tools. Reproducible with an open-source harness.`,
 		verdict:
-			"mcpvault gets the most important thing right: like Seekstone, it's filesystem-direct and returns excerpts, so its search payloads stay ~2 KB at any vault size — no Local REST API plugin, no running app. The gap is latency and depth: mcpvault re-scans the vault in a subprocess per query (958 ms warm at 10,000 notes), while Seekstone serves the same queries from a warm in-process index in 6.2 ms, and adds tools no other benchmarked server has — structured frontmatter queries, backlinks, outlines, and tag listings.",
+			`mcpvault gets the most important thing right: like Seekstone, it's filesystem-direct and returns excerpts, so its search payloads stay ~${payloadKB} KB at any vault size — no Local REST API plugin, no running app. The gap is latency and depth: mcpvault re-scans the vault in a subprocess per query (${MV.ms10k} warm at 10,000 notes), while Seekstone serves the same queries from a warm in-process index in ${seekMs}, and adds tools no other benchmarked server has — structured frontmatter queries, backlinks, outlines, and tag listings.`,
 		rows: [
 			{
 				label: "Architecture",
@@ -211,11 +258,11 @@ export const COMPETITORS: Competitor[] = [
 				seekstone: "Not needed",
 				them: "Not needed",
 			},
-			{ label: "Search payload @ 10k notes (mean)", seekstone: "2.0 KB", them: "2.2 KB" },
+			{ label: "Search payload @ 10k notes (mean)", seekstone: seekKB, them: MV.payload10k },
 			{
 				label: "Warm search latency @ 10k notes",
-				seekstone: "6.2 ms",
-				them: "958 ms (~155× slower)",
+				seekstone: seekMs,
+				them: `${MV.ms10k} (${MV.slower} slower)`,
 			},
 			{
 				label: "Backlinks, outlines, tags, structured queries",
@@ -223,12 +270,12 @@ export const COMPETITORS: Competitor[] = [
 				them: "Not offered",
 			},
 		],
-		payload: ["1.7 KB", "1.9 KB", "2.2 KB"],
-		latency: ["96 ms", "467 ms", "958 ms"],
+		payload: MV.payload,
+		latency: MV.latency,
 		edge: [
 			{
 				title: "Payload discipline.",
-				body: "mcpvault is the only other server we benchmarked in the ~2 KB class — it returns excerpts, not documents, and stays flat as the vault grows. On the metric that matters most for context tax, it's genuinely good.",
+				body: `mcpvault is the only other server we benchmarked in the ~${payloadKB} KB class — it returns excerpts, not documents, and stays flat as the vault grows. On the metric that matters most for context tax, it's genuinely good.`,
 			},
 			{
 				title: "The same no-plugin story.",
@@ -240,13 +287,13 @@ export const COMPETITORS: Competitor[] = [
 			},
 		],
 		why: [
-			"Seekstone and mcpvault agree on the big architectural call — filesystem-direct, excerpts-not-documents — which is why both sit in the ~2 KB payload class while REST proxies climb into the megabytes. The difference is what happens per query: mcpvault spawns a subprocess and scans the vault each time, so its warm latency grows 10× from a 1k-note vault (96 ms) to a 10k-note vault (958 ms). Seekstone builds its full-text index once, keeps it live with a file watcher, and answers from memory: 6.2 ms at 10,000 notes, barely moving with scale.",
-			"The second difference is tool depth. Seekstone ships 21 tools, including several no other benchmarked server offers: query_notes for structured frontmatter queries that answer in a few hundred bytes, context_pack for one-call byte-budgeted context assembly, get_backlinks and get_links for graph navigation, outline_note for section-level reads, and list_tags — plus periodic-notes support that works with Obsidian closed, and (since 0.15.0) fully-local semantic search through an in-process embedding model — the only benchmarked server that offers it offline (our head-to-head semantic comparison, losses included, is committed in the repo).",
+			`Seekstone and mcpvault agree on the big architectural call — filesystem-direct, excerpts-not-documents — which is why both sit in the ~${payloadKB} KB payload class while REST proxies climb into the megabytes. The difference is what happens per query: mcpvault spawns a subprocess and scans the vault each time, so its warm latency grows ${MV.growth} from a 1k-note vault (${MV.ms1k}) to a 10k-note vault (${MV.ms10k}). Seekstone builds its full-text index once, keeps it live with a file watcher, and answers from memory: ${seekMs} at 10,000 notes, barely moving with scale.`,
+			`The second difference is tool depth. Seekstone ships ${TOOLS.total} tools, including several no other benchmarked server offers: query_notes for structured frontmatter queries that answer in a few hundred bytes, context_pack for one-call byte-budgeted context assembly, get_backlinks and get_links for graph navigation, outline_note for section-level reads, and list_tags — plus periodic-notes support that works with Obsidian closed, and (since 0.15.0) fully-local semantic search through an in-process embedding model — the only benchmarked server that offers it offline (our head-to-head semantic comparison, losses included, is committed in the repo).`,
 		],
 		faq: [
 			{
 				q: "Why choose Seekstone over mcpvault if payloads are similar?",
-				a: "Latency and tools. Both return ~2 KB excerpt payloads, but mcpvault re-scans the vault per query — 958 ms warm at 10,000 notes vs 6.2 ms from Seekstone's warm in-process index, a gap that widens with vault size. Seekstone also adds structured frontmatter queries, backlinks, outlines, and tag tools that mcpvault doesn't offer.",
+				a: `Latency and tools. Both return ~${payloadKB} KB excerpt payloads, but mcpvault re-scans the vault per query — ${MV.ms10k} warm at 10,000 notes vs ${seekMs} from Seekstone's warm in-process index, a gap that widens with vault size. Seekstone also adds structured frontmatter queries, backlinks, outlines, and tag tools that mcpvault doesn't offer.`,
 			},
 			{
 				q: "Is mcpvault's approach ever preferable?",
@@ -254,7 +301,7 @@ export const COMPETITORS: Competitor[] = [
 			},
 			{
 				q: "Are these numbers reproducible?",
-				a: "Yes — every figure comes from an open-source harness run against committed 1,000 / 5,000 / 10,000-note vaults generated from public-domain text, 20 runs per query, cold and warm reported separately. Clone the Seekstone repo and re-run it.",
+				a: `Yes — every figure comes from an open-source harness run against committed 1,000 / 5,000 / 10,000-note vaults generated from public-domain text, ${SCALING.runs} runs per query, cold and warm reported separately. Clone the Seekstone repo and re-run it.`,
 			},
 		],
 	},

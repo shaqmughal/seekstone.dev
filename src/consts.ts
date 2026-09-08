@@ -3,6 +3,7 @@
  * (SHA-112). Everything an Open Graph tag, Twitter card, or JSON-LD block
  * needs lives here so copy and URLs never drift between pages.
  */
+import { fmtKB0, HEADLINE, multiplier } from "./data/benchmarks";
 import { VERSION } from "./version";
 
 export const SITE = {
@@ -11,8 +12,7 @@ export const SITE = {
 	url: "https://seekstone.dev",
 	// Default <title> / description. Per-page values override via Base props.
 	title: "Seekstone — the fastest Obsidian MCP server in open benchmarks",
-	description:
-		"Seekstone is a filesystem-direct Obsidian MCP server for Claude. Keyword and local semantic search in milliseconds, with up to ~47,000× smaller payloads (2 KB vs tens of MB) than the REST-proxy servers we benchmarked. No plugins, no Obsidian app required.",
+	description: `Seekstone is a filesystem-direct Obsidian MCP server for Claude. Keyword and local semantic search in milliseconds, with up to ~${multiplier(HEADLINE.contextTax.display)} smaller payloads (${fmtKB0(HEADLINE.payloadBytes10k)} KB vs tens of MB) than the REST-proxy servers we benchmarked. No plugins, no Obsidian app required.`,
 	// 1200×630 social card served from /public. See public/og-image.svg source.
 	ogImage: "/og-image.png",
 	author: { name: "Shaq Mughal", url: "https://github.com/shaqmughal" },
