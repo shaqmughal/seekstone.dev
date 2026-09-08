@@ -6,7 +6,7 @@
  * stories. Every figure is read from src/data/benchmarks.json — the same file
  * the README is checked against in the repo's CI (SHA-327).
  */
-import { BIG, adapter, fmtBytesShort, fmtMsUnit, SEEKSTONE } from "./benchmarks";
+import { type AdapterKey, BIG, adapter, fmtBytesShort, fmtMsUnit, HEADLINE, SEEKSTONE } from "./benchmarks";
 
 export interface CompareRow {
 	label: string;
@@ -23,7 +23,10 @@ export const COMPARE_COLUMNS = {
 } as const;
 
 const omcp = adapter("obsidian-mcp-server");
-const worstProxy = adapter("mcp-obsidian");
+// "up to …" = the worst REST-proxy *server* at 10k (the raw plugin baseline `rest` is not a server).
+const proxies = HEADLINE.restProxyRange.adapters.filter((k) => k !== "rest").map((k) => adapter(k as AdapterKey));
+const maxBy = (f: (a: ReturnType<typeof adapter>) => number) => Math.max(...proxies.map(f));
+const worstProxy = { payloadBytes10k: maxBy((a) => a.payloadBytes[BIG]), warmMs10k: maxBy((a) => a.warmMs[BIG]) };
 
 export const COMPARE_ROWS: CompareRow[] = [
 	{
@@ -42,13 +45,13 @@ export const COMPARE_ROWS: CompareRow[] = [
 		label: "Search payload @ 10k notes",
 		seekstone: fmtBytesShort(SEEKSTONE.payloadBytes[BIG]),
 		omcp: fmtBytesShort(omcp.payloadBytes[BIG]),
-		rest: `up to ${fmtBytesShort(worstProxy.payloadBytes[BIG])}`,
+		rest: `up to ${fmtBytesShort(worstProxy.payloadBytes10k)}`,
 	},
 	{
 		label: "Warm search latency @ 10k notes",
 		seekstone: fmtMsUnit(SEEKSTONE.warmMs[BIG]),
 		omcp: `${fmtMsUnit(omcp.warmMs[BIG])} (~${omcp.vsSeekstone10k?.display}× slower)`,
-		rest: `up to ${fmtMsUnit(worstProxy.warmMs[BIG])}`,
+		rest: `up to ${fmtMsUnit(worstProxy.warmMs10k)}`,
 	},
 	{
 		label: "Structured frontmatter queries",

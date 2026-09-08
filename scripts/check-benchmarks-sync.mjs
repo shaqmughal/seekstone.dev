@@ -37,12 +37,16 @@ if (localIdx !== -1) {
 	}
 	canonical = readFileSync(path, "utf8");
 } else {
-	const res = await fetch(SOURCE, { signal: AbortSignal.timeout(10_000) });
-	if (!res.ok) {
-		console.error(`could not fetch canonical benchmarks.json: ${SOURCE} responded ${res.status}`);
+	// Network trouble is exit 2, never exit 1: CI must be able to tell "GitHub
+	// hiccup, re-run" apart from "the vendored copy is stale".
+	try {
+		const res = await fetch(SOURCE, { signal: AbortSignal.timeout(10_000) });
+		if (!res.ok) throw new Error(`${SOURCE} responded ${res.status}`);
+		canonical = await res.text();
+	} catch (err) {
+		console.error(`could not fetch canonical benchmarks.json: ${err instanceof Error ? err.message : err}`);
 		process.exit(2);
 	}
-	canonical = await res.text();
 }
 
 const a = JSON.parse(vendored);

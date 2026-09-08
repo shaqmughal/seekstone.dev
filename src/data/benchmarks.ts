@@ -30,6 +30,8 @@ export const GUARANTEES = bench.guarantees.count;
 export const SCALING = bench.scaling;
 export const RETRIEVAL = bench.retrieval.conditions;
 export const RELEASE = bench.release;
+export const QUERY_SET = bench.retrieval.querySet;
+export const GATE_V2 = bench.retrieval.gateV2;
 
 // ---------- formatting (README conventions) ----------
 const KB = 1024;
@@ -50,6 +52,10 @@ export function fmtBytesShort(bytes: number): string {
 export const fmtMB1 = (bytes: number): string => `${(bytes / MB).toFixed(1)} MB`;
 /** Whole kilobytes: 2, 16. */
 export const fmtKB0 = (bytes: number): string => String(Math.round(bytes / KB));
+/** Kilobytes with one decimal: 15.6 KB — for columns where neighbours would otherwise collide. */
+export const fmtKB1 = (bytes: number): string => `${(bytes / KB).toFixed(1)} KB`;
+/** Milliseconds with one decimal, always: 1.0, 15.4 — for ranges whose ends must match in precision. */
+export const fmtMs1 = (v: number): string => v.toFixed(1);
 /** 97.8 million. */
 export const fmtMillions = (n: number): string => `${(n / 1e6).toFixed(1)} million`;
 /** Seconds / minutes from milliseconds. */

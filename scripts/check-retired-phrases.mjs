@@ -8,11 +8,17 @@
  * ship silently. This walks every source file and fails on any phrase the
  * messaging doc has retired. Keep the list in step with the repo's — when a
  * baseline is superseded, its headline figures get added on both sides.
+ *
+ * Only phrases that cannot coincide with a CURRENT figure belong here: a bare
+ * percentage or millisecond value can be both a retired claim and a live one
+ * (88.7% was our v1 quality-mode score and is tc's v2 overall score), so anchor
+ * such numbers to their old context ("84.0% overall") or leave them out.
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 
 const RETIRED = [
 	// pre-SHA-236 / SHA-276 claims
@@ -27,7 +33,8 @@ const RETIRED = [
 	// SHA-327: the fixture-v1 canon, retired by the fixture-v2 re-baseline
 	// (SHA-322): the old 6.2 ms / 440× / ~14 ms headline, the v1 retrieval
 	// figures, and the "beats tc's plain semantic on holdout" claim v2 overturned.
-	/6\.2\s*ms/,
+	// (lookbehind: "46.2 ms" is a current 1k figure)
+	/(?<![\d.])6\.2\s*ms/,
 	/~?440×/,
 	/~?118×/,
 	/\b2,?714\b/,
@@ -41,8 +48,6 @@ const RETIRED = [
 	/vs our 91\.7%/,
 	/84\.0% overall/,
 	/85\.0% (held|hold)/,
-	/\b84\.0%/,
-	/\b88\.7%/,
 	/222\s*ms/,
 	/833\s*ms/,
 	/36[- ]min/,

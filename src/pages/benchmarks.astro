@@ -16,21 +16,28 @@ import CodeBlock from "../components/CodeBlock.astro";
 import Icon from "../components/Icon.astro";
 import Metric from "../components/Metric.astro";
 import {
+	type AdapterKey,
 	adapter,
 	BIG,
+	COMPETITOR_COUNT,
 	COMPETITORS,
-	fmtBytesShort,
 	fmtKB0,
+	fmtKB1,
 	fmtMB1,
 	fmtMillions,
 	fmtMin,
 	fmtMs,
+	fmtMs1,
 	fmtMsUnit,
 	fmtSec,
 	fmtSec1,
+	GATE_V2,
 	HEADLINE,
 	latencyRange,
 	multiplier,
+	numberWord,
+	query10k,
+	QUERY_SET,
 	REST,
 	RETRIEVAL_DATE,
 	RETRIEVAL_DEFAULT,
@@ -50,16 +57,37 @@ const contextTax = multiplier(HEADLINE.contextTax.display); // "47,000×"
 const payloadKB = fmtKB0(HEADLINE.payloadBytes10k); // "2"
 const worst = HEADLINE.worstQuery;
 const seekQueryMs = SEEKSTONE.queries10k.map((q) => q.warmMedianMs);
+// Seekstone's own figure for the field's worst broad query — like-for-like with the
+// mcp-obsidian / REST numbers beside it, not the four-query mean.
+const seekBroad = query10k("seekstone", worst.query);
 // The plugin's HTTP API measured directly, vs Seekstone — floored to thousands like the headline.
 const restTax = Math.floor(REST.payloadBytes[BIG] / SEEKSTONE.payloadBytes[BIG] / 1000) * 1000;
 const fastest = HEADLINE.fastestCompetitor;
 const restOfField = latencyRange(COMPETITORS.map(([k]) => k).filter((k) => k !== fastest.adapter));
-const scanners = latencyRange(COMPETITORS.filter(([, a]) => a.architecture === "fs-direct subprocess").map(([k]) => k));
+
+// Architecture tiers are explicit key lists (never the free-text `architecture`
+// label) and must partition the benchmarked field — a re-sync that adds or
+// renames a competitor fails the build here instead of rendering a half-empty tier.
+const SCANNERS: AdapterKey[] = ["mcpvault", "obsidian-mcp-pro", "obsidian-mcp", "obsidian-mcp-rs"];
+const PLATFORMS: AdapterKey[] = ["obsidian-tc"];
+const PROXIES: AdapterKey[] = ["obsidian-mcp-server", "mcp-obsidian"];
+const tiered = [...SCANNERS, ...PLATFORMS, ...PROXIES];
+const fieldKeys = COMPETITORS.map(([k]) => k);
+const untiered = fieldKeys.filter((k) => !tiered.includes(k));
+const stale = tiered.filter((k) => !fieldKeys.includes(k));
+if (untiered.length > 0 || stale.length > 0 || new Set(tiered).size !== fieldKeys.length) {
+	throw new Error(
+		`benchmarks.astro: tiers do not partition the benchmarked field (unassigned: ${untiered.join(", ") || "none"}; not in benchmarks.json: ${stale.join(", ") || "none"})`,
+	);
+}
+const fastestScanner = SCANNERS.map((k) => [k, adapter(k)] as const).reduce((a, b) => (b[1].warmMs[BIG] < a[1].warmMs[BIG] ? b : a));
+const otherScanners = latencyRange(SCANNERS.filter((k) => k !== fastestScanner[0]));
+const round10 = (v: number) => Math.round(v / 10) * 10;
 const tc = adapter("obsidian-tc");
 
 const title = "Benchmarks: Seekstone vs Obsidian REST API | Seekstone";
 const description =
-	`Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and seven other servers, across 1k / 5k / 10k-note vaults. Up to ~${contextTax} smaller search payloads, fully reproducible with an open-source harness.`;
+	`Full payload and latency benchmark comparing Seekstone (filesystem-direct MCP) against the Obsidian Local REST API plugin and ${numberWord(COMPETITOR_COUNT)} other servers, across 1k / 5k / 10k-note vaults. Up to ~${contextTax} smaller search payloads, fully reproducible with an open-source harness.`;
 
 // Seekstone vs the Obsidian Local REST API plugin measured DIRECTLY over HTTP
 // (the `rest` harness backend) on the committed 10,000-note vault — the
@@ -68,11 +96,11 @@ const description =
 // fit card and the repo README). All from benchmarks.json → scaling.adapters.rest.
 const COMPARE: [metric: string, seekstone: string, rest: string][] = [
 	["Search payload (mean, 10k vault)", `~${payloadKB} KB`, fmtMB1(REST.payloadBytes[BIG])],
-	["Worst-case payload (broad query)", `~${payloadKB} KB`, fmtMB1(REST.worst10k?.bytes ?? 0)],
-	["Context tokens (broad query)", `~${Math.round(HEADLINE.payloadTokens10k / 10) * 10}`, fmtMillions(REST.worst10k?.tokens ?? 0)],
+	["Worst-case payload (broad query)", `~${fmtKB0(seekBroad.payloadBytes)} KB`, fmtMB1(REST.worst10k?.bytes ?? 0)],
+	["Context tokens (broad query)", `~${Math.round(seekBroad.payloadTokens / 10) * 10}`, fmtMillions(REST.worst10k?.tokens ?? 0)],
 	[
 		"Warm keyword search (10k vault)",
-		`${fmtMsUnit(SEEKSTONE.warmMs[BIG])} mean (${fmtMs(Math.min(...seekQueryMs))}–${fmtMs(Math.max(...seekQueryMs))} across queries)`,
+		`${fmtMsUnit(SEEKSTONE.warmMs[BIG])} mean (${fmtMs1(Math.min(...seekQueryMs))}–${fmtMs1(Math.max(...seekQueryMs))} across queries)`,
 		`~${fmtMsUnit(REST.warmMs[BIG])} mean`,
 	],
 	["Obsidian app required", "No", "Yes"],
@@ -91,20 +119,27 @@ const SCALE_LATENCY = scaleRows("warmMs");
 
 // The semantic head-to-head (retrieval-eval-competitors) — same golden set,
 // same vault, same run. Seekstone rows first, then the field.
-const semRow = (label: string, c: typeof RETRIEVAL_DEFAULT | typeof RETRIEVAL_TC, needs: string, you: boolean) => ({
+const semRow = (
+	label: string,
+	c: typeof RETRIEVAL_DEFAULT | typeof RETRIEVAL_TC,
+	needs: string,
+	you: boolean,
+	note = "",
+) => ({
 	label,
+	note,
 	you,
 	hit: `${c.overallHit5.toFixed(1)}%`,
 	holdout: `${c.holdoutHit5.toFixed(1)}%`,
 	p50: c.warmP50Ms >= 1000 ? `${fmtSec1(c.warmP50Ms)} (p95 ${fmtSec1(c.warmP95Ms)})` : fmtMsUnit(c.warmP50Ms),
-	payload: you ? `~${payloadKB} KB` : fmtBytesShort(c.payloadBytes),
+	payload: you ? `~${payloadKB} KB` : fmtKB1(c.payloadBytes),
 	index: "indexBuildMs" in c ? fmtSec(c.indexBuildMs) : "indexMs" in c ? fmtMin(c.indexMs) : "—",
 	needs,
 });
 const OFFLINE = "Nothing — in-process, offline";
 const OLLAMA = "Ollama server + native modules + Node ≥ 24";
 const SEMANTIC_ROWS = [
-	semRow("Seekstone quality mode (opt-in 32M + MaxSim)", RETRIEVAL_QUALITY, OFFLINE, true),
+	semRow("Seekstone quality mode", RETRIEVAL_QUALITY, OFFLINE, true, "(opt-in 32M + MaxSim)"),
 	semRow("Seekstone default (8M + MaxSim)", RETRIEVAL_DEFAULT, OFFLINE, true),
 	semRow("obsidian-tc semantic", RETRIEVAL_TC, OLLAMA, false),
 	{ ...semRow("obsidian-tc GraphRAG", RETRIEVAL_TC_GRAPH, "(same)", false), index: "(same)" },
@@ -114,6 +149,22 @@ const bestHit = Math.max(...SEMANTIC_ROWS.map((r) => Number.parseFloat(r.hit)));
 const graphLatencyVsDefault = Math.round(RETRIEVAL_TC_GRAPH.warmP50Ms / RETRIEVAL_DEFAULT.warmP50Ms / 10) * 10;
 const graphLatencyVsQuality = Math.round(RETRIEVAL_TC_GRAPH.warmP50Ms / RETRIEVAL_QUALITY.warmP50Ms / 10) * 10;
 const graphPayloadRatio = Math.round(RETRIEVAL_TC_GRAPH.payloadBytes / HEADLINE.payloadBytes10k);
+
+// The read-out below is prose with a direction baked into its wording: tc's plain
+// mode edges our best shipped mode on holdout, tc GraphRAG is the most accurate,
+// and the pre-registered gate was missed. Numbers interpolate; wording cannot.
+// Fail the build the moment the data stops supporting the sentence.
+const readoutHolds =
+	RETRIEVAL_TC.holdoutHit5 > RETRIEVAL_QUALITY.holdoutHit5 &&
+	RETRIEVAL_TC_GRAPH.holdoutHit5 > RETRIEVAL_TC.holdoutHit5 &&
+	RETRIEVAL_TC_GRAPH.holdoutHit5 === bestHoldout &&
+	GATE_V2.verdict === "fail" &&
+	worst.adapter === "mcp-obsidian";
+if (!readoutHolds) {
+	throw new Error(
+		"benchmarks.astro: the semantic read-out's wording (tc plain edges our quality mode on holdout; tc GraphRAG most accurate; gate v2 missed; mcp-obsidian is the worst broad query) no longer matches benchmarks.json — rewrite the paragraph, then remove/adjust this assertion",
+	);
+}
 
 // Three architectures, three scaling behaviours. The frame that makes the
 // tables legible — and puts Seekstone alone in the top tier.
@@ -125,17 +176,17 @@ const TIERS: { tier: string; who: string; body: string }[] = [
 	},
 	{
 		tier: "Subprocess scanners",
-		who: "mcpvault · obsidian-mcp · obsidian-mcp-pro · obsidian-mcp-rs",
-		body: `Spawn a process and scan the disk per query. Latency climbs with the vault — the fastest (${fastest.adapter}, Rust) is still ~${fastest.display}× slower than Seekstone at 10,000 notes; the rest run ~${fmtMs(Math.round(scanners.min / 10) * 10)}–${fmtMs(Math.round(scanners.max / 10) * 10)} ms at 10k notes.`,
+		who: SCANNERS.join(" · "),
+		body: `Spawn a process and scan the disk per query. Latency climbs with the vault — the fastest (${fastestScanner[0]}${fastestScanner[0] === "obsidian-mcp-rs" ? ", Rust" : ""}) is still ~${fastestScanner[1].vsSeekstone10k?.display}× slower than Seekstone at 10,000 notes; the rest run ~${fmtMs(round10(otherScanners.min))}–${fmtMs(round10(otherScanners.max))} ms at 10k notes.`,
 	},
 	{
 		tier: "Database platforms",
-		who: "obsidian-tc",
+		who: PLATFORMS.join(" · "),
 		body: `SQLite index behind a governance pipeline. Search runs ~${fmtSec1(tc.warmMs[BIG])} warm at 10,000 notes, and its read envelope returns each note's content twice.`,
 	},
 	{
 		tier: "REST proxies",
-		who: "Local REST API · mcp-obsidian",
+		who: `Local REST API · ${PROXIES.join(" · ")}`,
 		body: "Forward to Obsidian's HTTP API, which returns full note content for every hit — tens of megabytes per search, growing with the vault.",
 	},
 ];
@@ -230,7 +281,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					{fmtMB1(worst.bytes).replace(" ", "\u00a0")} / {fmtMillions(worst.tokens).replace(" ", "\u00a0")} tokens per call.
 				</p>
 				<p class="bm__note">
-					The rest of the field spans ~{fmtMs(Math.round(restOfField.min / 10) * 10)}–{fmtMs(restOfField.max)} ms warm search latency at 10,000 notes
+					The rest of the field spans ~{fmtMs(round10(restOfField.min))}–{fmtMs(restOfField.max)} ms warm search latency at 10,000 notes
 					in the chart above (one exception: {fastest.adapter} at {fmtMs(fastest.warmMs)} ms); Seekstone's
 					in-process index serves the same queries in single-digit milliseconds — and
 					the gap only widens as the vault grows.
@@ -343,7 +394,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					<p>
 						Opt-in meaning-based search through a small local embedding model — fully in-process,
 						offline at runtime, no API key, no native modules — with a MaxSim rerank on top since
-						0.17.0. Evaluated on the same committed 10,000-note vault with a 150-query golden set
+						0.17.0. Evaluated on the same committed 10,000-note vault with a {QUERY_SET.total}-query golden set
 						and a locked-away held-out split.
 					</p>
 				</div>
@@ -371,7 +422,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					<div class="bm__tablewrap">
 						<table class="bm__table">
 							<thead>
-								<tr><th>Semantic search</th><th>hit@5 (150q)</th><th>held-out</th><th>Latency (p50)</th><th>Payload/query</th><th>Cold index</th><th>Needs</th></tr>
+								<tr><th>Semantic search</th><th>hit@5 ({QUERY_SET.total}q)</th><th>held-out</th><th>Latency (p50)</th><th>Payload/query</th><th>Cold index</th><th>Needs</th></tr>
 							</thead>
 							<tbody>
 								{
@@ -379,7 +430,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 										const B = (v: string, strong: boolean) => (strong ? <strong>{v}</strong> : v);
 										return (
 											<tr>
-												<td>{r.you ? <strong>{r.label}</strong> : r.label}</td>
+												<td>{r.note ? <><strong>{r.label}</strong> {r.note}</> : r.label}</td>
 												<td>{B(r.hit, Number.parseFloat(r.hit) === bestHit)}</td>
 												<td>{B(r.holdout, Number.parseFloat(r.holdout) === bestHoldout)}</td>
 												<td>{B(r.p50, r.you)}</td>
@@ -399,7 +450,7 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 					The honest read, both directions: obsidian-tc's plain semantic mode <strong>edges
 					Seekstone's best shipped mode on the held-out split</strong> ({RETRIEVAL_TC.holdoutHit5.toFixed(1)}% vs
 					{RETRIEVAL_QUALITY.holdoutHit5.toFixed(1)}%) — at {Math.round(RETRIEVAL_TC.warmP50Ms)} ms per query against our
-					{Math.round(RETRIEVAL_QUALITY.warmP50Ms)} ms, a {fmtMin(RETRIEVAL_TC.indexMs)}ute Ollama index against our {fmtSec(RETRIEVAL_DEFAULT.indexBuildMs)}, and a
+					{Math.round(RETRIEVAL_QUALITY.warmP50Ms)} ms, a {fmtMin(RETRIEVAL_TC.indexMs)}ute Ollama index against our {fmtSec(RETRIEVAL_QUALITY.indexBuildMs)}, and a
 					second server you install, run, and keep a 137M-parameter model loaded in. Its GraphRAG
 					mode is <strong>the most accurate we benchmarked</strong> ({RETRIEVAL_TC_GRAPH.holdoutHit5.toFixed(1)}% held-out),
 					at seconds per query ({fmtSec1(RETRIEVAL_TC_GRAPH.warmP50Ms)} median, {fmtSec1(RETRIEVAL_TC_GRAPH.warmP95Ms)} p95 —

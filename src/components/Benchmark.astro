@@ -17,6 +17,7 @@ import {
 	fmtMs,
 	HEADLINE,
 	multiplier,
+	query10k,
 	scaleRows,
 	SCALING,
 	SERVERS,
@@ -29,7 +30,8 @@ const barWidth = (ms: number) => `${Math.max((ms / BMAX) * 100, 1.2)}%`;
 
 const contextTax = multiplier(HEADLINE.contextTax.display); // "47,000×"
 const worst = HEADLINE.worstQuery;
-const seekTokens = Math.round(HEADLINE.payloadTokens10k / 10) * 10;
+// Seekstone's own tokens for that same broad query — like-for-like, not the four-query mean.
+const seekTokens = Math.round(query10k("seekstone", worst.query).payloadTokens / 10) * 10;
 ---
 
 <section class="section" id="benchmark">

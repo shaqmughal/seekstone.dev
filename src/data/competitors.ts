@@ -29,16 +29,19 @@ const seekMs = fmtMsUnit(SEEKSTONE.warmMs[BIG]); // "5.2 ms"
 const seekKB = fmtBytesShort(SEEKSTONE.payloadBytes[BIG]); // "2.0 KB"
 const payloadKB = fmtKB0(HEADLINE.payloadBytes10k); // "2"
 const tax = multiplier(HEADLINE.contextTax.display); // "47,000×"
-const worstQuery = `${fmtMB1(HEADLINE.worstQuery.bytes)} (~${fmtMillions(HEADLINE.worstQuery.tokens)} tokens)`;
-const worstQueryShort = `${fmtMB1(HEADLINE.worstQuery.bytes)} / ~${(HEADLINE.worstQuery.tokens / 1e6).toFixed(1)}M tokens`;
+// mcp-obsidian's OWN worst broad query at 10k (not the field-wide headline, which
+// merely happens to be the same server today).
+const moWorst = adapter("mcp-obsidian").worst10k;
+if (!moWorst) throw new Error("benchmarks.json: mcp-obsidian has no worst-query figure at 10k notes");
+const worstQuery = `${fmtMB1(moWorst.bytes)} (~${fmtMillions(moWorst.tokens)} tokens)`;
+const worstQueryShort = `${fmtMB1(moWorst.bytes)} / ~${(moWorst.tokens / 1e6).toFixed(1)}M tokens`;
 
 /** Per-competitor figures, formatted the way the README formats them. */
 function vs(key: AdapterKey) {
 	const a = adapter(key);
-	const triple = <T,>(xs: T[]) => xs as [T, T, T];
 	return {
-		payload: triple(a.payloadBytes.map(fmtBytesShort)),
-		latency: triple(a.warmMs.map(fmtMsUnit)),
+		payload: a.payloadBytes.map(fmtBytesShort),
+		latency: a.warmMs.map(fmtMsUnit),
 		payload10k: fmtBytesShort(a.payloadBytes[BIG]),
 		payload1k: fmtBytesShort(a.payloadBytes[0]),
 		ms10k: fmtMsUnit(a.warmMs[BIG]),
@@ -79,9 +82,9 @@ export interface Competitor {
 	verdict: string;
 	/** At-a-glance table rows */
 	rows: VsRow[];
-	/** 1k / 5k / 10k scaling — payload then latency, competitor values */
-	payload: [string, string, string];
-	latency: [string, string, string];
+	/** Per-size scaling (one cell per benchmarks.json `scaling.sizes` entry) — payload then latency, competitor values */
+	payload: string[];
+	latency: string[];
 	/** Seekstone's values are constant across pages (from the same report) */
 	/** "Where <name> has the edge" — genuine strengths, 3 cards */
 	edge: { title: string; body: string }[];
@@ -92,8 +95,8 @@ export interface Competitor {
 }
 
 export const SEEKSTONE_SCALE = {
-	payload: SEEKSTONE.payloadBytes.map(fmtBytesShort) as [string, string, string],
-	latency: SEEKSTONE.warmMs.map(fmtMsUnit) as [string, string, string],
+	payload: SEEKSTONE.payloadBytes.map(fmtBytesShort),
+	latency: SEEKSTONE.warmMs.map(fmtMsUnit),
 };
 
 export const COMPETITORS: Competitor[] = [

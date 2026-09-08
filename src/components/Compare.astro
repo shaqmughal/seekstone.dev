@@ -7,6 +7,7 @@
 import Card from "./Card.astro";
 import Icon from "./Icon.astro";
 import { COMPARE_COLUMNS, COMPARE_ROWS } from "../data/comparison";
+import { numberWord, SCALING, SERVERS } from "../data/benchmarks";
 ---
 
 <section class="section section--tight compare" id="compare">
@@ -14,7 +15,7 @@ import { COMPARE_COLUMNS, COMPARE_ROWS } from "../data/comparison";
 		<div class="head head--center">
 			<span class="eyebrow eyebrow--center"><Icon name="shield" size={13} /> Same vault, different requirements</span>
 			<h2>No plugin. No app.<br /><span class="grad">No context tax.</span></h2>
-			<p>What each architecture demands of you — and what it costs your model. Same queries, same committed vaults, 20 runs each.</p>
+			<p>What each architecture demands of you — and what it costs your model. Same queries, same committed vaults, {SCALING.runs} runs each.</p>
 		</div>
 
 		<Card variant="raised" padding="lg" class="compare__card">
@@ -43,7 +44,7 @@ import { COMPARE_COLUMNS, COMPARE_ROWS } from "../data/comparison";
 				</table>
 			</div>
 			<p class="compare__foot">
-				Full methodology and the eight-server comparison on the
+				Full methodology and the {numberWord(SERVERS.length)}-server comparison on the
 				<a href="/benchmarks">benchmarks page</a> — reproducible from the open-source
 				<a href="https://github.com/shaqmughal/seekstone/tree/main/packages/harness" target="_blank" rel="noreferrer">harness</a>.
 			</p>
