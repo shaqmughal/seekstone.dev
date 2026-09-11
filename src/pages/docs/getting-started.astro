@@ -162,10 +162,19 @@ const CLIENTS: { id: string; label: string }[] = [
 					<li>Open it with Claude Desktop — double-click in Finder, or right-click → Open With → Claude Desktop.</li>
 					<li>Pick your Obsidian vault folder when prompted. Done.</li>
 				</ol>
+				<p class="gs__desc">
+					Want meaning-based search? Grab <code>seekstone-semantic.mcpb</code> instead — the same
+					server with the local embedding model shipped inside the bundle, so semantic search works
+					out of the box: still no terminal, and nothing is downloaded at runtime.
+				</p>
 				<div class="gs__row">
 					<Button variant="spark" href="/download/mcpb" data-analytics="Docs mcpb Download">
 						<Icon slot="iconLeft" name="download" size={16} />
 						Download .mcpb
+					</Button>
+					<Button variant="secondary" href="/download/mcpb-semantic" data-analytics="Docs mcpb-semantic Download">
+						<Icon slot="iconLeft" name="download" size={16} />
+						Semantic bundle
 					</Button>
 				</div>
 				<h3 class="gs__h3">Guided CLI</h3>
@@ -353,7 +362,9 @@ const CLIENTS: { id: string; label: string }[] = [
 					index — a few seconds for thousands of notes — and keeps it live as you edit. All {TOOLS.total}
 					tools are then available: ranked search (with optional local semantic mode — run
 					<code>npx -y seekstone fetch-model</code> once and set <code>SEEKSTONE_SEMANTIC=1</code>
-					in the server env), structured metadata queries, one-call context packs, section-level
+					in the server env, or skip both by installing the
+					<a href="/download/mcpb-semantic">semantic bundle</a>, which ships the model inside),
+					structured metadata queries, one-call context packs, section-level
 					reads, backlinks, periodic notes, and byte-safe writes.
 				</p>
 				<div class="gs__row">
