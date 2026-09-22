@@ -367,6 +367,26 @@ const CLIENTS: { id: string; label: string }[] = [
 					structured metadata queries, one-call context packs, section-level
 					reads, backlinks, periodic notes, and byte-safe writes.
 				</p>
+				<h3 class="gs__h3">Optional settings</h3>
+				<ul class="gs__defs">
+					<li>
+						<span class="gs__k">SEEKSTONE_INSTRUCTIONS</span>
+						<span>
+							Point it at a file (a relative path resolves inside the vault) and its contents become
+							the server's MCP <em>instructions</em>, which clients surface alongside the tool list:
+							a place to tell the AI how your vault is organised, which folders matter, and which
+							notes it should leave alone. Read once at boot; missing or empty means no instructions.
+						</span>
+					</li>
+					<li>
+						<span class="gs__k">Everything else</span>
+						<span>
+							Read-only mode, write policies, the audit log, semantic model choice and the rest are
+							all environment variables — the <a href="https://github.com/shaqmughal/seekstone#configuration" target="_blank" rel="noreferrer">README's Configuration table</a>
+							is the canonical list.
+						</span>
+					</li>
+				</ul>
 				<div class="gs__row">
 					<Button variant="secondary" href="/#tools">
 						Browse the tools
