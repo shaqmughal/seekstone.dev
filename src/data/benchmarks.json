@@ -15,12 +15,12 @@
     }
   },
   "release": {
-    "version": "0.20.3",
+    "version": "0.21.0",
     "source": "packages/server/package.json#version"
   },
   "tools": {
-    "total": 21,
-    "read": 11,
+    "total": 22,
+    "read": 12,
     "write": 10,
     "source": "packages/server/src/dispatch.ts#HANDLED_TOOLS,WRITE_TOOLS"
   },

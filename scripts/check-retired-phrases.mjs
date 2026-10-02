@@ -55,6 +55,7 @@ const RETIRED = [
 	/88% of the time/,
 	/beats\s+obsidian-tc'?s plain/,
 	/"19 tools"|\b19 tools\b/,
+	/"21 tools"|\b21 tools\b/,
 	/eight (named |tested )?guarantees/,
 ];
 

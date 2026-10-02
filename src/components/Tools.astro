@@ -17,6 +17,7 @@ const READ: Tool[] = [
 	["query_notes", "filter", "Structured queries — frontmatter, date & size predicates. Whole-vault answers in ~350 B."],
 	["context_pack", "package", "Answer-ready context for a question in one call — ranked excerpts + linked neighbors, hard byte cap. Scopable by folder or tag, same modes as search."],
 	["read_note", "fileText", "Read a note by path. Return a single section, block, or line range."],
+	["read_notes", "fileText", "Read up to 20 notes or sections in one call, under a total byte budget. Over budget, each is trimmed to a fair share and flagged."],
 	["list_notes", "list", "List notes, optionally filtered by folder prefix or tag."],
 	["list_tags", "tag", "Every tag in the vault, sorted by usage count or alphabetically."],
 	["outline_note", "listTree", "Heading & block structure — cheap navigation before a targeted read."],
