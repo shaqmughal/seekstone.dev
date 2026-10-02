@@ -63,6 +63,10 @@ export const FAQS: FaqItem[] = [
 		a: "Yes. Seekstone is tested on macOS, Linux, and Windows in CI on every commit.",
 	},
 	{
+		q: "Does search handle typos?",
+		a: "Yes, small ones. Keyword search allows one typo per word of 3–7 letters and two for words of 8 or more, so \"benchamrk\" still finds \"benchmark\". One- and two-letter words must match exactly, and swapping two letters counts as two typos. It also matches word prefixes: \"kuber\" finds \"Kubernetes\". Tag filters work like Obsidian's: they ignore case and include nested tags, so \"project\" matches #Project/alpha, and a tag that no note has comes back with the closest existing tags suggested.",
+	},
+	{
 		q: "How big a vault can it handle?",
 		a: `It is benchmarked against committed vaults of 1,000, 5,000, and 10,000 notes; warm keyword search averages ${seekMs} at 10k (the shipped semantic pipeline, MaxSim rerank included, ~${SEMANTIC_MS} ms). At that scale the cold index build takes tens of seconds and the process stays under ~100 MB of memory; typical personal vaults index in a few seconds.`,
 	},
