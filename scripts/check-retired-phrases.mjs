@@ -41,7 +41,6 @@ const RETIRED = [
 	/\b1,?302\b/,
 	/\b958\s*ms/,
 	/~14\s*ms/,
-	/~6× slower/,
 	/~?90–250×/,
 	/70–250×/,
 	/91\.7% (on the )?held-out/,
@@ -56,7 +55,16 @@ const RETIRED = [
 	/beats\s+obsidian-tc'?s plain/,
 	/"19 tools"|\b19 tools\b/,
 	/"21 tools"|\b21 tools\b/,
+	/"22 tools"|\b22 tools\b/,
 	/eight (named |tested )?guarantees/,
+	// SHA-342: the fixture-v2.0 latency canon (5.2 ms @10k), retired by the
+	// fixture-v2.1 canon re-run of 2026-10-12 (5.6 ms). Every multiplier divides
+	// by that figure, so the old headline set goes with it. "~6× slower" left the
+	// fixture-v1 block above at the same time: obsidian-mcp-rs measures 6.3× again.
+	/(?<![\d.])5\.2\s*ms/,
+	/~?514×/,
+	/~7× slower/,
+	/~?110–300×/,
 ];
 
 const INCLUDE = /\.(astro|ts|mjs|md|svg)$/;

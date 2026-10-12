@@ -25,7 +25,7 @@ import {
 	TOOLS,
 } from "./benchmarks";
 
-const seekMs = fmtMsUnit(SEEKSTONE.warmMs[BIG]); // "5.2 ms"
+const seekMs = fmtMsUnit(SEEKSTONE.warmMs[BIG]); // "5.6 ms"
 const seekKB = fmtBytesShort(SEEKSTONE.payloadBytes[BIG]); // "2.0 KB"
 const payloadKB = fmtKB0(HEADLINE.payloadBytes10k); // "2"
 const tax = multiplier(HEADLINE.contextTax.display); // "47,000×"
