@@ -20,9 +20,11 @@ const READ: Tool[] = [
 	["read_notes", "fileText", "Read up to 20 notes or sections in one call, under a total byte budget. Over budget, each is trimmed to a fair share and flagged."],
 	["list_notes", "list", "List notes, optionally filtered by folder prefix or tag."],
 	["list_tags", "tag", "Every tag in the vault, sorted by usage count or alphabetically."],
+	["list_tasks", "check", "Checkbox tasks as compact rows — path, line, state, text, nearest heading. Vault-wide or filtered by note, folder, tag, state, or modified time."],
 	["outline_note", "listTree", "Heading & block structure — cheap navigation before a targeted read."],
 	["get_backlinks", "link", "Find all notes that link to a given note."],
 	["get_links", "link", "List all outgoing wikilinks and markdown links from a note."],
+	["resolve_note", "link", "Turn a note name, path, or frontmatter alias into its canonical path — every candidate when ambiguous, did-you-mean when nothing matches."],
 	["get_periodic_note", "calendar", "Read any date's daily / weekly / monthly / quarterly / yearly note — Obsidian closed."],
 	["list_writes", "list", "Recent writes from the journal — seq, tool, touched paths, and whether each is still undoable. Metadata only, never note content."],
 ];
@@ -35,6 +37,7 @@ const WRITE: Tool[] = [
 	["move_note", "move", "Move or rename a note — wikilinks pointing at it are rewritten so nothing breaks."],
 	["rename_heading", "heading", "Rename a heading — every [[note#heading]] wikilink and embed across the vault is rewritten so references keep working."],
 	["append_periodic_note", "calendarPlus", "Append to today's periodic note, creating it from a template."],
+	["update_task", "check", "Set one checkbox's state by path and line — exactly one character changes. Refuses if the task text changed since it was listed."],
 	["delete_note", "trash", "Move a note to .trash/ — recoverable, Obsidian-compatible. permanent: true skips the trash; the write journal still lets undo_write restore it.", true],
 	["undo_write", "shield", "Revert any journaled write — every touched file restored byte-identical: multi-file moves and renames whole, deletes even if permanent."],
 ];

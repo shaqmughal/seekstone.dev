@@ -62,7 +62,7 @@ export const fmtMillions = (n: number): string => `${(n / 1e6).toFixed(1)} milli
 export const fmtSec = (ms: number): string => `${Math.round(ms / 1000)} s`;
 export const fmtSec1 = (ms: number): string => `${(ms / 1000).toFixed(1)} s`;
 export const fmtMin = (ms: number): string => `${Math.round(ms / 60_000)} min`;
-/** 47,000× / 514×. */
+/** 47,000× / 476×. */
 export const multiplier = (n: number): string => `${fmtInt(n)}×`;
 /** Small counts as words: "ten guarantees". */
 export function numberWord(n: number): string {
