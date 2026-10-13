@@ -65,6 +65,8 @@ const RETIRED = [
 	/~?514×/,
 	/~7× slower/,
 	/~?110–300×/,
+	// Same-day competitor re-run of 2026-10-12: obsidian-tc measures ~508× at 10k.
+	/~?476×/,
 ];
 
 const INCLUDE = /\.(astro|ts|mjs|md|svg)$/;
