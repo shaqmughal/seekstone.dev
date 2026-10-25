@@ -214,6 +214,18 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 		"Keyword search (fuzzy + prefix) is the default. Since 0.15.0, semantic and hybrid modes search by meaning through a small local embedding model: run npx -y seekstone fetch-model once (~30 MB, checksum-verified) and set SEEKSTONE_SEMANTIC=1. The costs, plainly: the one-time download, a background embedding pass at startup, and a per-vault vector cache under ~/.cache/seekstone. After that nothing ever leaves your machine — and if you never opt in, none of it exists.",
 	],
 ];
+
+// Comparisons other people have written that include Seekstone. Add an entry
+// only once the piece is live and actually covers Seekstone; the section is
+// hidden while the list is empty.
+const THIRD_PARTY: { title: string; publisher: string; url: string; summary: string }[] = [
+	{
+		title: "Best Obsidian MCP Server: 4 Compared + Setup",
+		publisher: "ContextBolt",
+		url: "https://contextbolt.com/blog/obsidian-mcp-claude/",
+		summary: "Compares Seekstone with mcp-obsidian, obsidian-mcp-server, MCPVault and the plain Filesystem MCP approach, with setup steps for each.",
+	},
+];
 ---
 
 <Base title={title} description={description}>
@@ -488,6 +500,33 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 				</div>
 			</div>
 		</section>
+
+		{
+			THIRD_PARTY.length > 0 && (
+				<section class="section section--tight" id="third-party">
+					<div class="container container--narrow">
+						<div class="head head--center">
+							<span class="eyebrow eyebrow--center"><Icon name="link" size={13} /> Further reading</span>
+							<h2>Third-party comparisons.</h2>
+							<p>Write-ups by other people that compare Obsidian MCP servers, Seekstone included. Their methods and verdicts are their own.</p>
+						</div>
+						<Card variant="raised" padding="lg" class="bm__ext">
+							<ul class="bm__ext-list">
+								{
+									THIRD_PARTY.map((p) => (
+										<li class="bm__ext-item">
+											<a class="bm__ext-title" href={p.url} target="_blank" rel="noopener">{p.title}</a>
+											<span class="bm__ext-pub">{p.publisher}</span>
+											<p class="bm__ext-sum">{p.summary}</p>
+										</li>
+									))
+								}
+							</ul>
+						</Card>
+					</div>
+				</section>
+			)
+		}
 	</main>
 	<Footer />
 </Base>
@@ -531,6 +570,14 @@ const TRADEOFFS: [icon: string, title: string, body: string][] = [
 	.bm__trade-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; color: var(--amber-300); background: var(--spark-soft); border: 1px solid rgba(245, 158, 11, 0.22); }
 	.bm__trade-title { margin: 0.3rem 0 0; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary); }
 	.bm__trade-body { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+
+	#third-party .head { margin-bottom: 2rem; }
+	.bm__ext-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
+	.bm__ext-item + .bm__ext-item { padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); }
+	.bm__ext-title { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.015em; color: var(--text-primary); text-decoration: none; }
+	.bm__ext-title:hover { color: var(--violet-200); text-decoration: underline; }
+	.bm__ext-pub { display: block; margin-top: 0.25rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-faint); }
+	.bm__ext-sum { margin: 0.6rem 0 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
 
 	@media (max-width: 900px) { .bm__tradeoffs { grid-template-columns: 1fr; } }
 	@media (max-width: 600px) { .bm__method li { grid-template-columns: 1fr; gap: 0.15rem; } }
